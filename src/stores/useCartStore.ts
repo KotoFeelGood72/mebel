@@ -45,18 +45,16 @@ export const useCartStore = defineStore("carts", {
       this.carts = this.carts.filter((cart: any) => cart.id !== itemId);
     },
     async createOrder() {
-      try {
-        const { $domain } = useNuxtApp();
-        const response = $domain.post(
-          "/wp-json/wc/v3/orders",
-          this.currentOrder
-        );
-      } catch (error) {}
+      // try {
+      //   const { $domain } = useNuxtApp();
+      //   const response = $domain.post(
+      //     "/wp-json/wc/v3/orders",
+      //     this.currentOrder
+      //   );
+      // } catch (error) {}
     },
   },
-  persist: {
-    storage: persistedState.localStorage,
-  },
+  persist: true,
 });
 
 export const useCartStoreRefs = () => storeToRefs(useCartStore());

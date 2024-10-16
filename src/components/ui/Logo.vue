@@ -1,8 +1,8 @@
 <template>
   <div :class="[`position-${position}`, 'logo']">
-    <NuxtLink to="/">
+    <RouterLink to="/">
       <img src="/img/logo.svg" alt="" />
-    </NuxtLink>
+    </RouterLink>
   </div>
 </template>
 

@@ -1,6 +1,6 @@
 import { ref } from "vue";
 import axios from "axios";
-import deliveryData from "~/data/DeliveryPrice.json";
+import deliveryData from "@/data/DeliveryPrice.json";
 
 const query = ref<any>("");
 const suggestions = ref<any>([]);

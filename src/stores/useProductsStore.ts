@@ -1,4 +1,4 @@
-import { defineStore } from "pinia";
+import { defineStore, storeToRefs } from "pinia";
 
 export const useProductsStore = defineStore("products", {
   state: () => ({
@@ -7,11 +7,11 @@ export const useProductsStore = defineStore("products", {
   }),
   actions: {
     async getAllProducts() {
-      try {
-        const { $main } = useNuxtApp();
-        const response = await $main.get("/all-products.json");
-        this.products = response.data;
-      } catch (error) {}
+      // try {
+      //   const { $main } = useNuxtApp();
+      //   const response = await $main.get("/all-products.json");
+      //   this.products = response.data;
+      // } catch (error) {}
     },
     getProductBySlug(slug: any) {
       if (!this.products) {
@@ -22,9 +22,7 @@ export const useProductsStore = defineStore("products", {
       );
     },
   },
-  persist: {
-    storage: persistedState.localStorage,
-  },
+  persist: true,
 });
 
 export const useProductsStoreRefs = () => storeToRefs(useProductsStore());

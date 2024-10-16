@@ -32,9 +32,12 @@
 </template>
 
 <script setup lang="ts">
-import Inputs from "~/components/ui/Inputs.vue";
-import DefaultBtn from "~/components/ui/DefaultBtn.vue";
-import { useUserStoreRefs } from "~/store/useUserStore";
+import Inputs from "@/components/ui/Inputs.vue";
+import DefaultBtn from "@/components/ui/DefaultBtn.vue";
+import { useUserStore, useUserStoreRefs } from "@/stores/useUserStore";
+// import Inputs from "~/components/ui/Inputs.vue";
+// import DefaultBtn from "~/components/ui/DefaultBtn.vue";
+// import { useUserStoreRefs } from "~/store/useUserStore";
 
 const { user } = useUserStoreRefs();
 </script>

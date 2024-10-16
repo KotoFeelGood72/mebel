@@ -23,8 +23,9 @@
 </template>
 
 <script setup lang="ts">
-import { useDelivery } from "~/composables/useDelivery";
-import { useCartStoreRefs } from "~/store/useCartStore";
+import { useDelivery } from "@/composables/useDelivery";
+import { useCartStoreRefs } from "@/stores/useCartStore";
+import { watch } from "vue";
 
 const {
   query,

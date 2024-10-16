@@ -5,8 +5,8 @@
         <div class="profile_head">
           <h1>Личный кабинет</h1>
           <nav class="profile_nav">
-            <NuxtLink to="/profile"> Профиль </NuxtLink>
-            <NuxtLink to="/profile/order"> Заказы </NuxtLink>
+            <RouterLink to="/profile"> Профиль </RouterLink>
+            <RouterLink to="/profile/order"> Заказы </RouterLink>
           </nav>
         </div>
         <NuxtPage />

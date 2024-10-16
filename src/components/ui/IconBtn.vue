@@ -1,6 +1,6 @@
 <template>
   <div class="icon-btn">
-    <Icon :name="icon" :size="size" />
+    <Icons :icon="icon" :size="size" />
   </div>
 </template>
 
@@ -27,5 +27,6 @@ const props = withDefaults(
   display: inline-flex;
   justify-content: center;
   align-items: center;
+  color: $brown;
 }
 </style>

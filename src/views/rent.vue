@@ -184,18 +184,19 @@
 </template>
 
 <script setup lang="ts">
-import PageHead from "~/components/head/PageHead.vue";
+import PageHead from "@/components/head/PageHead.vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Navigation } from "swiper/modules";
-import ActionBlock from "~/components/blocks/ActionBlock.vue";
+import ActionBlock from "@/components/blocks/ActionBlock.vue";
+import { ref, onMounted } from "vue";
+import { api } from "@/api/axios";
 
 const page = ref<any>(null);
 const head = ref<any>(null);
 
 async function getRent() {
   try {
-    const { $main } = useNuxtApp();
-    const response = await $main.get("/arenda.json");
+    const response = await api.get("/page/post-124.json");
     page.value = response.data.acf;
     head.value = {
       title: page?.value?.hero_title,

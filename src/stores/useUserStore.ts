@@ -13,21 +13,21 @@ export const useUserStore = defineStore("users", {
     },
 
     async fetchUser() {
-      if (!this.user) {
-        throw new Error("Пользователь не авторизован");
-      }
-      try {
-        const { $main } = useNuxtApp();
-        const response = await $main.get(
-          `/users/${this.user.user_data.ID}.json`
-        );
-        if (response.data) {
-          this.data = response.data;
-        }
-      } catch (error) {
-        console.error("Ошибка получения данных пользователя:", error);
-        throw new Error("Токен недействителен. Выполнен выход.");
-      }
+      // if (!this.user) {
+      //   throw new Error("Пользователь не авторизован");
+      // }
+      // try {
+      //   const { $main } = useNuxtApp();
+      //   const response = await $main.get(
+      //     `/users/${this.user.user_data.ID}.json`
+      //   );
+      //   if (response.data) {
+      //     this.data = response.data;
+      //   }
+      // } catch (error) {
+      //   console.error("Ошибка получения данных пользователя:", error);
+      //   throw new Error("Токен недействителен. Выполнен выход.");
+      // }
     },
 
     async logout() {
@@ -48,9 +48,7 @@ export const useUserStore = defineStore("users", {
       localStorage.removeItem("users");
     },
   },
-  persist: {
-    storage: persistedState.localStorage,
-  },
+  persist: true,
 });
 
 export const useUserStoreRefs = () => storeToRefs(useUserStore());

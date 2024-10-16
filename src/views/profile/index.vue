@@ -16,7 +16,7 @@
           </ul>
         </div>
         <div class="user__edit">
-          <NuxtLink to="/profile/edit">Редактировать</NuxtLink>
+          <RouterLink to="/profile/edit">Редактировать</RouterLink>
         </div>
         <div class="user__logout" @click="logoutUser">Выйти</div>
       </div>
@@ -28,11 +28,11 @@
 </template>
 
 <script setup lang="ts">
-import { useUserStoreRefs, useUserStore } from "~/store/useUserStore";
+import { useUserStoreRefs, useUserStore } from "@/stores/useUserStore";
 
-definePageMeta({
-  middleware: "auth",
-});
+// definePageMeta({
+//   middleware: "auth",
+// });
 
 const { data } = useUserStoreRefs();
 const { logout } = useUserStore();

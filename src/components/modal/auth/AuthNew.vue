@@ -21,9 +21,9 @@
 </template>
 
 <script setup lang="ts">
-import Inputs from "~/components/ui/Inputs.vue";
-import InputPhone from "~/components/ui/InputPhone.vue";
-import DefaultBtn from "~/components/ui/DefaultBtn.vue";
+import Inputs from "@/components/ui/Inputs.vue";
+import InputPhone from "@/components/ui/InputPhone.vue";
+import DefaultBtn from "@/components/ui/DefaultBtn.vue";
 import { ref } from "vue";
 
 const props = defineProps({

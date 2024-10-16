@@ -57,8 +57,8 @@
         <div class="products_description">
           {{ products.acf.about_txt_product }}
         </div>
-        <NuxtLink :to="`/shop/products/${products.slug}`"
-          >Подробнее о товаре</NuxtLink
+        <RouterLink :to="`/shop/products/${products.slug}`"
+          >Подробнее о товаре</RouterLink
         >
       </div>
       <div class="products_content_bottom">
@@ -107,7 +107,7 @@
 <script setup lang="ts">
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Navigation, Pagination } from "swiper/modules";
-import { useCartStore, useCartStoreRefs } from "~/store/useCartStore";
+import { useCartStore, useCartStoreRefs } from "@/stores/useCartStore";
 import AddToCart from "../ui/AddToCart.vue";
 import { ref, computed } from "vue";
 import Qty from "../ui/Qty.vue";

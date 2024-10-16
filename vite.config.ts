@@ -16,6 +16,7 @@ export default defineConfig({
     },
     cssCodeSplit: false,
   },
+
   plugins: [vue()],
   resolve: {
     alias: {
@@ -34,6 +35,16 @@ export default defineConfig({
         target: "http://fu.gleede.ru/wp-content/uploads/json",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `
+        @import "@/assets/scss/_mixins.scss";
+          @import "@/assets/scss/_variables.scss";
+        `,
       },
     },
   },

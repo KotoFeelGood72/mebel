@@ -6,8 +6,8 @@
           <h6>{{ title }}</h6>
           <div class="action__privacy" v-if="isHome">
             Отправляя заявку вы соглашаетесь на обработку своих
-            <NuxtLink to="/privacy">персональных данных</NuxtLink to="/privacy"> и принимаете <NuxtLink>политику
-            конфиденциальности.</NuxtLink>
+            <RouterLink to="/privacy">персональных данных</RouterLink to="/privacy"> и принимаете <RouterLink>политику
+            конфиденциальности.</RouterLink>
           </div>
           <div class="action_txt" v-if="txt && !isHome">
           {{ txt }}
@@ -18,8 +18,8 @@
           </div>
           <div class="action__privacy" v-if="!isHome">
             Отправляя заявку вы соглашаетесь на обработку своих
-            <NuxtLink to="/privacy">персональных данных</NuxtLink to="/privacy"> и принимаете <NuxtLink>политику
-            конфиденциальности.</NuxtLink>
+            <RouterLink to="/privacy">персональных данных</RouterLink to="/privacy"> и принимаете <RouterLink>политику
+            конфиденциальности.</RouterLink>
           </div>
           <div class="action_form__btn">
           
@@ -44,7 +44,7 @@
 import InputPhone from '../ui/InputPhone.vue';
 import DefaultBtn from '../ui/DefaultBtn.vue';
 import { useRoute } from 'vue-router';
-import { withDefaults, defineProps } from 'vue';
+import { withDefaults, defineProps, ref, computed } from 'vue';
 
 const route = useRoute()
 

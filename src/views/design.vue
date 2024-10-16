@@ -1,5 +1,3 @@
-<!-- @format -->
-
 <template>
   <div class="degign" v-if="page">
     <PageHead :data="head" />
@@ -53,16 +51,17 @@
 </template>
 
 <script setup lang="ts">
-import PageHead from "~/components/head/PageHead.vue";
-import ActionBlock from "~/components/blocks/ActionBlock.vue";
+import PageHead from "@/components/head/PageHead.vue";
+import ActionBlock from "@/components/blocks/ActionBlock.vue";
+import { ref, onMounted } from "vue";
+import { api } from "@/api/axios";
 
 const head = ref<any>();
 const page = ref<any>();
 
 async function getDesign() {
   try {
-    const { $main } = useNuxtApp();
-    const response = await $main.get("/design.json");
+    const response = await api.get("/page/post-116.json");
     page.value = response.data.acf;
     head.value = {
       title: page?.value?.hero_title,

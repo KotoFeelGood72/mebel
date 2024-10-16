@@ -1,5 +1,5 @@
 import { defineStore, storeToRefs } from "pinia";
-import { useLoadingStore } from "./useLoadingStore";
+import { api } from "@/api/axios";
 
 export const useHomeStore = defineStore("home", {
   state: () => ({
@@ -8,8 +8,7 @@ export const useHomeStore = defineStore("home", {
   actions: {
     async getHome() {
       try {
-        const { $main } = useNuxtApp();
-        const response = await $main.get("/home.json");
+        const response = await api.get("/page/post-114.json");
         this.home = response.data.acf;
       } catch (error) {}
     },

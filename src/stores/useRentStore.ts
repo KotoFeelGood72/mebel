@@ -6,11 +6,11 @@ export const useRentStore = defineStore("rent", {
   }),
   actions: {
     async getHome() {
-      try {
-        const { $main } = useNuxtApp();
-        const response = await $main.get("/home.json");
-        this.home = response.data.acf;
-      } catch (error) {}
+      // try {
+      //   const { $main } = useNuxtApp();
+      //   const response = await $main.get("/home.json");
+      //   this.home = response.data.acf;
+      // } catch (error) {}
     },
   },
 });

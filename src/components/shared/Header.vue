@@ -31,7 +31,10 @@
             </div>
             <div class="header_carts">
               <div class="counter">{{ isCarts.length }}</div>
-              <IconBtn icon="custom:cart" @click="router.push('/cart')" />
+              <IconBtn
+                icon="solar:cart-large-4-outline"
+                @click="router.push('/cart')"
+              />
             </div>
           </div>
         </div>
@@ -51,9 +54,9 @@ import DefaultBtn from "../ui/DefaultBtn.vue";
 import IconBtn from "../ui/IconBtn.vue";
 import Nav from "../ui/Nav.vue";
 import { useRoute, useRouter } from "vue-router";
-import { useModalStore } from "~/store/useModalStore";
-import { useUserStoreRefs } from "~/store/useUserStore";
-import { useCartStoreRefs } from "~/store/useCartStore";
+import { useModalStore } from "@/stores/useModalStore";
+import { useUserStoreRefs } from "@/stores/useUserStore";
+import { useCartStoreRefs } from "@/stores/useCartStore";
 
 const route = useRoute();
 const router = useRouter();
@@ -61,7 +64,7 @@ const { openModal, closeModal } = useModalStore();
 const { user } = useUserStoreRefs();
 const { carts } = useCartStoreRefs();
 
-const isHome = computed(() => route.name != "index");
+const isHome = computed(() => route.name != "home");
 const isCarts = computed(() => carts.value);
 
 const isCallBackModal = () => {

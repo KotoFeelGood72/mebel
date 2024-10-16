@@ -64,12 +64,12 @@
 
 <script setup lang="ts">
 import { ref, watch, onMounted } from "vue";
+import { useUserStoreRefs } from "@/stores/useUserStore";
+import { useModalStore } from "@/stores/useModalStore";
+import { useCartStoreRefs } from "@/stores/useCartStore";
 import DefaultBtn from "../ui/DefaultBtn.vue";
 import Inputs from "../ui/Inputs.vue";
 import InputPhone from "../ui/InputPhone.vue";
-import { useUserStoreRefs } from "~/store/useUserStore";
-import { useModalStore } from "~/store/useModalStore";
-import { useCartStoreRefs } from "~/store/useCartStore";
 
 // Получаем данные из стора
 const { data, user } = useUserStoreRefs();

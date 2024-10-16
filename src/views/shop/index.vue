@@ -16,9 +16,9 @@
 </template>
 
 <script setup lang="ts">
-import ShopHead from "~/components/head/ShopHead.vue";
-import { useProductsStoreRefs } from "~/store/useProductsStore";
-import ProductsCard from "~/components/card/ProductsCard.vue";
+import ShopHead from "@/components/head/ShopHead.vue";
+import { useProductsStoreRefs } from "@/stores/useProductsStore";
+import ProductsCard from "@/components/card/ProductsCard.vue";
 
 const { products } = useProductsStoreRefs();
 </script>

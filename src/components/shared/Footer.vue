@@ -14,11 +14,11 @@
         <div class="footer_col__center">
           <Nav />
           <div class="footer_additionaly">
-            <NuxtLink
+            <RouterLink
               v-for="(item, i) in additionaly"
               :key="'additionaly-nav-item-' + i"
               :to="item.link"
-              >{{ item.name }}</NuxtLink
+              >{{ item.name }}</RouterLink
             >
           </div>
           <div class="footer_legal__info">
@@ -44,6 +44,7 @@
 import Logo from "../ui/Logo.vue";
 import Nav from "../ui/Nav.vue";
 import Socials from "../ui/Socials.vue";
+import { ref } from "vue";
 
 const additionaly = ref<any>([
   { name: "Оферта для физических лиц", link: "/offer-physical" },

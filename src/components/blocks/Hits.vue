@@ -36,7 +36,7 @@
             :key="`hits-item-${i}`"
             class="hits_item"
           >
-            <NuxtLink :to="`/shop/products/${item.slug}`">
+            <RouterLink :to="`/shop/products/${item.slug}`">
               <div class="hits_item__content">
                 <span>{{ getStockStatus(item.stock_status) }}</span>
                 <h3>{{ item.title }}</h3>
@@ -50,7 +50,7 @@
               <div class="hits_item__img">
                 <img :src="item.acf.featured_img.url" />
               </div>
-            </NuxtLink>
+            </RouterLink>
           </swiper-slide>
         </swiper>
       </div>

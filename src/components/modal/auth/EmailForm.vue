@@ -17,17 +17,17 @@
       </div>
       <div class="form__notice">
         Нажимая кнопку “Подтвердить номер”, Вы принимаете условия
-        <NuxtLink>Программы лояльности</NuxtLink> и обработку персональных
-        данных на условиях <NuxtLink>Политики конфиденциальности</NuxtLink>
+        <RouterLink>Программы лояльности</RouterLink> и обработку персональных
+        данных на условиях <RouterLink>Политики конфиденциальности</RouterLink>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import Inputs from "~/components/ui/Inputs.vue";
-import DefaultBtn from "~/components/ui/DefaultBtn.vue";
-import { defineEmits } from "vue";
+import Inputs from "@/components/ui/Inputs.vue";
+import DefaultBtn from "@/components/ui/DefaultBtn.vue";
+import { defineEmits, computed } from "vue";
 
 const props = defineProps<{
   modelValue: string;

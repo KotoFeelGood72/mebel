@@ -97,11 +97,12 @@
           <div class="cart_total__privacy">
             Нажимая кнопку 'Оформить заказ', Вы принимаете условия
             соответствующей
-            <NuxtLink to="/">оферты: Оферты для физических лиц</NuxtLink> или
-            <NuxtLink to="/"> Оферты для юридических лиц и ИП</NuxtLink>,
+            <RouterLink to="/">оферты: Оферты для физических лиц</RouterLink>
+            или
+            <RouterLink to="/"> Оферты для юридических лиц и ИП</RouterLink>,
             Политики конфиденциальности, а также даете Согласие на
-            <NuxtLink to="/"
-              >обработку Ваших персональных данных и их передачу.</NuxtLink
+            <RouterLink to="/"
+              >обработку Ваших персональных данных и их передачу.</RouterLink
             >
           </div>
         </div>
@@ -112,13 +113,13 @@
 
 <script setup lang="ts">
 // import DefaultBtn from "~/components/ui/DefaultBtn.vue";
-import Qty from "~/components/ui/Qty.vue";
-import BlockUserInfo from "~/components/blocks/BlockUserInfo.vue";
-import BlockDeliveryCalc from "~/components/blocks/BlockDeliveryCalc.vue";
-import BlockPayment from "~/components/blocks/BlockPayment.vue";
+import Qty from "@/components/ui/Qty.vue";
+import BlockUserInfo from "@/components/blocks/BlockUserInfo.vue";
+import BlockDeliveryCalc from "@/components/blocks/BlockDeliveryCalc.vue";
+import BlockPayment from "@/components/blocks/BlockPayment.vue";
 import { ref, computed, watch, onMounted } from "vue";
-import { useCartStoreRefs, useCartStore } from "~/store/useCartStore";
-import { useDelivery } from "~/composables/useDelivery";
+import { useCartStoreRefs, useCartStore } from "@/stores/useCartStore";
+import { useDelivery } from "@/composables/useDelivery";
 // import YaPayBtn from "~/components/ui/YaPayBtn.vue";
 // Получаем данные корзины и текущего заказа
 const { carts, currentOrder } = useCartStoreRefs();

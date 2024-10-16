@@ -31,14 +31,14 @@ import { ref } from "vue";
 import IconBtn from "../ui/IconBtn.vue";
 import Inputs from "../ui/Inputs.vue";
 import InputPhone from "../ui/InputPhone.vue";
-import { useModalStore } from "~/store/useModalStore";
+import { useModalStore } from "@/stores/useModalStore";
 import { useRouter } from "vue-router";
 import DefaultBtn from "../ui/DefaultBtn.vue";
 import Divider from "../ui/Divider.vue";
-import { useTelegramBot } from "~/composables/useTelegramBot";
+// import { useTelegramBot } from "@/composables/useTelegramBot";
 
 // Используем composable для отправки данных в Telegram
-const { sendMessage } = useTelegramBot();
+// const { sendMessage } = useTelegramBot();
 
 const formData = ref<any>({
   name: "",
@@ -51,13 +51,13 @@ const router = useRouter();
 const submitForm = async () => {
   if (formData.value.name && formData.value.phone) {
     const message = `Новая заявка:\nИмя: ${formData.value.name}\nТелефон: ${formData.value.phone}`;
-    const response = await sendMessage(message);
-    if (response.success) {
-      alert("Заявка успешно отправлена!");
-      closeModal("callback");
-    } else {
-      alert("Ошибка при отправке заявки.");
-    }
+    // const response = await sendMessage(message);
+    // if (response.success) {
+    //   alert("Заявка успешно отправлена!");
+    //   closeModal("callback");
+    // } else {
+    //   alert("Ошибка при отправке заявки.");
+    // }
   } else {
     alert("Пожалуйста, заполните все поля.");
   }

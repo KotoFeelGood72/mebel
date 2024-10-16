@@ -5,13 +5,13 @@
         <h3>Рекомендуем сегодня</h3>
         <ul class="recomended_list">
           <li class="recomended_item">
-            <NuxtLink to="/">
+            <RouterLink to="/">
               <img src="/img/recomended-0.jpg" alt="" />
               <div class="item__sale">до <span>-40 %</span></div>
-            </NuxtLink>
+            </RouterLink>
           </li>
           <li class="recomended_item">
-            <NuxtLink to="/">
+            <RouterLink to="/">
               <div class="recomended_item__content">
                 <span>23 апреля - 18 мая</span>
                 <h3>Уже тепло</h3>
@@ -27,13 +27,13 @@
                 <img src="/img/recomended-1.jpg" alt="" />
                 <div class="item__sale">до <span>-40 %</span></div>
               </div>
-            </NuxtLink>
+            </RouterLink>
           </li>
           <li class="recomended_item">
-            <NuxtLink to="/">
+            <RouterLink to="/">
               <img src="/img/recomended-2.jpg" alt="" />
               <div class="item__sale">до <span>-40 %</span></div>
-            </NuxtLink>
+            </RouterLink>
           </li>
         </ul>
       </div>

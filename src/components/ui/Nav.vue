@@ -1,12 +1,13 @@
 <template>
   <nav class="nav">
-    <NuxtLink v-for="(item, i) in nav" :key="'nav-item-' + i" :to="item.link"
+    <RouterLink v-for="(item, i) in nav" :key="'nav-item-' + i" :to="item.link"
       >{{ item.name }}
-    </NuxtLink>
+    </RouterLink>
   </nav>
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 const nav = ref<any>([
   { name: "Каталог", link: "/shop" },
   { name: "Аренда", link: "/rent" },

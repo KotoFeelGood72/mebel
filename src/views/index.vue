@@ -8,12 +8,13 @@
 </template>
 
 <script setup lang="ts">
-import Hits from "~/components/blocks/Hits.vue";
-import ActionBlock from "~/components/blocks/ActionBlock.vue";
-import RecomendedBlock from "~/components/blocks/RecomendedBlock.vue";
-import HeroSlider from "~/components/blocks/HeroSlider.vue";
-import { useProductsStoreRefs } from "~/store/useProductsStore";
-import { useHomeStore, useHomeStoreRefs } from "~/store/useHomeStore";
+import Hits from "@/components/blocks/Hits.vue";
+import ActionBlock from "@/components/blocks/ActionBlock.vue";
+import RecomendedBlock from "@/components/blocks/RecomendedBlock.vue";
+import HeroSlider from "@/components/blocks/HeroSlider.vue";
+import { useProductsStoreRefs } from "@/stores/useProductsStore";
+import { useHomeStore, useHomeStoreRefs } from "@/stores/useHomeStore";
+import { computed, onMounted } from "vue";
 
 const { getHome } = useHomeStore();
 const { home } = useHomeStoreRefs();

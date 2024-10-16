@@ -44,9 +44,9 @@ import IconBtn from "../ui/IconBtn.vue";
 import AuthNew from "./auth/AuthNew.vue";
 import AuthVerification from "./auth/AuthVerification.vue";
 import EmailForm from "./auth/EmailForm.vue";
-import { useModalStore } from "~/store/useModalStore";
+import { useModalStore } from "@/stores/useModalStore";
 import { useRouter } from "vue-router";
-import { useUserStore } from "~/store/useUserStore";
+import { useUserStore } from "@/stores/useUserStore";
 import axios from "axios";
 
 // Флаги для отображения разных форм

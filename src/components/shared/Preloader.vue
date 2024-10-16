@@ -13,9 +13,9 @@
 
 <script lang="ts" setup>
 import Logo from "../ui/Logo.vue";
-import { useLoadingStoreRefs } from "~/store/useLoadingStore";
+// import { useLoadingStoreRefs } from "~/store/useLoadingStore";
 
-const { isLoading } = useLoadingStoreRefs();
+// const { isLoading } = useLoadingStoreRefs();
 </script>
 
 <style scoped lang="scss">

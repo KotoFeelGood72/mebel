@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { withDefaults, defineProps } from "vue";
+import { withDefaults, defineProps, computed } from "vue";
 const props = withDefaults(
   defineProps<{
     type?: "secondary" | "primary";
