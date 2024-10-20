@@ -1,7 +1,7 @@
 <template>
   <div class="home" v-if="page">
     <HeroSlider :slides="page.slider" />
-    <Hits :title="page.title_hit" :products="page.hit_products" />
+    <Hits :title="page.title_hit" :products="products" />
     <RecomendedBlock />
     <ActionBlock />
   </div>
@@ -12,23 +12,17 @@ import Hits from "@/components/blocks/Hits.vue";
 import ActionBlock from "@/components/blocks/ActionBlock.vue";
 import RecomendedBlock from "@/components/blocks/RecomendedBlock.vue";
 import HeroSlider from "@/components/blocks/HeroSlider.vue";
-import { useProductsStoreRefs } from "@/stores/useProductsStore";
-import { computed, onMounted } from "vue";
+import { onMounted } from "vue";
 
 import { usePage } from "@/services/usePage";
+import { useProducts } from "@/services/useProducts";
 
 const { useGetPage, page } = usePage();
-
-const { products } = useProductsStoreRefs();
-
-const featuredProducts = computed(() => {
-  if (products.value) {
-    return products.value.filter((product: any) => product.is_featured === true);
-  }
-});
+const { useGetProducts, products } = useProducts();
 
 onMounted(async () => {
   await useGetPage("114");
+  await useGetProducts("popular");
 });
 </script>
 

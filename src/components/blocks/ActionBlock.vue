@@ -62,7 +62,7 @@ const props = withDefaults(
 )
 const phone = ref<string>()
 
-const isHome = computed(() => route.name === 'index')
+const isHome = computed(() => route.name === 'home')
 const isRent = computed(() => route.name === 'rent')
 </script>
 

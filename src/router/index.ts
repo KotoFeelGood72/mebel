@@ -51,12 +51,17 @@ const router = createRouter({
     {
       path: "/shop",
       name: "shop",
-      component: () => import("@/views/shop/index.vue"),
+      redirect: "/shop/products", // Перенаправляем на /shop/products по умолчанию
       children: [
         {
-          path: "/shop/:id",
+          path: "/shop/products/:id",
           name: "product",
           component: () => import("@/views/shop/product.vue"),
+        },
+        {
+          path: "/shop/products",
+          name: "product-list", // Заменил name для уникальности
+          component: () => import("@/views/shop/index.vue"),
         },
       ],
     },

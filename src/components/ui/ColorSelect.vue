@@ -20,6 +20,7 @@
 </template>
 
 <script setup lang="ts">
+import { watch, ref } from "vue";
 const props = defineProps<{
   colors: string[];
   id: number;

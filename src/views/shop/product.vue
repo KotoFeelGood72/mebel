@@ -1,10 +1,10 @@
 <template>
-  <div class="single" v-if="product">
+  <div class="single" v-if="productPage">
     <div class="products">
       <div class="container">
         <Breadcrumbs :crumbs="breadcrumbs" />
         <div class="products_main">
-          <div class="products_slider">
+          <div class="products_slider" v-if="productPage.gallery_images">
             <Swiper
               :slides-per-view="1"
               :space-between="20"
@@ -16,10 +16,10 @@
               @slideChange="updateCurrentSlide"
             >
               <SwiperSlide
-                v-for="(item, i) in product.images"
+                v-for="(item, i) in productPage.gallery_images"
                 :key="'products-item-slide-' + i"
               >
-                <img :src="item" alt="" />
+                <img :src="item" />
               </SwiperSlide>
             </Swiper>
             <div class="products_navigation">
@@ -39,18 +39,21 @@
           </div>
           <div class="products_content">
             <div class="products_content__head">
-              <h3>{{ product.title }}</h3>
-              <div class="products_art">Артикул {{ product.sku }}</div>
+              <h3>{{ productPage.title }}</h3>
+              <div class="products_art">Артикул {{ productPage.sku }}</div>
             </div>
-            <div class="products_content_bottom">
+            <div
+              class="products_content_bottom"
+              v-if="productPage && productPage.attributes?.pa_colors"
+            >
               <ColorSelect
-                :id="product.slug"
-                :colors="product.attributes.pa_colors"
+                :id="productPage.slug"
+                :colors="productPage.attributes.pa_colors"
                 v-model="selectedColor"
               />
 
               <div class="products_prices">
-                <p>{{ product.price }} ₽</p>
+                <p>{{ productPage.price }} ₽</p>
                 <div class="product_cart__row">
                   <AddToCart
                     :center="true"
@@ -87,16 +90,16 @@
       </div>
     </div>
     <SingleAbout
-      :gallery="product.acf.galereya"
-      :title="product.acf.about_product"
-      :txt="product.acf.about_txt_product"
+      :gallery="productPage.acf.galereya"
+      :title="productPage.acf.about_product"
+      :txt="productPage.acf.about_txt_product"
     />
     <SingleCharacter
-      :title="product.acf.character_title"
-      :img="product.acf.character_img.url"
-      :list="product.acf.character_list"
+      :title="productPage.acf.character_title"
+      :img="productPage.acf.character_img.url"
+      :list="productPage.acf.character_list"
     />
-    <SingleIdeas :gallery="product.acf.ideas_gallery" />
+    <SingleIdeas :gallery="productPage.acf.ideas_gallery" />
   </div>
 </template>
 
@@ -116,11 +119,12 @@ import { ref, computed, onMounted } from "vue";
 import { useCartStore, useCartStoreRefs } from "@/stores/useCartStore";
 import { useToast } from "vue-toastification";
 import { watch } from "vue";
-
+import { useProductPage } from "@/services/useProductPage";
+import "swiper/swiper-bundle.css";
 const { removeCart, addCart, updateCartItem } = useCartStore();
 const { carts } = useCartStoreRefs();
+const { useGetProductPage, productPage } = useProductPage();
 
-// Переменные
 const currentSlide = ref(1);
 
 const product = ref<any>();
@@ -133,27 +137,27 @@ const breadcrumbs = ref([
   { text: "Бескаркасное кресло империал" },
 ]);
 const isCarts = computed(() =>
-  carts.value.some((cart: any) => cart.id === product.value.id)
+  carts.value.some((cart: any) => cart.id === productPage.value.id)
 );
 
 const cartItem = computed(() =>
-  carts.value.find((cart: any) => cart.id === product.value?.id)
+  carts.value.find((cart: any) => cart.id === productPage.value?.id)
 );
 
 const selectedQuantity = ref(cartItem.value ? cartItem.value.quantity : 1);
 const selectedColor = ref(
   cartItem.value
     ? cartItem.value.color
-    : product.value?.attributes?.pa_colors[0] || ""
+    : productPage.value?.attributes?.pa_colors[0] || ""
 );
 
 const toggleCart = () => {
   if (isCarts.value) {
-    removeCart(product.value);
+    removeCart(productPage.value);
     toast.error("Удалено из корзины");
   } else {
     addCart({
-      ...product.value,
+      ...productPage.value,
       quantity: selectedQuantity.value,
       color: selectedColor.value,
     });
@@ -171,7 +175,7 @@ watch(cartItem, (newVal) => {
 const updateCart = () => {
   if (isCarts.value) {
     updateCartItem({
-      id: product.value.id,
+      id: productPage.value.id,
       color: selectedColor.value,
       quantity: selectedQuantity.value,
     });
@@ -206,13 +210,16 @@ const updateSelectedColor = (color: string) => {
 };
 
 onMounted(async () => {
-  product.value = await getProductBySlug(route.params.slug[1]);
+  useGetProductPage(route.params.id);
+  // product.value = await getProductBySlug(route.params.slug[1]);
   if (cartItem.value) {
     selectedQuantity.value = cartItem.value.quantity;
     selectedColor.value = cartItem.value.color;
   }
 
-  totalSlides.value = product.value.images.length;
+  if (productPage.value && productPage.value.gallery_images) {
+    totalSlides.value = productPage.value.gallery_images.length;
+  }
 });
 </script>
 

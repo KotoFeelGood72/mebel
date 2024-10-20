@@ -11,8 +11,7 @@
     ]"
   >
     <div class="btn-icon" v-if="icon">
-      <Icons :icon="active ? 'custom:cart' : 'custom:cart-white'" size="26" />
-      <Icons :icon="active ? 'custom:cart' : 'custom:cart-white'" size="26" />
+      <Icons icon="fluent:cart-16-regular" :size="30" />
     </div>
     <p>{{ name }}</p>
   </div>
@@ -27,7 +26,7 @@ const props = withDefaults(
     name: string;
     icon?: string;
     center?: boolean;
-    color: string;
+    color?: string;
   }>(),
   {
     type: "secondary",

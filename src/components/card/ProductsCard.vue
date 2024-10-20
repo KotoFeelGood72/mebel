@@ -1,6 +1,9 @@
 <template>
   <div class="products">
-    <div :class="`products_slider products_slider_${products.id}`">
+    <div
+      :class="`products_slider products_slider_${products.id}`"
+      v-if="products && products.gallery_images"
+    >
       <Swiper
         :slides-per-view="1"
         :space-between="20"
@@ -30,13 +33,16 @@
         @slideChange="updateCurrentSlide"
       >
         <SwiperSlide
-          v-for="(item, i) in products.acf.galereya"
-          :key="'products-item-slide-' + item.id"
+          v-for="(item, i) in products.gallery_images"
+          :key="'products-item-slide-' + products.id"
         >
-          <img :src="item.img.url" :alt="item.img.alt" />
+          <img :src="item" />
         </SwiperSlide>
       </Swiper>
-      <div class="products_navigation">
+      <div
+        class="products_navigation"
+        v-if="products.gallery_images && totalSlides > 2"
+      >
         <div :class="`products_prev products_prev_${products.id}`">
           <Icons icon="bi:chevron-left" :size="30" />
         </div>
@@ -57,13 +63,16 @@
         <div class="products_description">
           {{ products.acf.about_txt_product }}
         </div>
-        <RouterLink :to="`/shop/products/${products.slug}`"
+        <RouterLink :to="`/shop/products/${products.id}`"
           >Подробнее о товаре</RouterLink
         >
       </div>
       <div class="products_content_bottom">
         <ul class="products_color_select">
-          <li v-for="(color, index) in products.attributes.pa_colors" :key="index">
+          <li
+            v-for="(color, index) in products.attributes.pa_colors"
+            :key="index"
+          >
             <input
               type="radio"
               :id="'color-' + index + '-' + products.id"
@@ -103,6 +112,7 @@
 
 <script setup lang="ts">
 import { Swiper, SwiperSlide } from "swiper/vue";
+import "swiper/swiper-bundle.css";
 import { Navigation, Pagination } from "swiper/modules";
 import { useCartStore, useCartStoreRefs } from "@/stores/useCartStore";
 import AddToCart from "../ui/AddToCart.vue";
@@ -126,7 +136,7 @@ const props = withDefaults(
 
 // Реактивные переменные
 const currentSlide = ref(1);
-const totalSlides = ref(props.products.acf.galereya.length);
+const totalSlides = ref(props.products.gallery_images.length);
 const toast = useToast();
 const cartItem = computed(() =>
   carts.value.find((cart: any) => cart.id === props.products.id)

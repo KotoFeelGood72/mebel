@@ -71,7 +71,7 @@ const additionaly = ref<any>([
 }
 
 .footer_col__center {
-  padding: 0 13.7rem 0 19.9rem;
+  padding: 0 12.7rem 0 19.9rem;
   @include flex-start;
   flex-direction: column;
   align-items: flex-start;

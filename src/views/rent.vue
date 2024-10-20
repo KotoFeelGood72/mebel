@@ -47,7 +47,7 @@
             <p>{{ page.colors_subtitle }}</p>
           </div>
           <div class="colors_slder__w">
-            <div class="color_slider">
+            <div class="color_slider" v-if="page && page.colors_list">
               <div class="colors_slider">
                 <Swiper
                   :slides-per-view="4"
@@ -186,29 +186,27 @@
 <script setup lang="ts">
 import PageHead from "@/components/head/PageHead.vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
+import "swiper/swiper-bundle.css";
 import { Navigation } from "swiper/modules";
 import ActionBlock from "@/components/blocks/ActionBlock.vue";
-import { ref, onMounted } from "vue";
-import { api } from "@/api/axios";
+import { computed, onMounted } from "vue";
+import { usePage } from "@/services/usePage";
 
-const page = ref<any>(null);
-const head = ref<any>(null);
-
-async function getRent() {
-  try {
-    const response = await api.get("/page/post-124.json");
-    page.value = response.data.acf;
-    head.value = {
-      title: page?.value?.hero_title,
-      txt: page?.value?.hero_txt,
-      img: page?.value?.hero_img.url,
-      btn: true,
+const { useGetPage, page } = usePage();
+const head = computed(() => {
+  if (page.value) {
+    return {
+      title: page.value.hero_title || "",
+      txt: page.value.hero_txt || "",
+      img: page.value.hero_img?.url || "",
+      btn: false,
     };
-  } catch (error) {}
-}
+  }
+  return null;
+});
 
 onMounted(async () => {
-  await getRent();
+  await useGetPage("124");
 });
 </script>
 
