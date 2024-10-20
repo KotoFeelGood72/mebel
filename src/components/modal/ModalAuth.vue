@@ -3,7 +3,11 @@
     <div class="auth__head">
       <h3>Войти или зарегистрироваться</h3>
       <div class="close-btn" @click="closeModal('auth')">
-        <IconBtn icon="simple-line-icons:close" :size="34" @click="closeModal('auth')" />
+        <IconBtn
+          icon="simple-line-icons:close"
+          :size="34"
+          @click="closeModal('auth')"
+        />
       </div>
     </div>
     <div class="auth_main">
@@ -11,7 +15,6 @@
         <Icons icon="eos-icons:bubble-loading" />
       </div>
       <div class="auth_main__child" v-else>
-        <!-- Шаг 1: Форма для ввода Email -->
         <EmailForm
           v-if="!showOtpForm && !showVerification"
           @submitEmail="sendOTP"
@@ -131,7 +134,7 @@ const verifyOTP = async () => {
 };
 
 // Метод для обновления профиля пользователя (сохранение имени и телефона)
-const handleNextStep = async (data: { name: string; phone: string }) => {
+const handleNextStep = async (data: any) => {
   try {
     isLoad.value = true; // Включаем прелоадер
     const response = await axios.post(

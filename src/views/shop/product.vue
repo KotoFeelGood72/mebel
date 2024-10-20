@@ -210,7 +210,7 @@ const updateSelectedColor = (color: string) => {
 };
 
 onMounted(async () => {
-  useGetProductPage(route.params.id);
+  useGetProductPage(String(route.params.id));
   // product.value = await getProductBySlug(route.params.slug[1]);
   if (cartItem.value) {
     selectedQuantity.value = cartItem.value.quantity;

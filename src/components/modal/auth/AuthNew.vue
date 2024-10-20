@@ -26,16 +26,17 @@ import InputPhone from "@/components/ui/InputPhone.vue";
 import DefaultBtn from "@/components/ui/DefaultBtn.vue";
 import { ref } from "vue";
 
-const props = defineProps({
-  phone: String,
-  name: String,
-});
+const props = defineProps<{
+  phone: string;
+  name: string;
+  onNext?: any;
+}>();
 
 const emit = defineEmits(["onNext"]);
 
 // Локальные переменные для хранения введенных данных
-const phone = ref(props.phone);
-const name = ref(props.name);
+const phone = ref<any>(props.phone);
+const name = ref<any>(props.name);
 
 // Функция для отправки данных в родительский компонент
 const nextStep = () => {
