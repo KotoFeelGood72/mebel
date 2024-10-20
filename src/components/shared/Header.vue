@@ -3,7 +3,7 @@
     <div class="container">
       <div class="header_top">
         <div class="burger">
-          <Icon name="iconamoon:menu-burger-horizontal-thin" :size="35" />
+          <Icons icon="iconamoon:menu-burger-horizontal-thin" :size="35" />
         </div>
         <div class="header_col__left">
           <div class="header_phone">
@@ -31,10 +31,7 @@
             </div>
             <div class="header_carts">
               <div class="counter">{{ isCarts.length }}</div>
-              <IconBtn
-                icon="solar:cart-large-4-outline"
-                @click="router.push('/cart')"
-              />
+              <IconBtn icon="solar:cart-large-4-outline" @click="router.push('/cart')" />
             </div>
           </div>
         </div>

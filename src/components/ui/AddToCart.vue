@@ -1,16 +1,10 @@
 <template>
   <div
     class="button"
-    :class="[
-      'button',
-      isColorSheme,
-      isType,
-      { center: isCenter },
-      { active: active },
-    ]"
+    :class="['button', isColorSheme, isType, { center: isCenter }, { active: active }]"
   >
     <div class="btn-icon" v-if="icon">
-      <Icon :name="active ? 'custom:cart' : 'custom:cart-white'" size="26" />
+      <Icons :icon="active ? 'custom:cart' : 'custom:cart-white'" size="26" />
     </div>
     <p>{{ name }}</p>
   </div>

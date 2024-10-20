@@ -6,7 +6,7 @@
           <h6>{{ title }}</h6>
           <div class="action__privacy" v-if="isHome">
             Отправляя заявку вы соглашаетесь на обработку своих
-            <RouterLink to="/privacy">персональных данных</RouterLink to="/privacy"> и принимаете <RouterLink>политику
+            <RouterLink to="/privacy">персональных данных</RouterLink to="/privacy"> и принимаете <RouterLink to="/">политику
             конфиденциальности.</RouterLink>
           </div>
           <div class="action_txt" v-if="txt && !isHome">
@@ -18,7 +18,7 @@
           </div>
           <div class="action__privacy" v-if="!isHome">
             Отправляя заявку вы соглашаетесь на обработку своих
-            <RouterLink to="/privacy">персональных данных</RouterLink to="/privacy"> и принимаете <RouterLink>политику
+            <RouterLink to="/privacy">персональных данных</RouterLink to="/privacy"> и принимаете <RouterLink to="/">политику
             конфиденциальности.</RouterLink>
           </div>
           <div class="action_form__btn">

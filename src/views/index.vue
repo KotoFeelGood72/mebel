@@ -1,7 +1,7 @@
 <template>
-  <div class="home" v-if="home">
-    <HeroSlider :slides="home.slider" />
-    <Hits :title="home.title_hit" :products="featuredProducts" />
+  <div class="home" v-if="page">
+    <HeroSlider :slides="page.slider" />
+    <Hits :title="page.title_hit" :products="page.hit_products" />
     <RecomendedBlock />
     <ActionBlock />
   </div>
@@ -13,23 +13,22 @@ import ActionBlock from "@/components/blocks/ActionBlock.vue";
 import RecomendedBlock from "@/components/blocks/RecomendedBlock.vue";
 import HeroSlider from "@/components/blocks/HeroSlider.vue";
 import { useProductsStoreRefs } from "@/stores/useProductsStore";
-import { useHomeStore, useHomeStoreRefs } from "@/stores/useHomeStore";
 import { computed, onMounted } from "vue";
 
-const { getHome } = useHomeStore();
-const { home } = useHomeStoreRefs();
+import { usePage } from "@/services/usePage";
+
+const { useGetPage, page } = usePage();
+
 const { products } = useProductsStoreRefs();
 
 const featuredProducts = computed(() => {
   if (products.value) {
-    return products.value.filter(
-      (product: any) => product.is_featured === true
-    );
+    return products.value.filter((product: any) => product.is_featured === true);
   }
 });
 
 onMounted(async () => {
-  await getHome();
+  await useGetPage("114");
 });
 </script>
 

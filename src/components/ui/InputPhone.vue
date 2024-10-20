@@ -1,8 +1,9 @@
 <template>
   <div class="phone_input">
-    <input
+    <MaskInput
+      type="tel"
       v-model="localValue"
-      v-mask="'# (###) ###-##-##'"
+      mask="+7 (###) ###-##-##"
       :placeholder="placeholder"
     />
   </div>

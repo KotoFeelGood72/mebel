@@ -1,7 +1,7 @@
 <template>
   <div class="button" :class="['button', isColorSheme, isType, isSize]">
     <div class="btn-icon" v-if="icon">
-      <Icon :name="icon" />
+      <Icons :icon="icon" />
     </div>
     <p>{{ name }}</p>
   </div>

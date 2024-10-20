@@ -11,10 +11,7 @@
         }"
         :pagination="{ el: '.hero-pagination', clickable: true }"
       >
-        <SwiperSlide
-          v-for="(item, i) in slides"
-          :key="'hero-item-slide-' + item.id"
-        >
+        <SwiperSlide v-for="(item, i) in slides" :key="'hero-item-slide-' + item.id">
           <div class="hero_slide">
             <div class="hero_slide__content">
               <p>{{ item.headtitle }}</p>
@@ -38,10 +35,10 @@
       </Swiper>
       <div class="hero_navigation">
         <div class="hero_prev">
-          <Icon name="custom:left" size="70" />
+          <Icons icon="bytesize:chevron-left" :size="45" />
         </div>
         <div class="hero_next">
-          <Icon name="custom:right" size="70" />
+          <Icons icon="bytesize:chevron-right" :size="45" />
         </div>
       </div>
       <div class="hero-pagination"></div>

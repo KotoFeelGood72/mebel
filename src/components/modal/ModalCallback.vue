@@ -5,7 +5,7 @@
       <div class="close-btn" @click="closeModal('callback')">
         <IconBtn
           icon="simple-line-icons:close"
-          size="34"
+          :size="34"
           @click="closeModal('callback')"
         />
       </div>

@@ -72,10 +72,10 @@
                 </Swiper>
                 <div class="colors_navigation">
                   <div class="colors_prev">
-                    <Icon name="custom:color-arrow" size="40" />
+                    <Icons icon="custom:color-arrow" size="40" />
                   </div>
                   <div class="colors_next">
-                    <Icon name="custom:color-arrow" size="40" />
+                    <Icons icon="custom:color-arrow" size="40" />
                   </div>
                 </div>
               </div>

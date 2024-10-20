@@ -38,7 +38,7 @@
       </Swiper>
       <div class="products_navigation">
         <div :class="`products_prev products_prev_${products.id}`">
-          <Icon name="bi:chevron-left" size="30" />
+          <Icons icon="bi:chevron-left" size="30" />
         </div>
         <div class="products-pagination">
           <span class="fraction">
@@ -47,7 +47,7 @@
           </span>
         </div>
         <div :class="`products_next products_next_${products.id}`">
-          <Icon name="bi:chevron-right" size="30" />
+          <Icons icon="bi:chevron-right" size="30" />
         </div>
       </div>
     </div>
@@ -63,10 +63,7 @@
       </div>
       <div class="products_content_bottom">
         <ul class="products_color_select">
-          <li
-            v-for="(color, index) in products.attributes.pa_colors"
-            :key="index"
-          >
+          <li v-for="(color, index) in products.attributes.pa_colors" :key="index">
             <input
               type="radio"
               :id="'color-' + index + '-' + products.id"

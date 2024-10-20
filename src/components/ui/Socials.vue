@@ -3,7 +3,7 @@
     <ul>
       <li v-for="(item, i) in socials" :key="'socials-item-' + i">
         <a target="_blank" :href="item.link"
-          ><Icon :name="`custom:${item.icon}`" :size="item.size"
+          ><Icons :icon="item.icon" :size="item.size"
         /></a>
       </li>
     </ul>
@@ -13,9 +13,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
 const socials = ref<any>([
-  { icon: "vk", link: "/", size: "35" },
-  { icon: "tg", link: "/", size: "35" },
-  { icon: "wa", link: "/", size: "35" },
+  { icon: "bxl:vk", link: "/", size: 23 },
+  { icon: "icon-park-outline:telegram", link: "/", size: 25 },
+  { icon: "ri:whatsapp-fill", link: "/", size: 20 },
 ]);
 </script>
 
@@ -25,14 +25,16 @@ const socials = ref<any>([
     @include flex-start;
     gap: 3rem;
     li {
-      width: 3.5rem;
-      height: 3.5rem;
+      width: 4rem;
+      height: 4rem;
       a {
         @include flex-center;
         width: 100%;
         height: 100%;
-        // border: 0.1rem solid $brown;
+        border: 0.1rem solid $brown;
+        color: $brown;
         border-radius: 100%;
+        padding: 0.5rem;
       }
       &:last-child {
         span {

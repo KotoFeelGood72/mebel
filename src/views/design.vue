@@ -1,6 +1,7 @@
 <template>
   <div class="degign" v-if="page">
-    <PageHead :data="head" />
+    <PageHead v-if="head && head.title" :data="head" />
+
     <div class="whats">
       <div class="container">
         <div class="whats_main">
@@ -51,29 +52,28 @@
 </template>
 
 <script setup lang="ts">
+import { usePage } from "@/services/usePage";
 import PageHead from "@/components/head/PageHead.vue";
 import ActionBlock from "@/components/blocks/ActionBlock.vue";
-import { ref, onMounted } from "vue";
-import { api } from "@/api/axios";
+import { ref, onMounted, computed } from "vue";
 
-const head = ref<any>();
-const page = ref<any>();
+const { useGetPage, page } = usePage();
+// const head = ref<any>();
 
-async function getDesign() {
-  try {
-    const response = await api.get("/page/post-116.json");
-    page.value = response.data.acf;
-    head.value = {
-      title: page?.value?.hero_title,
-      txt: page?.value?.hero_txt,
-      img: page?.value?.hero_img.url,
+const head = computed(() => {
+  if (page.value) {
+    return {
+      title: page.value.hero_title || "", // Если данные есть, то используем их
+      txt: page.value.hero_txt || "",
+      img: page.value.hero_img?.url || "",
       btn: false,
     };
-  } catch (error) {}
-}
+  }
+  return null; // Если данных нет, возвращаем null
+});
 
 onMounted(async () => {
-  await getDesign();
+  await useGetPage("116"); // Загружаем данные страницы
 });
 </script>
 

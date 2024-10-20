@@ -3,7 +3,7 @@
     <div class="preloader" v-if="isLoading">
       <div class="preloader-inner">
         <div class="preloader__icon">
-          <Icon name="line-md:loading-twotone-loop" :size="100" />
+          <Icons icon="line-md:loading-twotone-loop" :size="100" />
         </div>
         <Logo />
       </div>
@@ -13,9 +13,9 @@
 
 <script lang="ts" setup>
 import Logo from "../ui/Logo.vue";
-// import { useLoadingStoreRefs } from "~/store/useLoadingStore";
+import { useLoadingStoreRefs } from "@/stores/useLoadingStore";
 
-// const { isLoading } = useLoadingStoreRefs();
+const { isLoading } = useLoadingStoreRefs();
 </script>
 
 <style scoped lang="scss">

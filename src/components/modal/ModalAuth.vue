@@ -3,16 +3,12 @@
     <div class="auth__head">
       <h3>Войти или зарегистрироваться</h3>
       <div class="close-btn" @click="closeModal('auth')">
-        <IconBtn
-          icon="simple-line-icons:close"
-          size="34"
-          @click="closeModal('auth')"
-        />
+        <IconBtn icon="simple-line-icons:close" :size="34" @click="closeModal('auth')" />
       </div>
     </div>
     <div class="auth_main">
       <div class="loader" v-if="isLoad">
-        <Icon name="eos-icons:bubble-loading" />
+        <Icons icon="eos-icons:bubble-loading" />
       </div>
       <div class="auth_main__child" v-else>
         <!-- Шаг 1: Форма для ввода Email -->

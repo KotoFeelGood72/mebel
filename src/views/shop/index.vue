@@ -3,13 +3,13 @@
     <ShopHead />
     <div class="container">
       <ul class="products_list p10">
-        <li
+        <!-- <li
           class="products_item"
-          v-for="item in products"
+          v-for="item in page.products"
           :key="'products-item' + item.id"
         >
           <ProductsCard :products="item" />
-        </li>
+        </li> -->
       </ul>
     </div>
   </div>
@@ -18,9 +18,17 @@
 <script setup lang="ts">
 import ShopHead from "@/components/head/ShopHead.vue";
 import { useProductsStoreRefs } from "@/stores/useProductsStore";
+import { usePage } from "@/services/usePage";
 import ProductsCard from "@/components/card/ProductsCard.vue";
+import { onMounted } from "vue";
 
 const { products } = useProductsStoreRefs();
+
+const { useGetPage, page } = usePage();
+
+onMounted(async () => {
+  await useGetPage("133");
+});
 </script>
 
 <style scoped lang="scss">

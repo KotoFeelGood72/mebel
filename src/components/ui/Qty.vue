@@ -1,7 +1,7 @@
 <template>
   <div class="quantity">
     <button @click="decreaseQuantity" class="quantity-btn">
-      <Icon name="ic:baseline-minus" />
+      <Icons icon="ic:baseline-minus" />
     </button>
     <input
       type="number"
@@ -10,7 +10,7 @@
       @input="emitQuantityChange"
     />
     <button @click="increaseQuantity" class="quantity-btn">
-      <Icon name="ic:baseline-plus" />
+      <Icons icon="ic:baseline-plus" />
     </button>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <div class="hits">
+  <div class="hits" v-if="products">
     <div class="container">
       <div class="hits_main p10">
         <div class="hits__title">
@@ -48,7 +48,7 @@
                 </div>
               </div>
               <div class="hits_item__img">
-                <img :src="item.acf.featured_img.url" />
+                <img :src="item.acf?.featured_img.url" />
               </div>
             </RouterLink>
           </swiper-slide>

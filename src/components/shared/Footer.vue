@@ -6,7 +6,7 @@
           <Logo position="footer" />
           <div class="footer__email">
             <a target="_blank" href="mailto:Softpear@ya.ru">
-              <Icon name="custom:email" />
+              <Icons icon="ph:envelope-light" />
               <p>Softpear@ya.ru</p>
             </a>
           </div>

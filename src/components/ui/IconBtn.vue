@@ -10,11 +10,11 @@ import { withDefaults, defineProps } from "vue";
 const props = withDefaults(
   defineProps<{
     icon?: string;
-    size?: string;
+    size?: number;
   }>(),
   {
-    size: "24",
-    icon: "custom:user",
+    size: 35,
+    icon: "ph:user-circle-light",
   }
 );
 </script>
