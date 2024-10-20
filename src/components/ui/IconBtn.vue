@@ -13,8 +13,8 @@ const props = withDefaults(
     size?: number;
   }>(),
   {
-    size: 35,
-    icon: "ph:user-circle-light",
+    size: 32,
+    icon: "radix-icons:avatar",
   }
 );
 </script>

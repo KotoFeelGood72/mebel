@@ -13,9 +13,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
 const socials = ref<any>([
-  { icon: "bxl:vk", link: "/", size: 23 },
-  { icon: "icon-park-outline:telegram", link: "/", size: 25 },
-  { icon: "ri:whatsapp-fill", link: "/", size: 20 },
+  { icon: "bxl:vk", link: "/", size: 25 },
+  { icon: "mingcute:telegram-fill", link: "/", size: 23 },
+  { icon: "mage:whatsapp-filled", link: "/", size: 23 },
 ]);
 </script>
 
@@ -34,7 +34,11 @@ const socials = ref<any>([
         border: 0.1rem solid $brown;
         color: $brown;
         border-radius: 100%;
-        padding: 0.5rem;
+        color: $brown;
+        &:hover {
+          color: $white;
+          background-color: $brown;
+        }
       }
       &:last-child {
         span {

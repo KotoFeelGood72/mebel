@@ -1,4 +1,5 @@
-import { useCartStore } from "~/store/useCartStore";
+import { useCartStore } from "@/stores/useCartStore";
+import { ref } from "vue";
 
 export function useYaPay() {
   const { createOrder } = useCartStore();

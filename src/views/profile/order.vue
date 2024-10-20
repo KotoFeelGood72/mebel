@@ -40,7 +40,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import OrderCard from "~/components/card/OrderCard.vue";
+import OrderCard from "@/components/card/OrderCard.vue";
 
 // Активная вкладка
 const activeTab = ref<"active" | "completed">("active");

@@ -38,7 +38,7 @@
       </Swiper>
       <div class="products_navigation">
         <div :class="`products_prev products_prev_${products.id}`">
-          <Icons icon="bi:chevron-left" size="30" />
+          <Icons icon="bi:chevron-left" :size="30" />
         </div>
         <div class="products-pagination">
           <span class="fraction">
@@ -47,7 +47,7 @@
           </span>
         </div>
         <div :class="`products_next products_next_${products.id}`">
-          <Icons icon="bi:chevron-right" size="30" />
+          <Icons icon="bi:chevron-right" :size="30" />
         </div>
       </div>
     </div>

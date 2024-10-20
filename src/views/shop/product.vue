@@ -24,7 +24,7 @@
             </Swiper>
             <div class="products_navigation">
               <div class="products_prev">
-                <Icon name="bi:chevron-left" size="30" />
+                <Icons name="bi:chevron-left" :size="30" />
               </div>
               <div class="products-pagination">
                 <span class="fraction"
@@ -33,7 +33,7 @@
                 >
               </div>
               <div class="products_next">
-                <Icon name="bi:chevron-right" size="30" />
+                <Icons name="bi:chevron-right" :size="30" />
               </div>
             </div>
           </div>
@@ -71,13 +71,13 @@
                 <li>
                   <a href="#"
                     ><p>Характеристики</p>
-                    <Icon name="fluent:chevron-right-28-regular" />
+                    <Icons name="fluent:chevron-right-28-regular" />
                   </a>
                 </li>
                 <li>
                   <a href="#"
                     ><p>Отзывы</p>
-                    <Icon name="fluent:chevron-right-28-regular" />
+                    <Icons name="fluent:chevron-right-28-regular" />
                   </a>
                 </li>
               </ul>
@@ -101,20 +101,21 @@
 </template>
 
 <script setup lang="ts">
-import SingleCharacter from "~/components/single/SingleCharacter.vue";
-import SingleIdeas from "~/components/single/SingleIdeas.vue";
-import SingleAbout from "~/components/single/SingleAbout.vue";
-import ColorSelect from "~/components/ui/ColorSelect.vue";
-import AddToCart from "~/components/ui/AddToCart.vue";
+import SingleCharacter from "@/components/single/SingleCharacter.vue";
+import SingleIdeas from "@/components/single/SingleIdeas.vue";
+import SingleAbout from "@/components/single/SingleAbout.vue";
+import ColorSelect from "@/components/ui/ColorSelect.vue";
+import AddToCart from "@/components/ui/AddToCart.vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Navigation, Pagination } from "swiper/modules";
-import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
-import Qty from "~/components/ui/Qty.vue"; // Импортируем компонент для количества
-import { useProductsStore } from "~/store/useProductsStore";
+import Breadcrumbs from "@/components/ui/Breadcrumbs.vue";
+import Qty from "@/components/ui/Qty.vue"; // Импортируем компонент для количества
+import { useProductsStore } from "@/stores/useProductsStore";
 import { useRoute } from "vue-router";
 import { ref, computed, onMounted } from "vue";
-import { useCartStore, useCartStoreRefs } from "~/store/useCartStore";
+import { useCartStore, useCartStoreRefs } from "@/stores/useCartStore";
 import { useToast } from "vue-toastification";
+import { watch } from "vue";
 
 const { removeCart, addCart, updateCartItem } = useCartStore();
 const { carts } = useCartStoreRefs();

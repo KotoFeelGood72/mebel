@@ -35,10 +35,10 @@
       </Swiper>
       <div class="hero_navigation">
         <div class="hero_prev">
-          <Icons icon="bytesize:chevron-left" :size="45" />
+          <Icons icon="fluent-mdl2:chevron-left" :size="60" />
         </div>
         <div class="hero_next">
-          <Icons icon="bytesize:chevron-right" :size="45" />
+          <Icons icon="fluent-mdl2:chevron-right" :size="60" />
         </div>
       </div>
       <div class="hero-pagination"></div>

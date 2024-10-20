@@ -43,8 +43,8 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import InputPhone from "~/components/ui/InputPhone.vue";
-import DefaultBtn from "~/components/ui/DefaultBtn.vue";
+import InputPhone from "@/components/ui/InputPhone.vue";
+import DefaultBtn from "@/components/ui/DefaultBtn.vue";
 import otpPhone from "./components/otp-phone.vue";
 import { useRouter } from "vue-router";
 

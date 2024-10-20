@@ -9,13 +9,13 @@
           <div class="offerta__col">
             <ul class="offerta_list__action">
               <li class="offerta_item">
-                <Icons icon="custom:print" size="40" />
+                <Icons icon="custom:print" :size="40" />
               </li>
               <li class="offerta_item">
-                <Icons icon="custom:save" size="40" />
+                <Icons icon="custom:save" :size="40" />
               </li>
               <li class="offerta_item">
-                <Icons icon="custom:link" size="32" />
+                <Icons icon="custom:link" :size="32" />
               </li>
             </ul>
             <div class="offerta_quot">

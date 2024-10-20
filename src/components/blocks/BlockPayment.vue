@@ -29,8 +29,8 @@
 
 <script setup>
 import { ref, watch, onMounted } from "vue";
-import { useCartStoreRefs } from "~/store/useCartStore";
-import { useYaPay } from "~/composables/useYaPay";
+import { useCartStoreRefs } from "@/stores/useCartStore";
+import { useYaPay } from "@/composables/useYaPay";
 
 const selectedMethod = ref("Оплата картой онлайн или через СБП");
 const { currentOrder } = useCartStoreRefs();

@@ -14,7 +14,6 @@
 <script lang="ts" setup>
 import Logo from "../ui/Logo.vue";
 import { useLoadingStoreRefs } from "@/stores/useLoadingStore";
-
 const { isLoading } = useLoadingStoreRefs();
 </script>
 
