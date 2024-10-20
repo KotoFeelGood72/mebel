@@ -2,7 +2,13 @@
   <!-- isColorSheme, -->
   <div
     class="button"
-    :class="['button', isColorSheme, isType, { center: isCenter }, { active: active }]"
+    :class="[
+      'button',
+      isColorSheme,
+      isType,
+      { center: isCenter },
+      { active: active },
+    ]"
   >
     <div class="btn-icon" v-if="icon">
       <Icons :icon="active ? 'custom:cart' : 'custom:cart-white'" size="26" />
@@ -21,6 +27,7 @@ const props = withDefaults(
     name: string;
     icon?: string;
     center?: boolean;
+    color: string;
   }>(),
   {
     type: "secondary",
@@ -30,7 +37,7 @@ const props = withDefaults(
   }
 );
 
-// const isColorSheme = computed(() => props.color);
+const isColorSheme = computed(() => props.color);
 const isType = computed(() => props.type);
 const isCenter = computed(() => props.center);
 </script>
