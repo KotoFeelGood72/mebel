@@ -36,6 +36,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
+      "/auth": {
+        target: "http://fu.gleede.ru/wp-json/custom-auth/v1/",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/auth/, ""),
+      },
     },
   },
   css: {

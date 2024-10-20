@@ -49,7 +49,7 @@ watch(
 
 onMounted(async () => {
   await getAllProducts();
-  await fetchUser();
+  // await fetchUser();
 
   // Убираем прелоадер через 1.5 секунды после загрузки
   // setTimeout(() => {

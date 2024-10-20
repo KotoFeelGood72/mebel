@@ -25,8 +25,8 @@
           <div class="header__action">
             <div class="header_user" @click="targetUser()">
               <IconBtn />
-              <p v-if="user && user.user_data">
-                {{ user.user_data.first_name }}
+              <p v-if="user">
+                {{ user.username }}
               </p>
             </div>
             <div class="header_carts">
