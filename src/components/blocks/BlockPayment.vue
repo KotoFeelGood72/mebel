@@ -30,11 +30,11 @@
 <script setup>
 import { ref, watch, onMounted } from "vue";
 import { useCartStoreRefs } from "@/stores/useCartStore";
-import { useYaPay } from "@/composables/useYaPay";
+// import { useYaPay } from "@/composables/useYaPay";
 
 const selectedMethod = ref("Оплата картой онлайн или через СБП");
 const { currentOrder } = useCartStoreRefs();
-const { createPaymentSession, resetPaymentSession } = useYaPay();
+// const { createPaymentSession, resetPaymentSession } = useYaPay();
 const paymentMethods = [
   {
     name: "Оплата картой онлайн или через СБП",
@@ -43,46 +43,46 @@ const paymentMethods = [
 ];
 
 // Обновление сессии оплаты
-const updateYaPaySession = () => {
-  const amount = currentOrder.value.price || 0;
+// const updateYaPaySession = () => {
+//   const amount = currentOrder.value.price || 0;
 
-  // Сбрасываем предыдущую сессию, если она есть
-  resetPaymentSession();
+//   // Сбрасываем предыдущую сессию, если она есть
+//   resetPaymentSession();
 
-  if (selectedMethod.value === "Оплатить") {
-    // Инициализируем сессию сплит-оплаты
-    createPaymentSession({
-      amount,
-      methods: ["SPLIT"],
-      buttonContainerId: "#payButton", // Кнопка оплаты
-      widgetContainerId: "#split-widget", // Информационный виджет сплита
-    });
-  } else {
-    // Инициализируем обычную оплату
-    createPaymentSession({
-      amount,
-      methods: ["CARD"],
-      buttonContainerId: "#payButton", // Кнопка мгновенной оплаты
-    });
-  }
-};
+//   if (selectedMethod.value === "Оплатить") {
+//     // Инициализируем сессию сплит-оплаты
+//     createPaymentSession({
+//       amount,
+//       methods: ["SPLIT"],
+//       buttonContainerId: "#payButton",
+//       widgetContainerId: "#split-widget",
+//     });
+//   } else {
+//     // Инициализируем обычную оплату
+//     createPaymentSession({
+//       amount,
+//       methods: ["CARD"],
+//       buttonContainerId: "#payButton", // Кнопка мгновенной оплаты
+//     });
+//   }
+// };
 
 // Следим за изменением способа оплаты и пересоздаем сессии
-watch(selectedMethod, () => {
-  updateYaPaySession();
-});
+// watch(selectedMethod, () => {
+//   updateYaPaySession();
+// });
 
 // Пересоздание сессии при изменении цены
-watch(
-  () => currentOrder.value.price,
-  () => {
-    updateYaPaySession();
-  }
-);
+// watch(
+//   () => currentOrder.value.price,
+//   () => {
+//     updateYaPaySession();
+//   }
+// );
 
-onMounted(() => {
-  updateYaPaySession();
-});
+// onMounted(() => {
+//   updateYaPaySession();
+// });
 </script>
 
 <style scoped lang="scss">
