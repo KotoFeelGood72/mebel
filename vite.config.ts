@@ -1,14 +1,12 @@
 import { fileURLToPath, URL } from "node:url";
 import { defineConfig, loadEnv } from "vite";
 import vue from "@vitejs/plugin-vue";
-import dotenv from "dotenv";
-import path from "path";
 
 export default defineConfig(({ mode }) => {
-  // Загружаем файл .env для соответствующего режима
+  // Загружаем переменные окружения для текущего режима
   const env = loadEnv(mode, process.cwd());
 
-  // Теперь мы можем использовать переменные окружения
+  // Теперь у нас есть доступ к переменным окружения, например:
   const apiUrl = env.VITE_API_BASE_URL;
   const authUrl = env.VITE_AUTH_BASE_URL;
 
@@ -31,10 +29,17 @@ export default defineConfig(({ mode }) => {
         "@": fileURLToPath(new URL("./src", import.meta.url)),
       },
     },
+    define: {
+      __API_URL__: JSON.stringify(apiUrl),
+      __SOCKET_URL__: JSON.stringify(authUrl),
+    },
     server: {
       port: 5173,
       host: true,
-
+      strictPort: true,
+      watch: {
+        usePolling: true,
+      },
       proxy: {
         "/api": {
           target: apiUrl, // Использование переменной окружения
@@ -55,7 +60,6 @@ export default defineConfig(({ mode }) => {
           @import "@/assets/scss/_mixins.scss";
           @import "@/assets/scss/_variables.scss";
           `,
-          api: "modern-compiler",
         },
       },
     },
