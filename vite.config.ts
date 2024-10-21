@@ -1,9 +1,14 @@
 import { fileURLToPath, URL } from "node:url";
-
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
+import dotenv from "dotenv";
 
-// https://vitejs.dev/config/
+// Загрузка переменных окружения в зависимости от окружения (development/production)
+dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
+
+const apiUrl = process.env.VITE_API_BASE_URL;
+const authUrl = process.env.VITE_AUTH_BASE_URL;
+
 export default defineConfig({
   build: {
     rollupOptions: {
@@ -23,6 +28,10 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
+  define: {
+    __API_URL__: JSON.stringify(apiUrl),
+    __SOCKET_URL__: JSON.stringify(authUrl),
+  },
   server: {
     port: 5173,
     host: true,
@@ -32,12 +41,12 @@ export default defineConfig({
     },
     proxy: {
       "/api": {
-        target: "http://fu.gleede.ru/wp-content/uploads/json",
+        target: apiUrl, // Использование переменной окружения
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
       "/auth": {
-        target: "http://fu.gleede.ru/wp-json/custom-auth/v1/",
+        target: authUrl, // Использование переменной окружения
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/auth/, ""),
       },
@@ -48,8 +57,9 @@ export default defineConfig({
       scss: {
         additionalData: `
         @import "@/assets/scss/_mixins.scss";
-          @import "@/assets/scss/_variables.scss";
+        @import "@/assets/scss/_variables.scss";
         `,
+        api: "modern-compiler",
       },
     },
   },
