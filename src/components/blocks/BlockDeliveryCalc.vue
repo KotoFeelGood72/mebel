@@ -37,7 +37,7 @@ const {
 } = useDelivery();
 const { currentOrder } = useCartStoreRefs();
 
-watch([selectedAddress], (newAddress) => {
+watch([selectedAddress], (newAddress: any) => {
   const addressData = JSON.parse(newAddress);
   currentOrder.value = {
     ...currentOrder.value,
