@@ -31,17 +31,10 @@ export default defineConfig(({ mode }) => {
         "@": fileURLToPath(new URL("./src", import.meta.url)),
       },
     },
-    define: {
-      __API_URL__: JSON.stringify(apiUrl),
-      __AUTH_URL__: JSON.stringify(authUrl),
-    },
     server: {
       port: 5173,
       host: true,
-      strictPort: true,
-      watch: {
-        usePolling: true,
-      },
+
       proxy: {
         "/api": {
           target: apiUrl, // Использование переменной окружения
@@ -62,6 +55,7 @@ export default defineConfig(({ mode }) => {
           @import "@/assets/scss/_mixins.scss";
           @import "@/assets/scss/_variables.scss";
           `,
+          api: "modern-compiler",
         },
       },
     },

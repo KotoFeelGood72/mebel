@@ -12,12 +12,14 @@ const getToken = () => {
 
 // Настройка основного API
 const api = axios.create({
-  baseURL: "/api/",
+  baseURL: "http://fu.gleede.ru/wp-content/uploads/json",
+  // baseURL: "/api/",
 });
 
 // Настройка custom API
 const auth = axios.create({
-  baseURL: "/auth/",
+  baseURL: "http://fu.gleede.ru/wp-json/custom-auth/v1",
+  // baseURL: "/auth/",
 });
 
 // Интерцептор для запросов
