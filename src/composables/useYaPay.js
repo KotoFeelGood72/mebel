@@ -12,10 +12,9 @@ export function useYaPay() {
     buttonContainerId,
     widgetContainerId,
   }) {
-    // Если сессия уже существует, удаляем её и кнопки
     if (activeSession.value) {
       try {
-        activeSession.value.destroy(); // Удаляем сессию и все связанные кнопки и виджеты
+        activeSession.value.destroy();
       } catch (error) {
         console.error("Ошибка при уничтожении сессии:", error);
       }
@@ -23,7 +22,7 @@ export function useYaPay() {
     }
 
     const paymentData = {
-      env: window.YaPay.Sandbox,
+      // env: window.YaPay.Sandbox,
       version: 4,
       currencyCode: window.YaPay.CurrencyCode.Rub,
       merchantId: "4d715c56-1ac9-49bc-9330-889e3487b2c1",

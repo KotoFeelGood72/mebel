@@ -3,7 +3,11 @@
     <div class="auth__head">
       <h3>Войти или зарегистрироваться</h3>
       <div class="close-btn" @click="closeModal('auth')">
-        <IconBtn icon="simple-line-icons:close" :size="34" @click="closeModal('auth')" />
+        <IconBtn
+          icon="simple-line-icons:close"
+          :size="34"
+          @click="closeModal('auth')"
+        />
       </div>
     </div>
     <div class="auth_main">
@@ -23,7 +27,7 @@
           @verify="verifyOTP"
           :error="otpErrorMessage"
         />
-        <AuthNew v-if="showVerification" @onNext="handleNextStep" />
+        <AuthNew v-if="showVerification" />
       </div>
     </div>
   </div>
@@ -48,17 +52,7 @@ const {
   showOtpForm,
   showVerification,
 } = useUserStoreRefs();
-const {
-  loginUser,
-  sendOTP,
-  resendOTP,
-  verifyOTP,
-  logout,
-  handleNextStep,
-} = useUserStore();
-const router = useRouter();
-
-// Метод для обновления профиля пользователя (сохранение имени и телефона)
+const { loginUser, sendOTP, resendOTP, verifyOTP, logout } = useUserStore();
 </script>
 
 <style scoped lang="scss">

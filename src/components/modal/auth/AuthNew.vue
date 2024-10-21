@@ -3,18 +3,21 @@
     <div class="usernew__form">
       <div class="usernew__input">
         <p>Имя</p>
-        <Inputs v-model="name" placeholder="Поддубная Елена" />
+        <Inputs v-model="user.user_data.name" placeholder="Поддубная Елена" />
       </div>
       <div class="usernew__input">
         <p>Номер телефона</p>
-        <InputPhone v-model="phone" placeholder="+7 (999) 999-99-99" />
+        <InputPhone
+          v-model="user.user_data.phone"
+          placeholder="+7 (999) 999-99-99"
+        />
       </div>
       <DefaultBtn
         name="Продолжить"
         type="primary"
         color="brown"
         size="normal"
-        @click="nextStep"
+        @click="handleNextStep"
       />
     </div>
   </div>
@@ -24,24 +27,24 @@
 import Inputs from "@/components/ui/Inputs.vue";
 import InputPhone from "@/components/ui/InputPhone.vue";
 import DefaultBtn from "@/components/ui/DefaultBtn.vue";
-import { ref } from "vue";
+import { useUserStoreRefs, useUserStore } from "@/stores/useUserStore";
+// import { ref } from "vue";
 
-const props = defineProps<{
-  phone: string;
-  name: string;
-  onNext?: any;
-}>();
+// const props = defineProps<{
+//   phone: string;
+//   name: string;
+//   onNext?: any;
+// }>();
+
+const { user } = useUserStoreRefs();
+const { handleNextStep } = useUserStore();
 
 const emit = defineEmits(["onNext"]);
-
-// Локальные переменные для хранения введенных данных
-const phone = ref<any>(props.phone);
-const name = ref<any>(props.name);
-
-// Функция для отправки данных в родительский компонент
-const nextStep = () => {
-  emit("onNext", { phone: phone.value, name: name.value });
-};
+// const phone = ref<any>(props.phone);
+// const name = ref<any>(props.name);
+// const nextStep = () => {
+//   emit("onNext", { phone: phone.value, name: name.value });
+// };
 </script>
 
 <style scoped lang="scss">

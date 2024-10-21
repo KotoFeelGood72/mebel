@@ -1,6 +1,6 @@
 import { defineStore, storeToRefs } from "pinia";
 import axios from "axios";
-import { auth ,api } from "@/api/axios"; // Здесь предполагается, что вы настроили axios-инстанс в файле "@/api/axios".
+import { auth, api } from "@/api/axios"; // Здесь предполагается, что вы настроили axios-инстанс в файле "@/api/axios".
 
 export const useUserStore = defineStore("users", {
   state: () => ({
@@ -19,7 +19,7 @@ export const useUserStore = defineStore("users", {
     // Логин пользователя
     async loginUser(data: any) {
       this.user = data;
-      localStorage.setItem("user", JSON.stringify(data)); 
+      localStorage.setItem("user", JSON.stringify(data));
     },
 
     // Получение данных пользователя
@@ -60,8 +60,11 @@ export const useUserStore = defineStore("users", {
         this.otpErrorMessage = "";
         this.userData = response.data.user_data;
         console.log("OTP отправлен:", response.data);
-      } catch (error) {
-        console.error("Ошибка отправки OTP:", error.response?.data?.message || error.message);
+      } catch (error: any) {
+        console.error(
+          "Ошибка отправки OTP:",
+          error.response?.data?.message || error.message
+        );
       } finally {
         this.isLoad = false;
       }
@@ -75,8 +78,11 @@ export const useUserStore = defineStore("users", {
         console.log("OTP отправлен повторно:", response.data);
         this.showOtpForm = true;
         this.otpErrorMessage = "";
-      } catch (error) {
-        console.error("Ошибка повторной отправки OTP:", error.response?.data?.message || error.message);
+      } catch (error: any) {
+        console.error(
+          "Ошибка повторной отправки OTP:",
+          error.response?.data?.message || error.message
+        );
       } finally {
         this.isLoad = false;
       }
@@ -97,15 +103,19 @@ export const useUserStore = defineStore("users", {
 
           // Если у пользователя нет имени, показываем форму для заполнения данных
           if (this.userData?.first_name) {
-            // location.href = "/"; 
+            // location.href = "/";
             this.fetchUser(this.user.user_data.ID);
           } else {
             this.showVerification = true;
           }
         }
-      } catch (error) {
-        this.otpErrorMessage = error.response?.data?.message || "Неверный код OTP";
-        console.error("Ошибка верификации OTP:", error.response?.data?.message || error.message);
+      } catch (error: any) {
+        this.otpErrorMessage =
+          error.response?.data?.message || "Неверный код OTP";
+        console.error(
+          "Ошибка верификации OTP:",
+          error.response?.data?.message || error.message
+        );
       } finally {
         this.isLoad = false;
       }
@@ -117,8 +127,9 @@ export const useUserStore = defineStore("users", {
         this.isLoad = true; // Включаем прелоадер
         const response = await auth.post("/update-profile", {
           email: this.email,
-          name: data.name,
-          phone: data.phone,
+          
+          name: this.user.user_data.name,
+          phone: this.user.user_data.phone,
         });
         console.log("Профиль обновлен", response.data);
         this.fetchUser(this.user.user_data.ID);

@@ -1,7 +1,7 @@
 <template>
   <div class="quantity">
     <button @click="decreaseQuantity" class="quantity-btn">
-      <Icons icon="ic:baseline-minus" />
+      <Icons icon="pixelarticons:minus" />
     </button>
     <input
       type="number"
@@ -10,7 +10,7 @@
       @input="emitQuantityChange"
     />
     <button @click="increaseQuantity" class="quantity-btn">
-      <Icons icon="ic:baseline-plus" />
+      <Icons icon="pixelarticons:plus" />
     </button>
   </div>
 </template>
@@ -88,5 +88,9 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.quantity-btn {
+  color: $white;
 }
 </style>

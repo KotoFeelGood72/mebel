@@ -5,7 +5,7 @@
       <div class="container">
         <div class="rentdesc_main">
           <div class="rentdesc__img">
-            <img :src="page.your_img.url" alt="" />
+            <img :src="page.your_img?.url" />
           </div>
           <div class="rentdesc__content">
             <ul>
