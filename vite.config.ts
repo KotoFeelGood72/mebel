@@ -16,12 +16,16 @@ export default defineConfig(({ mode }) => {
           entryFileNames: "assets/[name].js",
           chunkFileNames: "assets/[name].js",
           assetFileNames: (assetInfo) => {
-            // Проверка на наличие имени файла
+            // Проверка на наличие имени файла и типа
             if (
               assetInfo.name &&
               /\.(woff|woff2|eot|ttf|otf)$/.test(assetInfo.name)
             ) {
               // Для шрифтов убираем хеширование
+              return "assets/[name][extname]";
+            }
+            if (assetInfo.name && /\.css$/.test(assetInfo.name)) {
+              // Для CSS убираем хеширование
               return "assets/[name][extname]";
             }
             // Для всех остальных ассетов оставляем хеширование
