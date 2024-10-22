@@ -20,14 +20,7 @@ export default defineConfig(({ mode }) => {
     //   },
     //   cssCodeSplit: false,
     // },
-    build: {
-      manifest: true, // Создаем манифест для доступа к хешированным файлам
-      rollupOptions: {
-        output: {
-          manualChunks: () => "main.js",
-        },
-      },
-    },
+
     plugins: [vue()],
     resolve: {
       alias: {
