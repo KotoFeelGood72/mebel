@@ -9,17 +9,17 @@ export default defineConfig(({ mode }) => {
 
   return {
     base: process.env.VITE_BASE_URL_ASSET || "/",
-    // build: {
-    //   rollupOptions: {
-    //     output: {
-    //       manualChunks: () => "main.js",
-    //       //   entryFileNames: "assets/[name].js",
-    //       //   chunkFileNames: "assets/[name].js",
-    //       //   assetFileNames: "assets/[name].[ext]",
-    //     },
-    //   },
-    //   cssCodeSplit: false,
-    // },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: () => "main.js",
+          entryFileNames: "assets/[name].js",
+          chunkFileNames: "assets/[name].js",
+          assetFileNames: "assets/[name].[ext]",
+        },
+      },
+      cssCodeSplit: false,
+    },
 
     plugins: [vue()],
     resolve: {
