@@ -15,22 +15,7 @@ export default defineConfig(({ mode }) => {
           manualChunks: () => "main.js",
           entryFileNames: "assets/[name].js",
           chunkFileNames: "assets/[name].js",
-          assetFileNames: (assetInfo) => {
-            // Проверка на наличие имени файла и типа
-            if (
-              assetInfo.name &&
-              /\.(woff|woff2|eot|ttf|otf)$/.test(assetInfo.name)
-            ) {
-              // Для шрифтов сохраняем в папку fonts
-              return "assets/fonts/[name][extname]";
-            }
-            if (assetInfo.name && /\.css$/.test(assetInfo.name)) {
-              // Для CSS убираем хеширование
-              return "assets/[name][extname]";
-            }
-            // Для всех остальных ассетов оставляем хеширование
-            return "assets/[name]-[hash][extname]";
-          },
+          assetFileNames: "assets/[name].[ext]",
         },
       },
       cssCodeSplit: false,
