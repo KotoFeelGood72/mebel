@@ -11,6 +11,7 @@ export default defineConfig(({ mode }) => {
   const authUrl = env.VITE_AUTH_BASE_URL;
 
   return {
+    base: process.env.VITE_BASE_URL_ASSET || "/",
     build: {
       rollupOptions: {
         output: {
