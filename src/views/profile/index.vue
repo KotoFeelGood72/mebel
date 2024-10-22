@@ -18,7 +18,7 @@
         <div class="user__edit">
           <RouterLink to="/profile/edit">Редактировать</RouterLink>
         </div>
-        <div class="user__logout" @click="logoutUser">Выйти</div>
+        <div class="user__logout" @click.prevent="logoutUser">Выйти</div>
       </div>
       <div class="user__img">
         <img src="/img/profile.png" alt="" />
