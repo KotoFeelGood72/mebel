@@ -33,17 +33,9 @@ export default defineConfig(({ mode }) => {
         "@": fileURLToPath(new URL("./src", import.meta.url)),
       },
     },
-    define: {
-      __API_URL__: JSON.stringify(apiUrl),
-      __SOCKET_URL__: JSON.stringify(authUrl),
-    },
     server: {
       port: 8000,
       host: true,
-      strictPort: true,
-      watch: {
-        usePolling: true,
-      },
       proxy: {
         "/api": {
           target: apiUrl, // Использование переменной окружения
