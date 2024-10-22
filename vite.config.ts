@@ -12,6 +12,9 @@ export default defineConfig(({ mode }) => {
 
   return {
     base: process.env.VITE_BASE_URL_ASSET || "/",
+    static: {
+      dir: "public",
+    },
     build: {
       rollupOptions: {
         output: {
