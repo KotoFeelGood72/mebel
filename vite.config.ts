@@ -21,8 +21,8 @@ export default defineConfig(({ mode }) => {
               assetInfo.name &&
               /\.(woff|woff2|eot|ttf|otf)$/.test(assetInfo.name)
             ) {
-              // Для шрифтов убираем хеширование
-              return "assets/[name][extname]";
+              // Для шрифтов сохраняем в папку fonts
+              return "assets/fonts/[name][extname]";
             }
             if (assetInfo.name && /\.css$/.test(assetInfo.name)) {
               // Для CSS убираем хеширование
