@@ -12,12 +12,18 @@ const getToken = () => {
 
 // Настройка основного API
 const api = axios.create({
-  baseURL: "/api/",
+  baseURL:
+    import.meta.env.MODE === "production"
+      ? import.meta.env.VITE_API_BASE_URL
+      : "/api/",
 });
 
 // Настройка custom API
 const auth = axios.create({
-  baseURL: "/auth/",
+  baseURL:
+    import.meta.env.MODE === "production"
+      ? import.meta.env.VITE_AUTH_BASE_URL
+      : "/api/",
 });
 
 // Интерцептор для запросов

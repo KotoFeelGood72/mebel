@@ -34,7 +34,7 @@ export default defineConfig(({ mode }) => {
       __SOCKET_URL__: JSON.stringify(authUrl),
     },
     server: {
-      port: 5173,
+      port: 8000,
       host: true,
       strictPort: true,
       watch: {
@@ -60,6 +60,7 @@ export default defineConfig(({ mode }) => {
           @import "@/assets/scss/_mixins.scss";
           @import "@/assets/scss/_variables.scss";
           `,
+          api: "modern-compiler",
         },
       },
     },
