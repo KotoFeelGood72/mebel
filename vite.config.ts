@@ -8,6 +8,7 @@ export default defineConfig(({ mode }) => {
   const authUrl = env.VITE_AUTH_BASE_URL;
 
   return {
+    base: "/wp-content/themes/fu/vue/dist/",
     build: {
       rollupOptions: {
         output: {
