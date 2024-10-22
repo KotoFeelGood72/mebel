@@ -3,30 +3,31 @@ import { defineConfig, loadEnv } from "vite";
 import vue from "@vitejs/plugin-vue";
 
 export default defineConfig(({ mode }) => {
-  // Загружаем переменные окружения для текущего режима
   const env = loadEnv(mode, process.cwd());
-
-  // Теперь у нас есть доступ к переменным окружения, например:
   const apiUrl = env.VITE_API_BASE_URL;
   const authUrl = env.VITE_AUTH_BASE_URL;
 
   return {
     base: process.env.VITE_BASE_URL_ASSET || "/",
-    static: {
-      dir: "public",
-    },
+    // build: {
+    //   rollupOptions: {
+    //     output: {
+    //       manualChunks: () => "main.js",
+    //       //   entryFileNames: "assets/[name].js",
+    //       //   chunkFileNames: "assets/[name].js",
+    //       //   assetFileNames: "assets/[name].[ext]",
+    //     },
+    //   },
+    //   cssCodeSplit: false,
+    // },
     build: {
+      manifest: true, // Создаем манифест для доступа к хешированным файлам
       rollupOptions: {
         output: {
           manualChunks: () => "main.js",
-          entryFileNames: "assets/[name].js",
-          chunkFileNames: "assets/[name].js",
-          assetFileNames: "assets/[name].[ext]",
         },
       },
-      cssCodeSplit: false,
     },
-
     plugins: [vue()],
     resolve: {
       alias: {
