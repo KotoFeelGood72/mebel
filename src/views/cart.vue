@@ -241,24 +241,23 @@ watch(carts, setLineItemsAndPrice, { deep: true });
 
 watch(selectedMethod, (newMethod) => {
   const amount = totalPrice.value;
-  const methods = newMethod === "Оплатить" ? ["SPLIT"] : ["CARD"];
 
-  // Уничтожаем текущую сессию перед созданием новой
+  // Уничтожаем текущую платежную сессию перед созданием новой
   resetPaymentSession();
 
-  // Пересоздаем платежную сессию только если выбран метод оплаты "Оплатить"
+  // Пересоздаем платежную сессию только если выбран метод "Оплатить" (SPLIT)
   if (newMethod === "Оплатить") {
     createPaymentSession({
       amount: amount,
-      methods: ["SPLIT"],
+      methods: ["SPLIT"], // Метод "SPLIT"
       buttonContainerId: "#pay-button-container",
-      widgetContainerId: "#split-widget",
+      widgetContainerId: "#split-widget", // Контейнер для виджета SPLIT
     });
   } else {
-    // Если метод оплаты не "Оплатить", создаем сессию для обычной оплаты картой
+    // Если выбран другой метод оплаты, например, "CARD"
     createPaymentSession({
       amount: amount,
-      methods: ["CARD"],
+      methods: ["CARD"], // Метод "CARD"
       buttonContainerId: "#pay-button-container",
     });
   }
