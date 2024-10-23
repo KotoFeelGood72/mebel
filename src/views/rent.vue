@@ -34,7 +34,7 @@
             <div class="price_notice">Длительная аренда — еще выгоднее!</div>
           </div>
           <div class="price_img">
-            <img :src="page.price_img.url" :alt="page.price_img.alt" />
+            <img :src="page?.price_img?.url" :alt="page.price_img?.alt" />
           </div>
         </div>
       </div>

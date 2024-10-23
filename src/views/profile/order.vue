@@ -41,7 +41,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import OrderCard from "@/components/card/OrderCard.vue";
-
+import "swiper/swiper-bundle.css";
 // Активная вкладка
 const activeTab = ref<"active" | "completed">("active");
 
@@ -129,5 +129,9 @@ const completedOrders = ref([
 .orders {
   background-color: $light;
   padding: 3.6rem 6.4rem 3.6rem 6.4rem;
+}
+
+:deep(.order-pagination) {
+  display: none !important;
 }
 </style>

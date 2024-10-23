@@ -7,19 +7,23 @@ export default defineConfig(({ mode }) => {
   const apiUrl = env.VITE_API_BASE_URL;
   const authUrl = env.VITE_AUTH_BASE_URL;
 
+  const isProduction = mode === "production"; // Определяем режим
+
   return {
-    base: "/wp-content/themes/fu/vue/dist/",
-    build: {
-      rollupOptions: {
-        output: {
-          manualChunks: () => "main.js",
-          entryFileNames: "assets/[name].js",
-          chunkFileNames: "assets/[name].js",
-          assetFileNames: "assets/[name].[ext]",
-        },
-      },
-      cssCodeSplit: false,
-    },
+    base: isProduction ? "/wp-content/themes/fu/vue/dist/" : "/", // Указываем base только для деплоя
+    build: isProduction
+      ? {
+          rollupOptions: {
+            output: {
+              manualChunks: () => "main.js",
+              entryFileNames: "assets/[name].js",
+              chunkFileNames: "assets/[name].js",
+              assetFileNames: "assets/[name].[ext]",
+            },
+          },
+          cssCodeSplit: false,
+        }
+      : {}, // Пустые настройки для режима разработки
 
     plugins: [vue()],
     resolve: {

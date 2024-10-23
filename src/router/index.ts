@@ -32,6 +32,24 @@ const router = createRouter({
       path: "/profile",
       name: "profile",
       component: () => import("@/views/profile.vue"),
+      redirect: "/profile/user",
+      children: [
+        {
+          path: "user",
+          name: "user",
+          component: () => import("@/views/profile/index.vue"),
+        },
+        {
+          path: "order",
+          name: "order",
+          component: () => import("@/views/profile/order.vue"),
+        },
+        {
+          path: "edit",
+          name: "edit",
+          component: () => import("@/views/profile/edit.vue"),
+        },
+      ],
     },
     {
       path: "/rent",

@@ -1,5 +1,5 @@
 import { defineStore, storeToRefs } from "pinia";
-import axios from "axios";
+// import axios from "axios";
 import { auth, api } from "@/api/axios"; // Здесь предполагается, что вы настроили axios-инстанс в файле "@/api/axios".
 
 export const useUserStore = defineStore("users", {
@@ -127,7 +127,7 @@ export const useUserStore = defineStore("users", {
         this.isLoad = true; // Включаем прелоадер
         const response = await auth.post("/update-profile", {
           email: this.email,
-          
+
           name: this.user.user_data.name,
           phone: this.user.user_data.phone,
         });

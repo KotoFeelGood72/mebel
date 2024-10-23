@@ -1,17 +1,17 @@
 <template>
-  <div class="user" v-if="data">
+  <div class="user" v-if="user && user.meta">
     <div class="user__main">
       <div class="user__info">
         <div class="user__content">
-          <p>{{ data.meta.billing_first_name[0] }}</p>
+          <p>{{ user.meta?.first_name[0] }}</p>
           <ul>
             <li>
               <p>Телефон</p>
-              <span>{{ data.meta.billing_phone[0] }}</span>
+              <span>{{ user?.meta.billing_phone[0] }}</span>
             </li>
             <li>
               <p>E-mail</p>
-              <span>{{ data.meta.billing_email[0] }}</span>
+              <span>{{ user?.email }}</span>
             </li>
           </ul>
         </div>
@@ -34,7 +34,7 @@ import { useUserStoreRefs, useUserStore } from "@/stores/useUserStore";
 //   middleware: "auth",
 // });
 
-const { data } = useUserStoreRefs();
+const { user } = useUserStoreRefs();
 const { logout } = useUserStore();
 
 async function logoutUser() {

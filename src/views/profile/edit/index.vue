@@ -1,5 +1,5 @@
 <template>
-  <!-- <div class="edit">
+  <div class="edit">
     <div class="edit_form">
       <div class="close">
         <Icon name="simple-line-icons:close" size="30" />
@@ -28,7 +28,7 @@
         <div class="edit__delete">Удалить профиль</div>
       </div>
     </div>
-  </div> -->
+  </div>
 </template>
 
 <script setup lang="ts">

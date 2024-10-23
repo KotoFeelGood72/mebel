@@ -23,7 +23,7 @@ const auth = axios.create({
   baseURL:
     import.meta.env.MODE === "production"
       ? import.meta.env.VITE_AUTH_BASE_URL
-      : "/api/",
+      : "/auth/",
 });
 
 // Интерцептор для запросов

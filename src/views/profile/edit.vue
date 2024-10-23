@@ -1,6 +1,6 @@
 <template>
   <div class="edit">
-    <NuxtPage />
+    <RouterView />
   </div>
 </template>
 

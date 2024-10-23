@@ -136,14 +136,21 @@ const props = withDefaults(
 
 // Реактивные переменные
 const currentSlide = ref(1);
-const totalSlides = ref(props.products.gallery_images.length);
+const totalSlides = ref(
+  props.products?.gallery_images ? props.products.gallery_images.length : 0
+);
 const toast = useToast();
 const cartItem = computed(() =>
-  carts.value.find((cart: any) => cart.id === props.products.id)
+  carts.value.find((cart: any) => cart.id === props.products?.id)
 );
 
 const selectedQuantity = ref(cartItem.value ? cartItem.value.quantity : 1);
-const selectedColor = ref(props.products.attributes.pa_colors[0]);
+const selectedColor = ref(
+  props.products?.attributes?.pa_colors &&
+    props.products.attributes.pa_colors.length > 0
+    ? props.products.attributes.pa_colors[0]
+    : null
+);
 
 // Карта цветов для визуального отображения
 const colorMap: Record<string, string> = {

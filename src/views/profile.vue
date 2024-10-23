@@ -9,18 +9,21 @@
             <RouterLink to="/profile/order"> Заказы </RouterLink>
           </nav>
         </div>
-        <NuxtPage />
+        <RouterView />
       </div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { RouterView } from "vue-router";
+</script>
 
 <style scoped lang="scss">
 .profile {
   padding-top: calc($header + 5.8rem);
   padding-bottom: 10rem;
+  min-height: 100dvh;
 }
 
 .profile_head {

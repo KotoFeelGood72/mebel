@@ -29,9 +29,9 @@
                 {{ user.username }}
               </p>
             </div>
-            <div class="header_carts">
+            <div class="header_carts" @click="nextCarts()">
               <div class="counter">{{ isCarts.length }}</div>
-              <IconBtn icon="solar:cart-large-4-outline" @click="router.push('/cart')" />
+              <IconBtn icon="solar:cart-large-4-outline" />
             </div>
           </div>
         </div>
@@ -69,11 +69,17 @@ const isCallBackModal = () => {
 };
 
 const targetUser = () => {
-  if (!user.value || !user.value.token) {
+  if (!user.value) {
     openModal("auth");
   } else {
     closeModal("auth");
     router.push("profile");
+  }
+};
+
+const nextCarts = () => {
+  if (isCarts.value.length > 0) {
+    router.push("/cart");
   }
 };
 
@@ -222,17 +228,19 @@ onUnmounted(() => {
 }
 
 .counter {
-  font-size: 1.2rem;
-  background-color: $brown;
+  font-size: 1rem;
+  background-color: $lbrown;
   width: 1.5rem;
   height: 1.5rem;
   @include flex-center;
-  font-family: $font_4;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-weight: 400;
   color: $white;
   border-radius: 100%;
   position: absolute;
-  top: -0.5rem;
-  right: -0.8rem;
+  top: -0.3rem;
+  right: -0.5rem;
 }
 
 .burger {

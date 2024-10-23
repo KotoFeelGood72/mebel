@@ -1,5 +1,5 @@
 <template>
-  <!-- <div class="edit_phone__w">
+  <div class="edit_phone__w">
     <div class="edit-phone">
       <div class="close">
         <Icon name="simple-line-icons:close" size="30" />
@@ -38,7 +38,7 @@
         @click="pushEdit"
       />
     </div>
-  </div> -->
+  </div>
 </template>
 
 <script setup lang="ts">
