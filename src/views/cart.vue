@@ -117,8 +117,7 @@
               </li>
             </ul>
           </div>
-          <!-- <YaPayBtn /> -->
-          <div id="payButton"></div>
+          <div id="pay-button-container"></div>
           <div class="cart_total__privacy">
             Нажимая кнопку 'Оформить заказ', Вы принимаете условия
             соответствующей
@@ -141,24 +140,29 @@
 import Qty from "@/components/ui/Qty.vue";
 import BlockUserInfo from "@/components/blocks/BlockUserInfo.vue";
 import BlockDeliveryCalc from "@/components/blocks/BlockDeliveryCalc.vue";
-// import BlockPayment from "@/components/blocks/BlockPayment.vue";
 import { ref, computed, watch, onMounted } from "vue";
 import { useCartStoreRefs, useCartStore } from "@/stores/useCartStore";
 import { useDelivery } from "@/composables/useDelivery";
-// import YaPayBtn from "~/components/ui/YaPayBtn.vue";
-// Получаем данные корзины и текущего заказа
 const { carts, currentOrder } = useCartStoreRefs();
 const { updateCartItem, removeCartItem, createOrder } = useCartStore();
+import { useYaPay } from "@/services/useYaPay";
 const { deliveryPrice } = useDelivery();
+const { createPaymentSession, resetPaymentButton, resetPaymentSession } =
+  useYaPay();
+
+// Данные из store
 
 const selectedItems = ref<string[]>([]);
 const selectedMethod = ref("Оплата картой онлайн или через СБП");
+
+// Методы оплаты
 const paymentMethods = [
   {
     name: "Оплата картой онлайн или через СБП",
   },
   { name: "Оплатить", logo: "/img/split.png" },
 ];
+
 // Вычисляем, есть ли выбранные товары
 const hasSelectedItems = computed(() => {
   return selectedItems.value.length > 0;
@@ -210,6 +214,7 @@ const totalPrice = computed(() => {
   }, 0);
 });
 
+// Функция установки товаров и цены в заказ
 const setLineItemsAndPrice = () => {
   const lineItems = carts.value.map((item: any) => ({
     product_id: item.id,
@@ -229,22 +234,72 @@ const setLineItemsAndPrice = () => {
     line_items: lineItems,
     price: totalOrderPrice,
   };
-
-  // // Проверяем, определена ли функция updateYaPayPrice
-  // if (typeof window.updateYaPayPrice === "function") {
-  //   console.log("Updating YaPay price:", totalOrderPrice);
-  //   window.updateYaPayPrice(totalOrderPrice);
-  // } else {
-  //   console.error("updateYaPayPrice is not defined");
-  // }
 };
 
 // Следим за изменениями в корзине и обновляем line_items и price
 watch(carts, setLineItemsAndPrice, { deep: true });
 
-// Инициализация line_items и цены при монтировании компонента
+watch(selectedMethod, (newMethod) => {
+  const amount = totalPrice.value;
+  const methods = newMethod === "Оплатить" ? ["SPLIT"] : ["CARD"];
+
+  // Уничтожаем текущую сессию перед созданием новой
+  resetPaymentSession();
+
+  // Пересоздаем платежную сессию только если выбран метод оплаты "Оплатить"
+  if (newMethod === "Оплатить") {
+    createPaymentSession({
+      amount: amount,
+      methods: ["SPLIT"],
+      buttonContainerId: "#pay-button-container",
+      widgetContainerId: "#split-widget",
+    });
+  } else {
+    // Если метод оплаты не "Оплатить", создаем сессию для обычной оплаты картой
+    createPaymentSession({
+      amount: amount,
+      methods: ["CARD"],
+      buttonContainerId: "#pay-button-container",
+    });
+  }
+});
+
+// Очищаем контейнеры перед монтированием новой кнопки или виджета
+function clearContainer(selector: string) {
+  const container = document.querySelector(selector);
+  if (container) {
+    container.innerHTML = ""; // Очищаем контейнер
+  }
+}
+
+// Инициализация платежной сессии при монтировании компонента
 onMounted(() => {
-  setLineItemsAndPrice();
+  const amount = totalPrice.value;
+  const methods = selectedMethod.value === "Оплатить" ? ["SPLIT"] : ["CARD"];
+
+  clearContainer("#pay-button-container"); // Очищаем контейнер для кнопки
+
+  createPaymentSession({
+    amount: amount,
+    methods: methods,
+    buttonContainerId: "#pay-button-container",
+    widgetContainerId:
+      selectedMethod.value === "Оплатить" ? "#split-widget" : undefined,
+  });
+});
+
+// Инициализация платежной сессии при монтировании компонента
+onMounted(() => {
+  const amount = totalPrice.value;
+  const methods = selectedMethod.value === "Оплатить" ? ["SPLIT"] : ["CARD"];
+
+  // Создаем платежную сессию
+  createPaymentSession({
+    amount: amount,
+    methods: methods,
+    buttonContainerId: "#pay-button-container",
+    widgetContainerId: "#split-widget", // Если используется SPLIT
+  });
 });
 </script>
 

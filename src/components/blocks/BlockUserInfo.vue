@@ -55,9 +55,9 @@
     </div>
 
     <div class="userInfoData" v-else>
-      <p><strong>Имя:</strong> {{ userData.name }}</p>
-      <p><strong>Телефон:</strong> {{ userData.phone }}</p>
-      <p><strong>Email:</strong> {{ userData.email }}</p>
+      <p><strong>Имя:</strong> {{ user.meta.first_name[0] }}</p>
+      <p><strong>Телефон:</strong> {{ user.meta.billing_phone[0] }}</p>
+      <p><strong>Email:</strong> {{ user.email }}</p>
     </div>
   </div>
 </template>
