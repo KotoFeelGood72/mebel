@@ -118,6 +118,7 @@
             </ul>
           </div>
           <div id="pay-button-container"></div>
+          <div id="update_order_button"></div>
           <div class="cart_total__privacy">
             Нажимая кнопку 'Оформить заказ', Вы принимаете условия
             соответствующей
@@ -145,10 +146,10 @@ import { useCartStoreRefs, useCartStore } from "@/stores/useCartStore";
 import { useDelivery } from "@/composables/useDelivery";
 const { carts, currentOrder } = useCartStoreRefs();
 const { updateCartItem, removeCartItem, createOrder } = useCartStore();
-import { useYaPay } from "@/services/useYaPay";
+// import { useYaPay } from "@/services/useYaPay";
 const { deliveryPrice } = useDelivery();
-const { createPaymentSession, resetPaymentButton, resetPaymentSession } =
-  useYaPay();
+// const { createPaymentSession, resetPaymentButton, resetPaymentSession } =
+//   useYaPay();
 
 // Данные из store
 
@@ -239,29 +240,29 @@ const setLineItemsAndPrice = () => {
 // Следим за изменениями в корзине и обновляем line_items и price
 watch(carts, setLineItemsAndPrice, { deep: true });
 
-watch(selectedMethod, (newMethod) => {
-  const amount = totalPrice.value;
+// watch(selectedMethod, (newMethod) => {
+//   const amount = totalPrice.value;
 
-  // Уничтожаем текущую платежную сессию перед созданием новой
-  resetPaymentSession();
+//   // Уничтожаем текущую платежную сессию перед созданием новой
+//   resetPaymentSession();
 
-  // Пересоздаем платежную сессию только если выбран метод "Оплатить" (SPLIT)
-  if (newMethod === "Оплатить") {
-    createPaymentSession({
-      amount: amount,
-      methods: ["SPLIT"], // Метод "SPLIT"
-      buttonContainerId: "#pay-button-container",
-      widgetContainerId: "#split-widget", // Контейнер для виджета SPLIT
-    });
-  } else {
-    // Если выбран другой метод оплаты, например, "CARD"
-    createPaymentSession({
-      amount: amount,
-      methods: ["CARD"], // Метод "CARD"
-      buttonContainerId: "#pay-button-container",
-    });
-  }
-});
+//   // Пересоздаем платежную сессию только если выбран метод "Оплатить" (SPLIT)
+//   if (newMethod === "Оплатить") {
+//     createPaymentSession({
+//       amount: amount,
+//       methods: ["SPLIT"], // Метод "SPLIT"
+//       buttonContainerId: "#pay-button-container",
+//       widgetContainerId: "#split-widget", // Контейнер для виджета SPLIT
+//     });
+//   } else {
+//     // Если выбран другой метод оплаты, например, "CARD"
+//     createPaymentSession({
+//       amount: amount,
+//       methods: ["CARD"], // Метод "CARD"
+//       buttonContainerId: "#pay-button-container",
+//     });
+//   }
+// });
 
 // Очищаем контейнеры перед монтированием новой кнопки или виджета
 function clearContainer(selector: string) {
@@ -278,13 +279,13 @@ onMounted(() => {
 
   clearContainer("#pay-button-container"); // Очищаем контейнер для кнопки
 
-  createPaymentSession({
-    amount: amount,
-    methods: methods,
-    buttonContainerId: "#pay-button-container",
-    widgetContainerId:
-      selectedMethod.value === "Оплатить" ? "#split-widget" : undefined,
-  });
+  // createPaymentSession({
+  //   amount: amount,
+  //   methods: methods,
+  //   buttonContainerId: "#pay-button-container",
+  //   widgetContainerId:
+  //     selectedMethod.value === "Оплатить" ? "#split-widget" : undefined,
+  // });
 });
 
 // Инициализация платежной сессии при монтировании компонента
@@ -293,12 +294,12 @@ onMounted(() => {
   const methods = selectedMethod.value === "Оплатить" ? ["SPLIT"] : ["CARD"];
 
   // Создаем платежную сессию
-  createPaymentSession({
-    amount: amount,
-    methods: methods,
-    buttonContainerId: "#pay-button-container",
-    widgetContainerId: "#split-widget", // Если используется SPLIT
-  });
+  // createPaymentSession({
+  //   amount: amount,
+  //   methods: methods,
+  //   buttonContainerId: "#pay-button-container",
+  //   widgetContainerId: "#split-widget", // Если используется SPLIT
+  // });
 });
 </script>
 

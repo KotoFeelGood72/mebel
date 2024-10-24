@@ -1,4 +1,4 @@
-import { useCartStore } from "@/stores/useCartStore";
+import { useCartStore, useCartStoreRefs } from "@/stores/useCartStore";
 import { ref } from "vue";
 
 type PaymentMethods = "SPLIT" | "CARD";
@@ -12,14 +12,16 @@ interface PaymentSessionParams {
 
 export function useYaPay() {
   const { createOrder } = useCartStore();
+  const { carts } = useCartStoreRefs();
   const activeSession = ref<any>(null);
+  const YaPay = window.YaPay;
 
   const buttonContainerCache: Map<string, HTMLElement> = new Map();
   const widgetContainerCache: Map<string, HTMLElement> = new Map();
 
   // Функция для загрузки скрипта SDK Яндекс Пэй
   async function loadYaPayScript(): Promise<void> {
-    if (window.YaPay) {
+    if (YaPay) {
       return Promise.resolve(); // SDK уже загружен
     }
 
@@ -79,10 +81,10 @@ export function useYaPay() {
     if (buttonContainer && activeSession.value) {
       activeSession.value.mountButton(buttonContainer, {
         type: methods.includes("SPLIT")
-          ? window.YaPay.ButtonType.Split
-          : window.YaPay.ButtonType.Pay,
-        theme: window.YaPay.ButtonTheme.Black,
-        width: window.YaPay.ButtonWidth.Auto,
+          ? YaPay.ButtonType.Split
+          : YaPay.ButtonType.Pay,
+        theme: YaPay.ButtonTheme.Black,
+        width: YaPay.ButtonWidth.Auto,
       });
     }
   }
@@ -96,8 +98,8 @@ export function useYaPay() {
     if (widgetContainer && activeSession.value) {
       widgetContainer.innerHTML = ""; // Очищаем контейнер перед монтированием нового виджета
       activeSession.value.mountWidget(widgetContainer, {
-        widgetType: window.YaPay.WidgetType.Info,
-        widgetTheme: window.YaPay.WidgetTheme.Light,
+        widgetType: YaPay.WidgetType.Info,
+        widgetTheme: YaPay.WidgetTheme.Light,
         borderRadius: 8,
       });
     }
@@ -121,15 +123,27 @@ export function useYaPay() {
 
       destroySession(); // Уничтожаем существующую сессию перед созданием новой
 
+      // Генерация данных о товарах из корзины
+      const orderItems = carts.value.map((item: any) => ({
+        description: item.name, // Название товара
+        quantity: item.quantity, // Количество товара
+        amount: {
+          value: item.price, // Цена за единицу
+          currency: "RUB", // Валюта
+        },
+      }));
+
       const paymentData = {
+        env: window.YaPay.PaymentEnv.Sandbox,
         version: 4,
-        currencyCode: window.YaPay.CurrencyCode.Rub,
+        currencyCode: YaPay.CurrencyCode.Rub,
         merchantId: "4d715c56-1ac9-49bc-9330-889e3487b2c1",
         totalAmount: amount,
-        availablePaymentMethods: methods,
+        availablePaymentMethods: ["SPLIT"],
+        orderItems, // Товары из корзины
       };
 
-      activeSession.value = await window.YaPay.createSession(paymentData, {
+      activeSession.value = await YaPay.createSession(paymentData, {
         onPayButtonClick: createOrder, // Запуск createOrder при нажатии на кнопку
       });
 
