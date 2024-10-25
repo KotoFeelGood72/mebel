@@ -81,10 +81,10 @@ export function useYaPay() {
     if (buttonContainer && activeSession.value) {
       activeSession.value.mountButton(buttonContainer, {
         type: methods.includes("SPLIT")
-          ? YaPay.ButtonType.Split
-          : YaPay.ButtonType.Pay,
-        theme: YaPay.ButtonTheme.Black,
-        width: YaPay.ButtonWidth.Auto,
+          ? window.YaPay.ButtonType.Split
+          : window.YaPay.ButtonType.Pay,
+        theme: window.YaPay.ButtonTheme.Black,
+        width: window.YaPay.ButtonWidth.Auto,
       });
     }
   }
@@ -98,8 +98,8 @@ export function useYaPay() {
     if (widgetContainer && activeSession.value) {
       widgetContainer.innerHTML = ""; // Очищаем контейнер перед монтированием нового виджета
       activeSession.value.mountWidget(widgetContainer, {
-        widgetType: YaPay.WidgetType.Info,
-        widgetTheme: YaPay.WidgetTheme.Light,
+        widgetType: window.YaPay.WidgetType.Info,
+        widgetTheme: window.YaPay.WidgetTheme.Light,
         borderRadius: 8,
       });
     }
@@ -136,14 +136,14 @@ export function useYaPay() {
       const paymentData = {
         env: window.YaPay.PaymentEnv.Sandbox,
         version: 4,
-        currencyCode: YaPay.CurrencyCode.Rub,
-        merchantId: "4d715c56-1ac9-49bc-9330-889e3487b2c1",
+        currencyCode: window.YaPay.CurrencyCode.Rub,
+        merchantId: "bbb9c171-2fab-45e6-b1f8-6212980aa9bb",
         totalAmount: amount,
         availablePaymentMethods: ["SPLIT"],
         orderItems, // Товары из корзины
       };
 
-      activeSession.value = await YaPay.createSession(paymentData, {
+      activeSession.value = await window.YaPay.createSession(paymentData, {
         onPayButtonClick: createOrder, // Запуск createOrder при нажатии на кнопку
       });
 

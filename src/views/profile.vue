@@ -5,7 +5,7 @@
         <div class="profile_head">
           <h1>Личный кабинет</h1>
           <nav class="profile_nav">
-            <RouterLink to="/profile"> Профиль </RouterLink>
+            <RouterLink to="/profile/user"> Профиль </RouterLink>
             <RouterLink to="/profile/order"> Заказы </RouterLink>
           </nav>
         </div>

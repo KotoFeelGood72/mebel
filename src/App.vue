@@ -5,29 +5,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, watch } from "vue";
+import { watch } from "vue";
 import DefaultLayout from "@/layouts/DefaultLayout.vue";
 import { useRoute } from "vue-router";
-import { useModalStoreRefs, useModalStore } from "./stores/useModalStore";
-
-const isModalActive = computed(() => {
-  return Object.values(modals.value).some((isActive) => isActive);
-});
+import { useModalStore } from "./stores/useModalStore";
 
 const route = useRoute();
 const { closeAllModals } = useModalStore();
-const { modals } = useModalStoreRefs();
-
-// const layoutComponent = computed(() => {
-//   switch (route.meta.layout) {
-//     case "default":
-//       return DefaultLayout;
-//     case "empty":
-//       return EmptyLayout;
-//     default:
-//       return DefaultLayout;
-//   }
-// });
 
 watch(
   () => route.fullPath,

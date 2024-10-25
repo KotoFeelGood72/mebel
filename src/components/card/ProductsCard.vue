@@ -58,7 +58,7 @@
       </div>
     </div>
     <div class="products_content">
-      <yandex-pay-badge
+      <!-- <yandex-pay-badge
         merchant-id="<YOUR_MERCHANT_ID>"
         type="bnpl"
         amount="1000.00"
@@ -67,7 +67,7 @@
         theme="light"
         align="left"
         color="primary"
-      />
+      /> -->
       <div class="products_content__head">
         <h3>{{ products.title }}</h3>
         <div class="products_description">

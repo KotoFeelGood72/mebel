@@ -13,8 +13,11 @@
 
 <script lang="ts" setup>
 import Logo from "../ui/Logo.vue";
-import { useLoadingStoreRefs } from "@/stores/useLoadingStore";
-const { isLoading } = useLoadingStoreRefs();
+import { useLoading } from "@/composables/useLoading";
+
+const { isLoading } = useLoading();
+// import { useLoadingStoreRefs } from "@/stores/useLoadingStore";
+// const { isLoading } = useLoadingStoreRefs();
 </script>
 
 <style scoped lang="scss">
@@ -55,16 +58,15 @@ const { isLoading } = useLoadingStoreRefs();
   }
 }
 
-/* Стили для transition */
-.fade-enter-active,
+/* Применим анимацию только на leave */
 .fade-leave-active {
-  transition: opacity 0.5s;
+  transition: opacity 0.3s ease;
 }
-.fade-enter-from,
+
 .fade-leave-to {
   opacity: 0;
 }
-.fade-enter-to,
+
 .fade-leave-from {
   opacity: 1;
 }

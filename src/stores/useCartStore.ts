@@ -45,13 +45,12 @@ export const useCartStore = defineStore("carts", {
       this.carts = this.carts.filter((cart: any) => cart.id !== itemId);
     },
     async createOrder() {
-      // try {
-      //   const { $domain } = useNuxtApp();
-      //   const response = $domain.post(
-      //     "/wp-json/wc/v3/orders",
-      //     this.currentOrder
-      //   );
-      // } catch (error) {}
+      try {
+        const response = axios.post(
+          "https://fu.gleede.ru/wp-json/yandexpay/v1/create-order/",
+          this.currentOrder.line_items
+        );
+      } catch (error) {}
     },
   },
   persist: true,
