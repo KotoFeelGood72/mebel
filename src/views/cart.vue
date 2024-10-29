@@ -72,35 +72,23 @@
           <div class="list-block">
             <BlockUserInfo />
             <BlockDeliveryCalc />
-            <div class="payment">
-              <div class="payment__address">
-                <h3>Выберите способ оплаты</h3>
-              </div>
-              <div class="payment__method">
-                <div
-                  v-for="method in paymentMethods"
-                  :key="method.name"
-                  class="payment__method-item"
-                >
-                  <input
-                    type="radio"
-                    :id="method.name"
-                    v-model="selectedMethod"
-                    :value="method.name"
-                  />
-                  <label :for="method.name">
-                    <span>{{ method.name }}</span>
-                    <img v-if="method.logo" :src="method.logo" alt="" />
-                  </label>
-                </div>
-                <div class="split__w" v-if="selectedMethod === 'Оплатить'">
-                  <div id="split-widget"></div>
-                </div>
-              </div>
-            </div>
+            <BlockPayments />
           </div>
         </div>
-        <div class="cart_totals">
+        <BlockCartTotals
+          :total="totalPrice"
+          :delivery="deliveryPrice"
+          :length="carts.length"
+        >
+          <DefaultBtn
+            name="Оплатить"
+            color="brown"
+            size="normal"
+            type="primary"
+            @click="createOrder"
+          />
+        </BlockCartTotals>
+        <!-- <div class="cart_totals">
           <div class="cart_total__head">
             <span>Итого</span>
             <p>{{ totalPrice }} P</p>
@@ -117,8 +105,12 @@
               </li>
             </ul>
           </div>
-          <div id="pay-button-container"></div>
-          <div id="update_order_button"></div>
+          <DefaultBtn
+            name="Оплатить"
+            color="brown"
+            size="normal"
+            type="primary"
+          />
           <div class="cart_total__privacy">
             Нажимая кнопку 'Оформить заказ', Вы принимаете условия
             соответствующей
@@ -130,17 +122,20 @@
               >обработку Ваших персональных данных и их передачу.</RouterLink
             >
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-// import DefaultBtn from "~/components/ui/DefaultBtn.vue";
+import DefaultBtn from "@/components/ui/DefaultBtn.vue";
 import Qty from "@/components/ui/Qty.vue";
 import BlockUserInfo from "@/components/blocks/BlockUserInfo.vue";
 import BlockDeliveryCalc from "@/components/blocks/BlockDeliveryCalc.vue";
+import BlockCartTotals from "@/components/blocks/BlockCartTotals.vue";
+// @ts-ignore
+import BlockPayments from "@/components/blocks/BlockPayments.vue";
 import { ref, computed, watch, onMounted } from "vue";
 import { useCartStoreRefs, useCartStore } from "@/stores/useCartStore";
 import { useDelivery } from "@/composables/useDelivery";
@@ -155,14 +150,6 @@ const { createPaymentSession, resetPaymentButton, resetPaymentSession } =
 
 const selectedItems = ref<string[]>([]);
 const selectedMethod = ref("Оплата картой онлайн или через СБП");
-
-// Методы оплаты
-const paymentMethods = [
-  {
-    name: "Оплата картой онлайн или через СБП",
-  },
-  { name: "Оплатить", logo: "/img/split.png" },
-];
 
 // Вычисляем, есть ли выбранные товары
 const hasSelectedItems = computed(() => {
@@ -240,29 +227,29 @@ const setLineItemsAndPrice = () => {
 // Следим за изменениями в корзине и обновляем line_items и price
 watch(carts, setLineItemsAndPrice, { deep: true });
 
-watch(selectedMethod, (newMethod) => {
-  const amount = totalPrice.value;
+// watch(selectedMethod, (newMethod) => {
+//   const amount = totalPrice.value;
 
-  // Уничтожаем текущую платежную сессию перед созданием новой
-  resetPaymentSession();
+//   // Уничтожаем текущую платежную сессию перед созданием новой
+//   resetPaymentSession();
 
-  // Пересоздаем платежную сессию только если выбран метод "Оплатить" (SPLIT)
-  if (newMethod === "Оплатить") {
-    createPaymentSession({
-      amount: amount,
-      methods: ["SPLIT"], // Метод "SPLIT"
-      buttonContainerId: "#pay-button-container",
-      widgetContainerId: "#split-widget", // Контейнер для виджета SPLIT
-    });
-  } else {
-    // Если выбран другой метод оплаты, например, "CARD"
-    createPaymentSession({
-      amount: amount,
-      methods: ["CARD"], // Метод "CARD"
-      buttonContainerId: "#pay-button-container",
-    });
-  }
-});
+//   // Пересоздаем платежную сессию только если выбран метод "Оплатить" (SPLIT)
+//   if (newMethod === "Оплатить") {
+//     createPaymentSession({
+//       amount: amount,
+//       methods: ["SPLIT"], // Метод "SPLIT"
+//       buttonContainerId: "#pay-button-container",
+//       widgetContainerId: "#split-widget", // Контейнер для виджета SPLIT
+//     });
+//   } else {
+//     // Если выбран другой метод оплаты, например, "CARD"
+//     createPaymentSession({
+//       amount: amount,
+//       methods: ["CARD"], // Метод "CARD"
+//       buttonContainerId: "#pay-button-container",
+//     });
+//   }
+// });
 
 // Очищаем контейнеры перед монтированием новой кнопки или виджета
 function clearContainer(selector: string) {
@@ -274,18 +261,16 @@ function clearContainer(selector: string) {
 
 // Инициализация платежной сессии при монтировании компонента
 onMounted(() => {
-  const amount = totalPrice.value;
-  const methods = selectedMethod.value === "Оплатить" ? ["SPLIT"] : ["CARD"];
-
-  clearContainer("#pay-button-container"); // Очищаем контейнер для кнопки
-
-  createPaymentSession({
-    amount: amount,
-    methods: methods,
-    buttonContainerId: "#pay-button-container",
-    widgetContainerId:
-      selectedMethod.value === "Оплатить" ? "#split-widget" : undefined,
-  });
+  // const amount = totalPrice.value;
+  // const methods = selectedMethod.value === "Оплатить" ? ["SPLIT"] : ["CARD"];
+  // clearContainer("#pay-button-container"); // Очищаем контейнер для кнопки
+  // createPaymentSession({
+  //   amount: amount,
+  //   methods: methods,
+  //   buttonContainerId: "#pay-button-container",
+  //   widgetContainerId:
+  //     selectedMethod.value === "Оплатить" ? "#split-widget" : undefined,
+  // });
 });
 
 // Инициализация платежной сессии при монтировании компонента
@@ -329,78 +314,6 @@ onMounted(() => {
       font-size: 3rem;
       margin-bottom: 2.5rem;
     }
-  }
-}
-
-.cart_totals {
-  max-width: 43.5rem;
-  position: sticky;
-  top: 2rem;
-  right: 0;
-}
-
-.cart_products__head {
-  @include flex-space;
-  gap: 2rem;
-  margin-bottom: 3.5rem;
-  @include bp($point_2) {
-    margin-bottom: 3rem;
-  }
-}
-
-.cart_total__head {
-  @include flex-space;
-  gap: 2rem;
-  margin-bottom: 4rem;
-  @include bp($point_2) {
-    margin-bottom: 2rem;
-  }
-  span,
-  p {
-    font-size: 4rem;
-    font-family: $font_2;
-    @include bp($point_2) {
-      font-size: 2.4rem;
-    }
-  }
-
-  p {
-    @include bp($point_2) {
-      font-size: 3rem;
-    }
-  }
-}
-
-.cart_total__body {
-  ul {
-    margin-bottom: 4.5rem;
-    @include bp($point_2) {
-      margin-bottom: 2.7rem;
-    }
-  }
-  li {
-    @include flex-space;
-    @include bp($point_2) {
-      font-size: 1.6rem;
-    }
-    &:not(:last-child) {
-      margin-bottom: 2rem;
-      @include bp($point_2) {
-        margin-bottom: 1.5rem;
-      }
-    }
-  }
-}
-
-.cart_total__privacy {
-  padding-top: 3.5rem;
-  font-size: 1.6rem;
-  @include bp($point_2) {
-    font-size: 1.2rem;
-    padding-top: 2rem;
-  }
-  a {
-    color: $brown;
   }
 }
 
@@ -635,90 +548,12 @@ onMounted(() => {
   }
 }
 
-.payment {
-  background-color: $white;
-  padding: 1.7rem 2.4rem 3.4rem 2.4rem;
+.cart_products__head {
+  @include flex-space;
+  gap: 2rem;
+  margin-bottom: 3.5rem;
   @include bp($point_2) {
-    padding: 1.5rem;
-  }
-
-  h3 {
-    font-size: 3rem;
     margin-bottom: 3rem;
-    font-family: $font_2;
-    font-weight: 500;
-    @include bp($point_2) {
-      font-size: 2.4rem;
-    }
   }
-}
-
-.payment__method-item {
-  input:checked + label {
-    &:after {
-      opacity: 1;
-      visibility: visible;
-    }
-  }
-  label {
-    cursor: pointer;
-    @include flex-start;
-    position: relative;
-    padding-left: 3.1rem;
-    font-size: 1.8rem;
-
-    span {
-      margin-right: 1.2rem;
-    }
-
-    img {
-      @include flex-start;
-    }
-    &:before {
-      position: absolute;
-      top: 45%;
-      left: 0%;
-      width: 1.6rem;
-      height: 1.6rem;
-      border: 0.1rem solid $brown;
-      border-radius: 100%;
-      content: "";
-      transform: translateY(-50%);
-      @include bp($point_2) {
-        transform: translateY(0);
-        top: 0.2rem;
-      }
-    }
-    &:after {
-      position: absolute;
-      top: 45%;
-      left: 0.3rem;
-      transform: translateY(-50%);
-      width: 1rem;
-      height: 1rem;
-      content: "";
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease-in-out;
-      background-position: center center;
-      background-color: $brown;
-      border-radius: 100%;
-      @include bp($point_2) {
-        top: 0.5rem;
-        transform: translateY(0);
-      }
-    }
-  }
-
-  input {
-    display: none;
-  }
-  &:not(:last-child) {
-    margin-bottom: 1rem;
-  }
-}
-
-.split__w {
-  max-width: 50rem;
 }
 </style>

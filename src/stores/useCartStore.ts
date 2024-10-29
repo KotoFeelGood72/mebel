@@ -4,9 +4,13 @@ import axios from "axios";
 export const useCartStore = defineStore("carts", {
   state: () => ({
     carts: [] as any,
+    paymentMethod: "Оплата картой онлайн или через СБП" as any,
     currentOrder: {} as any,
   }),
   actions: {
+    setPaymentMethod(methods: any) {
+      this.paymentMethod = methods;
+    },
     addCart(item: any) {
       console.log(item);
       const existingCartItem = this.carts.find(
@@ -48,7 +52,7 @@ export const useCartStore = defineStore("carts", {
       try {
         const response = axios.post(
           "https://fu.gleede.ru/wp-json/yandexpay/v1/create-order/",
-          this.currentOrder.line_items
+          this.currentOrder
         );
       } catch (error) {}
     },
