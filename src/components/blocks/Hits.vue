@@ -6,10 +6,8 @@
           <h2>{{ title }}</h2>
         </div>
         <swiper
-          :slides-per-view="1.2"
+          :slides-per-view="3"
           :space-between="20"
-          :slides-offset-before="16"
-          :slides-offset-after="16"
           :breakpoints="{
             320: {
               slidesPerView: 1.2,
@@ -26,8 +24,6 @@
             1024: {
               slidesPerView: 3,
               spaceBetween: 30,
-              slidesOffsetBefore: 30,
-              slidesOffsetAfter: 30,
             },
           }"
         >
@@ -144,7 +140,7 @@ const getStockStatus = (status: string) => {
     text-transform: uppercase;
   }
   h3 {
-    font-size: 3rem;
+    font-size: 2.4rem;
     transition: all 0.3s ease-in-out;
     max-width: 30rem;
     display: -webkit-box;

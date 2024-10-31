@@ -9,8 +9,8 @@
             v-for="(item, i) in gallery"
             :key="'gallery-item-' + i"
           >
-            <a :href="item.img.url">
-              <img :src="item.img.url" alt="" />
+            <a :href="item.img.url" data-fancybox="ideas-products">
+              <img :src="item.img.url" />
             </a>
           </li>
         </ul>

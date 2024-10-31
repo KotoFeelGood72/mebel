@@ -11,6 +11,7 @@
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
+    "@fancyapps/ui": "^5.0.36",
     "@gladesinger/vue3-yandex-smartcaptcha": "github:gladesinger/vue3-yandex-smartcaptcha",
     "@iconify/vue": "^4.1.2",
     "axios": "^1.7.7",

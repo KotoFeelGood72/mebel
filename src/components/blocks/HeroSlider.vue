@@ -11,7 +11,10 @@
         }"
         :pagination="{ el: '.hero-pagination', clickable: true }"
       >
-        <SwiperSlide v-for="(item, i) in slides" :key="'hero-item-slide-' + item.id">
+        <SwiperSlide
+          v-for="(item, i) in slides"
+          :key="'hero-item-slide-' + item.id"
+        >
           <div class="hero_slide">
             <div class="hero_slide__content">
               <p>{{ item.headtitle }}</p>
@@ -35,10 +38,10 @@
       </Swiper>
       <div class="hero_navigation">
         <div class="hero_prev">
-          <Icons icon="fluent-mdl2:chevron-left" :size="60" />
+          <img src="@/assets/icons/arrow-right.svg" />
         </div>
         <div class="hero_next">
-          <Icons icon="fluent-mdl2:chevron-right" :size="60" />
+          <img src="@/assets/icons/arrow-left.svg" />
         </div>
       </div>
       <div class="hero-pagination"></div>
@@ -170,6 +173,12 @@ defineProps<{
   div {
     cursor: pointer;
     pointer-events: all;
+
+    &.swiper-button-disabled {
+      opacity: 0.4;
+      pointer-events: none;
+      cursor: no-drop;
+    }
   }
 
   .hero_prev,

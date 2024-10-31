@@ -12,8 +12,8 @@
             v-for="(item, i) in gallery"
             :key="'about-item-' + i"
           >
-            <a :href="item.img.url">
-              <img :src="item.img.url" alt="" />
+            <a :href="item.img.url" data-fancybox="products-gallery">
+              <img :src="item.img.url" />
             </a>
           </li>
         </ul>
@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import { defineProps } from "vue";
 
-const props = defineProps<{
+defineProps<{
   gallery: any;
   title: string;
   txt: string;

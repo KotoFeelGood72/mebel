@@ -5,13 +5,17 @@
 </template>
 
 <script setup lang="ts">
-import { watch } from "vue";
+import { onMounted, watch } from "vue";
 import DefaultLayout from "@/layouts/DefaultLayout.vue";
 import { useRoute } from "vue-router";
 import { useModalStore } from "./stores/useModalStore";
+import { Fancybox } from "@fancyapps/ui";
+import "@fancyapps/ui/dist/fancybox/fancybox.css";
 
 const route = useRoute();
 const { closeAllModals } = useModalStore();
+
+Fancybox.bind("[data-fancybox]");
 
 watch(
   () => route.fullPath,

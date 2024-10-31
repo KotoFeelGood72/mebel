@@ -10,13 +10,15 @@
             <p>{{ page.whats_txt }}</p>
           </div>
           <div class="whats_imgs">
-            <div
+            <a
+              :href="item.img.url"
+              data-fancybox="design"
               class="whats_img"
               v-for="(item, i) in page.whats_gallery"
               :key="'whats-item-g-' + i"
             >
               <img :src="item.img.url" :alt="item.img.alt" />
-            </div>
+            </a>
           </div>
         </div>
       </div>

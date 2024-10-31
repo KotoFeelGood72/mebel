@@ -65,6 +65,10 @@
                     <div class="colors_slide">
                       <div class="color_slide__img">
                         <img :src="item.img.url" :alt="item.img.alt" />
+                        <div class="color_ex" v-if="item.colors_ex">
+                          <img src="@/assets/icons/fire.svg" />
+                          <p>Эксклюзив</p>
+                        </div>
                       </div>
                       <div class="colors_slide__txt" v-html="item.name"></div>
                     </div>
@@ -72,10 +76,10 @@
                 </Swiper>
                 <div class="colors_navigation">
                   <div class="colors_prev">
-                    <Icons icon="custom:color-arrow" :size="40" />
+                    <img src="@/assets/icons/arrow-brown-right.png" />
                   </div>
                   <div class="colors_next">
-                    <Icons icon="custom:color-arrow" :size="40" />
+                    <img src="@/assets/icons/arrow-brown-right.png" />
                   </div>
                 </div>
               </div>
@@ -137,9 +141,9 @@
               v-for="(item, i) in page.geo_list"
               :key="'geo-item-' + i"
             >
-              <div class="geo_item__img">
+              <a class="geo_item__img" :href="item.img.url" v-fancybox>
                 <img :src="item.img.url" :alt="item.img.alt" />
-              </div>
+              </a>
               <p>{{ item.title }}</p>
             </li>
           </ul>
@@ -166,7 +170,7 @@
               v-for="(item, i) in page.events_gallery"
               :key="'event-gallery-item' + i"
             >
-              <a :href="item.img.url">
+              <a :href="item.img.url" data-fancybox="gallery">
                 <img :src="item.img.url" :alt="item.img.alt" />
               </a>
             </li>
@@ -295,10 +299,27 @@ onMounted(async () => {
   max-width: 41.5rem;
   height: 25.9rem;
   background-color: $light;
+  position: relative;
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+}
+
+.color_ex {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  @include flex-start;
+  align-items: flex-end;
+  gap: 1.4rem;
+  font-size: 1.4rem;
+  color: $brown;
+  font-family: $font_2;
+  img {
+    @include flex-center;
+    width: 1.9rem;
   }
 }
 
@@ -363,9 +384,9 @@ onMounted(async () => {
 
 .conditions_item__img {
   @include flex-center;
-  margin-bottom: 5.2rem;
+  margin-bottom: 4rem;
   img {
-    max-width: 10rem;
+    max-width: 17rem;
     height: 100%;
     object-fit: contain;
   }

@@ -36,7 +36,9 @@
           v-for="(item, i) in products.gallery_images"
           :key="'products-item-slide-' + products.id"
         >
-          <img :src="item" />
+          <a :href="item" :data-fancybox="'fancy-products-' + products.id">
+            <img :src="item" />
+          </a>
         </SwiperSlide>
       </Swiper>
       <div
@@ -247,6 +249,7 @@ const updateQuantity = (quantity: number) => {
     height: 100%;
   }
 
+  a,
   img {
     width: 100%;
     height: 100%;
@@ -257,6 +260,7 @@ const updateQuantity = (quantity: number) => {
 .products_navigation {
   @include flex-space;
   margin-top: 3rem;
+  user-select: none;
 
   @include bp($point_2) {
     display: none;
@@ -265,6 +269,11 @@ const updateQuantity = (quantity: number) => {
   div {
     cursor: pointer;
     @include flex-center;
+
+    &.swiper-button-disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
   }
 }
 

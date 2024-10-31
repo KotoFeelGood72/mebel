@@ -90,6 +90,7 @@
       </div>
     </div>
     <SingleAbout
+      v-if="productPage.acf.galereya"
       :gallery="productPage.acf.galereya"
       :title="productPage.acf.about_product"
       :txt="productPage.acf.about_txt_product"

@@ -82,7 +82,7 @@ const isSize = computed(() => props.size);
     }
   }
   &.secondary {
-    border: 0.1rem solid;
+    border: 0.1rem solid transparent;
     &.gray {
       border-color: $gray;
     }
@@ -111,7 +111,7 @@ const isSize = computed(() => props.size);
     }
   }
   &.primary {
-    border: 0.1rem solid;
+    border: 0.1rem solid transparent;
     &.gray {
       background-color: $gray;
     }

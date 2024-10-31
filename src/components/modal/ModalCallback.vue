@@ -67,12 +67,13 @@ const submitForm = async () => {
 <style scoped lang="scss">
 .callback {
   position: fixed;
-  max-width: 66rem;
+  max-width: 50rem;
   background-color: $white;
   top: 0;
   right: 0;
   z-index: 101;
   height: 100%;
+  width: 100%;
   padding: 4.5rem 3rem;
 }
 
