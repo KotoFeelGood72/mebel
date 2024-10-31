@@ -60,9 +60,7 @@
                   <div class="cart_item__price">{{ item.price }} Р</div>
                   <Qty
                     :initialQuantity="item.quantity"
-                    @updateQuantity="
-                      (quantity) => updateQuantity(item, quantity)
-                    "
+                    @updateQuantity="(quantity) => updateQuantity(item, quantity)"
                     @clear="removeCartItem(item.id)"
                   />
                 </div>
@@ -71,9 +69,7 @@
           </div>
           <div class="list-block">
             <BlockUserInfo />
-            <BlockDeliveryCalc
-              :defaultAddress="user.customer.billing.address_1"
-            />
+            <BlockDeliveryCalc :defaultAddress="user.billing.address_1" />
             <BlockPayments />
           </div>
         </div>
@@ -153,9 +149,7 @@ const toggleSelectAll = (event: Event) => {
 
 // Проверка, все ли товары выбраны
 const isAllSelected = computed(() => {
-  return (
-    carts.value.length > 0 && selectedItems.value.length === carts.value.length
-  );
+  return carts.value.length > 0 && selectedItems.value.length === carts.value.length;
 });
 
 // Подсчет общей стоимости корзины
@@ -184,12 +178,16 @@ const setLineItemsAndPrice = () => {
     ...currentOrder.value,
     line_items: lineItems,
     price: totalOrderPrice,
-    user_id: user.value.customer.ID,
+    user_id: user.value.ID,
   };
 };
 
 // Следим за изменениями в корзине и обновляем line_items и price
 watch(carts, setLineItemsAndPrice, { deep: true });
+
+onMounted(() => {
+  setLineItemsAndPrice();
+});
 </script>
 
 <style scoped lang="scss">

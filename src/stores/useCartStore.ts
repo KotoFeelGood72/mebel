@@ -52,12 +52,27 @@ export const useCartStore = defineStore("carts", {
     },
     async createOrder() {
       try {
-        const response = axios.post(
+        const response = await axios.post(
           "https://fu.gleede.ru/wp-json/yandexpay/v1/create-order/",
           this.currentOrder
         );
-      } catch (error) {}
-    },
+    
+        if (response.data && response.data.payment_url) {
+          // Если есть ссылка на оплату, перенаправляем пользователя
+          window.location.href = response.data.payment_url;
+        }
+    
+        // Очистка корзины и сброс текущего заказа
+        this.carts = [];
+        this.currentOrder = {
+          line_items: [],
+          price: 0,
+        };
+      } catch (error) {
+        console.error("Ошибка при создании заказа:", error);
+      }
+    }
+    
   },
   persist: true,
 });

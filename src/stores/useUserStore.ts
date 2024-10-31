@@ -17,9 +17,8 @@ export const useUserStore = defineStore("users", {
     // Логин пользователя
     async loginUser(data: any) {
       this.user = {
+        ...data.user_data,
         token: data.token,
-        people: data.user_data,
-        customer: data.user_data,
       };
     },
 
@@ -59,8 +58,6 @@ export const useUserStore = defineStore("users", {
         const response = await auth.post("/send-otp", { email: this.email });
         this.showOtpForm = true;
         this.otpErrorMessage = "";
-        // this.userData = response.data.user_data;
-        // console.log("OTP отправлен:", response.data);
       } catch (error: any) {
         console.error(
           "Ошибка отправки OTP:",
@@ -103,7 +100,7 @@ export const useUserStore = defineStore("users", {
           this.otpErrorMessage = "";
 
           // Если у пользователя нет имени, показываем форму для заполнения данных
-          if (this.user?.customer.first_name) {
+          if (this.user?.billing.first_name) {
           } else {
             this.showVerification = true;
           }
@@ -128,8 +125,8 @@ export const useUserStore = defineStore("users", {
         // Формируем данные для отправки
         const payload = {
           email: this.email,
-          name: this.user.customer.first_name,
-          phone: this.user.customer.phone,
+          name: this.user.billing.first_name,
+          phone: this.user.billing.phone,
           state: delivery.state || null,
           country: delivery.country || null,
           postcode: delivery.postcode || null,
@@ -147,9 +144,9 @@ export const useUserStore = defineStore("users", {
 
         if (response.data && response.data.updated_data) {
           // Обновляем состояние `user` с новыми данными
-          this.user.customer = response.data.updated_data;
-          this.user.people = {
-            ...this.user.people,
+          this.user = response.data.updated_data;
+          this.user = {
+            ...this.user,
             email: response.data.updated_data.email,
             first_name: response.data.updated_data.first_name,
             last_name: response.data.updated_data.last_name,

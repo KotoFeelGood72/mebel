@@ -1,17 +1,17 @@
 <template>
-  <div class="user" v-if="user && user.customer">
+  <div class="user" v-if="user && user.billing">
     <div class="user__main">
       <div class="user__info">
         <div class="user__content">
-          <p>{{ user.customer?.first_name }}</p>
+          <p>{{ user.billing?.first_name }}</p>
           <ul>
             <li>
               <p>Телефон</p>
-              <span>{{ user?.customer.phone }}</span>
+              <span>{{ user?.billing.phone }}</span>
             </li>
             <li>
               <p>E-mail</p>
-              <span>{{ user?.people.email }}</span>
+              <span>{{ user?.email }}</span>
             </li>
           </ul>
         </div>

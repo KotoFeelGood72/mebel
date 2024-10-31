@@ -2,19 +2,13 @@
   <div class="userInfo">
     <div class="userInfo__head">
       <h3>Информация о покупателе</h3>
-      <p v-if="!user && !user?.token">
-        Авторизуйтесь, чтобы отслеживать свой заказ
-      </p>
+      <p v-if="!user && !user?.token">Авторизуйтесь, чтобы отслеживать свой заказ</p>
     </div>
 
     <div class="user_toggle__w" v-if="!user && !user?.token">
       <div class="user__toggle">
         <label class="switch">
-          <input
-            type="checkbox"
-            v-model="isAuthorized"
-            @change="toggleAuthorization"
-          />
+          <input type="checkbox" v-model="isAuthorized" @change="toggleAuthorization" />
           <span class="slider round"></span>
         </label>
         <span>Продолжить без авторизации</span>
@@ -33,34 +27,24 @@
         <div v-else class="userInfoForm">
           <div class="userInfoForm__input">
             <p>Имя*</p>
-            <Inputs
-              v-model="user.customer.first_name"
-              placeholder="Поддубная Елена"
-            />
+            <Inputs v-model="user.billing.first_name" placeholder="Поддубная Елена" />
           </div>
           <div class="userInfoForm__input">
             <p>Телефон*</p>
-            <InputPhone
-              v-model="user.customer.phone"
-              placeholder="+7 (918) 123 45 67"
-            />
+            <InputPhone v-model="user.billing.phone" placeholder="+7 (918) 123 45 67" />
           </div>
           <div class="userInfoForm__input">
             <p>E-mail</p>
-            <Inputs
-              v-model="user.people.email"
-              placeholder="dundub@gmail.com"
-              type="email"
-            />
+            <Inputs v-model="user.email" placeholder="dundub@gmail.com" type="email" />
           </div>
         </div>
       </div>
     </div>
 
     <div class="userInfoData" v-else>
-      <p><strong>Имя:</strong> {{ user.customer.first_name }}</p>
-      <p><strong>Телефон:</strong> {{ user.customer.phone }}</p>
-      <p><strong>Email:</strong> {{ user.people.email }}</p>
+      <p><strong>Имя:</strong> {{ user.billing.first_name }}</p>
+      <p><strong>Телефон:</strong> {{ user.billing.phone }}</p>
+      <p><strong>Email:</strong> {{ user.billing.email }}</p>
     </div>
   </div>
 </template>

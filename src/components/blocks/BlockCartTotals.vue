@@ -2,7 +2,7 @@
   <div class="cart_totals">
     <div class="cart_total__head">
       <span>Итого</span>
-      <p>{{ total }} P</p>
+      <p>{{ totalWithDelivery }} P</p>
     </div>
     <div class="cart_total__body">
       <ul>
@@ -17,26 +17,27 @@
       </ul>
     </div>
     <slot />
-    <!-- <DefaultBtn name="Оплатить" color="brown" size="normal" type="primary" /> -->
+
     <div class="cart_total__privacy">
       Нажимая кнопку 'Оформить заказ', Вы принимаете условия соответствующей
       <RouterLink to="/">оферты: Оферты для физических лиц</RouterLink>
       или
       <RouterLink to="/"> Оферты для юридических лиц и ИП</RouterLink>, Политики
       конфиденциальности, а также даете Согласие на
-      <RouterLink to="/"
-        >обработку Ваших персональных данных и их передачу.</RouterLink
-      >
+      <RouterLink to="/">обработку Ваших персональных данных и их передачу.</RouterLink>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-defineProps<{
+import { computed } from "vue";
+const props = defineProps<{
   total: any;
   length: any;
   delivery: any;
 }>();
+
+const totalWithDelivery = computed(() => props.total + props.delivery);
 </script>
 
 <style scoped lang="scss">
