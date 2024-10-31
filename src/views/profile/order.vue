@@ -42,6 +42,7 @@
 import { ref } from "vue";
 import OrderCard from "@/components/card/OrderCard.vue";
 import "swiper/swiper-bundle.css";
+import { useUserStoreRefs } from "@/stores/useUserStore";
 // Активная вкладка
 const activeTab = ref<"active" | "completed">("active");
 
@@ -105,6 +106,8 @@ const completedOrders = ref([
     ],
   },
 ]);
+
+const {} = useUserStoreRefs();
 </script>
 
 <style scoped lang="scss">

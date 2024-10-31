@@ -29,10 +29,10 @@
       </Swiper>
       <div class="order__nav">
         <div class="order__btn prev">
-          <Icons icon="bi:chevron-left" size="30" />
+          <Icons icon="bi:chevron-left" :size="30" />
         </div>
         <div class="order__btn next">
-          <Icons icon="bi:chevron-right" size="30" />
+          <Icons icon="bi:chevron-right" :size="30" />
         </div>
       </div>
       <div class="order-pagination"></div>

@@ -4,7 +4,7 @@ import { auth, api } from "@/api/axios";
 export const useUserStore = defineStore("users", {
   state: () => ({
     user: null as any,
-    data: null as any,
+    order: null as any,
     isLoad: false,
     email: "",
     otpCode: "",
@@ -23,10 +23,10 @@ export const useUserStore = defineStore("users", {
     },
 
     // Получение данных пользователя
-    async fetchUser(id: string) {
+    async fetchUser() {
       try {
-        const response = await api.get(`/users/user-${id}.json`);
-        this.user = response.data;
+        const response = await api.get(`/users/user-${this.user.ID}.json`);
+        this.order = response.data
         console.log("Данные пользователя:", response.data);
       } catch (error) {
         console.error("Ошибка при получении данных пользователя:", error);
@@ -46,7 +46,6 @@ export const useUserStore = defineStore("users", {
         console.error("Ошибка выполнения запроса logout:", error);
       } finally {
         this.user = null;
-        this.data = null;
         localStorage.removeItem("user");
       }
     },

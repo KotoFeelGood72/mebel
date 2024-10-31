@@ -170,9 +170,11 @@ const setLineItemsAndPrice = () => {
     thumbnail: item.thumbnail,
   }));
 
-  const totalOrderPrice = carts.value.reduce((total: any, item: any) => {
-    return total + item.price * item.quantity;
-  }, 0);
+  // Добавляем стоимость доставки к общей стоимости заказа
+  const totalOrderPrice =
+    carts.value.reduce((total: any, item: any) => {
+      return total + item.price * item.quantity;
+    }, 0) + deliveryPrice.value;
 
   currentOrder.value = {
     ...currentOrder.value,
