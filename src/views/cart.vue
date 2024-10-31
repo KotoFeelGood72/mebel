@@ -88,41 +88,6 @@
             @click="createOrder"
           />
         </BlockCartTotals>
-        <!-- <div class="cart_totals">
-          <div class="cart_total__head">
-            <span>Итого</span>
-            <p>{{ totalPrice }} P</p>
-          </div>
-          <div class="cart_total__body">
-            <ul>
-              <li>
-                <span>{{ carts.length }} товара(ов) на сумму</span>
-                <p>{{ totalPrice }}</p>
-              </li>
-              <li>
-                <span>Доставка</span>
-                <p>{{ deliveryPrice }}</p>
-              </li>
-            </ul>
-          </div>
-          <DefaultBtn
-            name="Оплатить"
-            color="brown"
-            size="normal"
-            type="primary"
-          />
-          <div class="cart_total__privacy">
-            Нажимая кнопку 'Оформить заказ', Вы принимаете условия
-            соответствующей
-            <RouterLink to="/">оферты: Оферты для физических лиц</RouterLink>
-            или
-            <RouterLink to="/"> Оферты для юридических лиц и ИП</RouterLink>,
-            Политики конфиденциальности, а также даете Согласие на
-            <RouterLink to="/"
-              >обработку Ваших персональных данных и их передачу.</RouterLink
-            >
-          </div>
-        </div> -->
       </div>
     </div>
   </div>
@@ -141,17 +106,11 @@ import { useCartStoreRefs, useCartStore } from "@/stores/useCartStore";
 import { useDelivery } from "@/composables/useDelivery";
 const { carts, currentOrder } = useCartStoreRefs();
 const { updateCartItem, removeCartItem, createOrder } = useCartStore();
-import { useYaPay } from "@/services/useYaPay";
+
 const { deliveryPrice } = useDelivery();
-const { createPaymentSession, resetPaymentButton, resetPaymentSession } =
-  useYaPay();
-
-// Данные из store
-
 const selectedItems = ref<string[]>([]);
 const selectedMethod = ref("Оплата картой онлайн или через СБП");
 
-// Вычисляем, есть ли выбранные товары
 const hasSelectedItems = computed(() => {
   return selectedItems.value.length > 0;
 });
@@ -226,65 +185,6 @@ const setLineItemsAndPrice = () => {
 
 // Следим за изменениями в корзине и обновляем line_items и price
 watch(carts, setLineItemsAndPrice, { deep: true });
-
-// watch(selectedMethod, (newMethod) => {
-//   const amount = totalPrice.value;
-
-//   // Уничтожаем текущую платежную сессию перед созданием новой
-//   resetPaymentSession();
-
-//   // Пересоздаем платежную сессию только если выбран метод "Оплатить" (SPLIT)
-//   if (newMethod === "Оплатить") {
-//     createPaymentSession({
-//       amount: amount,
-//       methods: ["SPLIT"], // Метод "SPLIT"
-//       buttonContainerId: "#pay-button-container",
-//       widgetContainerId: "#split-widget", // Контейнер для виджета SPLIT
-//     });
-//   } else {
-//     // Если выбран другой метод оплаты, например, "CARD"
-//     createPaymentSession({
-//       amount: amount,
-//       methods: ["CARD"], // Метод "CARD"
-//       buttonContainerId: "#pay-button-container",
-//     });
-//   }
-// });
-
-// Очищаем контейнеры перед монтированием новой кнопки или виджета
-function clearContainer(selector: string) {
-  const container = document.querySelector(selector);
-  if (container) {
-    container.innerHTML = ""; // Очищаем контейнер
-  }
-}
-
-// Инициализация платежной сессии при монтировании компонента
-onMounted(() => {
-  // const amount = totalPrice.value;
-  // const methods = selectedMethod.value === "Оплатить" ? ["SPLIT"] : ["CARD"];
-  // clearContainer("#pay-button-container"); // Очищаем контейнер для кнопки
-  // createPaymentSession({
-  //   amount: amount,
-  //   methods: methods,
-  //   buttonContainerId: "#pay-button-container",
-  //   widgetContainerId:
-  //     selectedMethod.value === "Оплатить" ? "#split-widget" : undefined,
-  // });
-});
-
-// Инициализация платежной сессии при монтировании компонента
-onMounted(() => {
-  const amount = totalPrice.value;
-  const methods = selectedMethod.value === "Оплатить" ? ["SPLIT"] : ["CARD"];
-
-  createPaymentSession({
-    amount: amount,
-    methods: methods,
-    buttonContainerId: "#pay-button-container",
-    widgetContainerId: "#split-widget", // Если используется SPLIT
-  });
-});
 </script>
 
 <style scoped lang="scss">
