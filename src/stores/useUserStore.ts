@@ -1,6 +1,5 @@
 import { defineStore, storeToRefs } from "pinia";
-// import axios from "axios";
-import { auth, api } from "@/api/axios"; // Здесь предполагается, что вы настроили axios-инстанс в файле "@/api/axios".
+import { auth, api } from "@/api/axios";
 
 export const useUserStore = defineStore("users", {
   state: () => ({
@@ -9,7 +8,6 @@ export const useUserStore = defineStore("users", {
     isLoad: false,
     email: "",
     otpCode: "",
-    userData: null as any,
     otpErrorMessage: "",
     showOtpForm: false,
     showVerification: false,
@@ -18,8 +16,11 @@ export const useUserStore = defineStore("users", {
   actions: {
     // Логин пользователя
     async loginUser(data: any) {
-      this.user = data;
-      localStorage.setItem("user", JSON.stringify(data));
+      this.user = {
+        token: data.token,
+        people: data.user_data,
+        customer: data.user_data,
+      };
     },
 
     // Получение данных пользователя
@@ -58,8 +59,8 @@ export const useUserStore = defineStore("users", {
         const response = await auth.post("/send-otp", { email: this.email });
         this.showOtpForm = true;
         this.otpErrorMessage = "";
-        this.userData = response.data.user_data;
-        console.log("OTP отправлен:", response.data);
+        // this.userData = response.data.user_data;
+        // console.log("OTP отправлен:", response.data);
       } catch (error: any) {
         console.error(
           "Ошибка отправки OTP:",
@@ -102,9 +103,7 @@ export const useUserStore = defineStore("users", {
           this.otpErrorMessage = "";
 
           // Если у пользователя нет имени, показываем форму для заполнения данных
-          if (this.userData?.first_name) {
-            // location.href = "/";
-            this.fetchUser(this.user.user_data.ID);
+          if (this.user?.customer.first_name) {
           } else {
             this.showVerification = true;
           }
@@ -121,20 +120,47 @@ export const useUserStore = defineStore("users", {
       }
     },
 
-    // Обновление профиля пользователя (имя и телефон)
-    async handleNextStep(data: any) {
+    // Обновление профиля пользователя (имя, телефон и адресные данные)
+    async handleNextStep(delivery: any = {}) {
       try {
         this.isLoad = true; // Включаем прелоадер
-        const response = await auth.post("/update-profile", {
-          email: this.email,
 
-          name: this.user.user_data.name,
-          phone: this.user.user_data.phone,
-        });
-        console.log("Профиль обновлен", response.data);
-        this.fetchUser(this.user.user_data.ID);
-        // Перенаправляем пользователя на главную страницу
-        // location.href = "/";
+        // Формируем данные для отправки
+        const payload = {
+          email: this.email,
+          name: this.user.customer.first_name,
+          phone: this.user.customer.phone,
+          state: delivery.state || null,
+          country: delivery.country || null,
+          postcode: delivery.postcode || null,
+          city: delivery.city || null,
+          address: delivery.address || null,
+        };
+
+        // Фильтруем null значения, чтобы не отправлять ненужные поля
+        const filteredPayload = Object.fromEntries(
+          Object.entries(payload).filter(([_, v]) => v != null)
+        );
+
+        // Запрос на обновление профиля
+        const response = await auth.post("/update-profile", filteredPayload);
+
+        if (response.data && response.data.updated_data) {
+          // Обновляем состояние `user` с новыми данными
+          this.user.customer = response.data.updated_data;
+          this.user.people = {
+            ...this.user.people,
+            email: response.data.updated_data.email,
+            first_name: response.data.updated_data.first_name,
+            last_name: response.data.updated_data.last_name,
+          };
+
+          console.log("Профиль обновлен:", this.user);
+        } else {
+          console.warn(
+            "Не удалось обновить профиль: данные отсутствуют в ответе"
+          );
+        }
       } catch (error) {
         console.error("Ошибка при обновлении профиля:", error);
       } finally {

@@ -13,7 +13,7 @@
         <li
           v-for="suggestion in suggestions"
           :key="suggestion"
-          @click="selectSuggestion(suggestion)"
+          @click="onSuggestionSelect(suggestion)"
         >
           {{ suggestion.value }}
         </li>
@@ -25,7 +25,12 @@
 <script setup lang="ts">
 import { useDelivery } from "@/composables/useDelivery";
 import { useCartStoreRefs } from "@/stores/useCartStore";
-import { watch } from "vue";
+import { useUserStore, useUserStoreRefs } from "@/stores/useUserStore";
+import { watch, ref, onMounted } from "vue";
+
+const props = defineProps<{
+  defaultAddress?: string;
+}>();
 
 const {
   query,
@@ -35,23 +40,63 @@ const {
   selectSuggestion,
   selectedAddress,
 } = useDelivery();
+
 const { currentOrder } = useCartStoreRefs();
+const { handleNextStep } = useUserStore();
+
+// Инициализируем query при монтировании, если defaultAddress задан
+onMounted(async () => {
+  if (props.defaultAddress) {
+    try {
+      // Используем fetchSuggestions для получения подсказок на основе defaultAddress
+      query.value = props.defaultAddress; // Устанавливаем значение по умолчанию в query
+      await fetchSuggestions(); // Вызываем функцию для получения подсказок
+
+      // Проверяем, есть ли предложения, и выбираем первое
+      if (suggestions.value.length > 0) {
+        const suggestion = suggestions.value[0];
+
+        // Устанавливаем query на основе первой подсказки и сохраняем адрес
+        query.value = suggestion.value;
+        selectedAddress.value = JSON.stringify(suggestion.data);
+
+        // Передаем результат в selectSuggestion для расчета стоимости
+        selectSuggestion(suggestion);
+      }
+    } catch (error) {
+      console.error("Ошибка при обработке defaultAddress:", error);
+      query.value = props.defaultAddress; // В случае ошибки просто отображаем текст
+    }
+  }
+});
+
+function onSuggestionSelect(suggestion: any) {
+  const addressData =
+    typeof suggestion.data === "string"
+      ? JSON.parse(suggestion.data)
+      : suggestion.data;
+
+  const deliveryData = {
+    address: `${addressData.street_with_type || ""} ${
+      addressData.house || ""
+    } ${addressData.flat || ""}`,
+    city: addressData.city || "",
+    postcode: addressData.postal_code || "",
+    country: addressData.country_iso_code || "RU",
+    state: addressData.region_with_type || "",
+  };
+
+  // Вызываем handleNextStep с сформированным deliveryData
+  handleNextStep(deliveryData);
+
+  // Вызываем selectSuggestion для расчета стоимости доставки
+  selectSuggestion(suggestion);
+}
 
 watch([selectedAddress], (newAddress: any) => {
   const addressData = JSON.parse(newAddress);
   currentOrder.value = {
     ...currentOrder.value,
-    shipping: {
-      ...currentOrder.value.shipping,
-      address_1: `${addressData.street_with_type || ""} ${
-        addressData.house || ""
-      }`,
-      city: addressData.city || "",
-      postcode: addressData.postal_code || "",
-      country: addressData.country_iso_code || "RU",
-      region: addressData.region_with_type || "",
-      price: deliveryPrice.value,
-    },
     billing: {
       ...currentOrder.value.billing,
       address_1: `${addressData.street_with_type || ""} ${

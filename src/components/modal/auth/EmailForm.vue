@@ -13,6 +13,7 @@
           color="brown"
           size="normal"
           @click="submitEmail"
+          :icon="load ? 'svg-spinners:ring-resize' : ''"
         />
       </div>
       <div class="form__notice">
@@ -31,6 +32,7 @@ import { defineEmits, computed } from "vue";
 
 const props = defineProps<{
   modelValue: string;
+  load: boolean;
 }>();
 
 const emit = defineEmits();

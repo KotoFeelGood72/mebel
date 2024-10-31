@@ -412,10 +412,9 @@ const updateQuantity = (quantity: number) => {
 .products_prices__right {
   @include flex-end;
   gap: 3.1rem;
+  user-select: none;
   @include bp($point_2) {
     width: 100%;
-    // flex-direction: column;
-    // align-items: flex-start;
   }
 }
 </style>

@@ -33,19 +33,22 @@
         <div v-else class="userInfoForm">
           <div class="userInfoForm__input">
             <p>Имя*</p>
-            <Inputs v-model="userData.name" placeholder="Поддубная Елена" />
+            <Inputs
+              v-model="user.customer.first_name"
+              placeholder="Поддубная Елена"
+            />
           </div>
           <div class="userInfoForm__input">
             <p>Телефон*</p>
             <InputPhone
-              v-model="userData.phone"
+              v-model="user.customer.phone"
               placeholder="+7 (918) 123 45 67"
             />
           </div>
           <div class="userInfoForm__input">
             <p>E-mail</p>
             <Inputs
-              v-model="userData.email"
+              v-model="user.people.email"
               placeholder="dundub@gmail.com"
               type="email"
             />
@@ -55,9 +58,9 @@
     </div>
 
     <div class="userInfoData" v-else>
-      <p><strong>Имя:</strong> {{ user.meta.first_name[0] }}</p>
-      <p><strong>Телефон:</strong> {{ user.meta.billing_phone[0] }}</p>
-      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p><strong>Имя:</strong> {{ user.customer.first_name }}</p>
+      <p><strong>Телефон:</strong> {{ user.customer.phone }}</p>
+      <p><strong>Email:</strong> {{ user.people.email }}</p>
     </div>
   </div>
 </template>
@@ -66,14 +69,11 @@
 import { ref, watch, onMounted } from "vue";
 import { useUserStoreRefs } from "@/stores/useUserStore";
 import { useModalStore } from "@/stores/useModalStore";
-import { useCartStoreRefs } from "@/stores/useCartStore";
 import DefaultBtn from "../ui/DefaultBtn.vue";
 import Inputs from "../ui/Inputs.vue";
 import InputPhone from "../ui/InputPhone.vue";
 
-// Получаем данные из стора
-const { data, user } = useUserStoreRefs();
-const { currentOrder } = useCartStoreRefs();
+const { user } = useUserStoreRefs();
 const { openModal } = useModalStore();
 
 const isAuthorized = ref(false);
@@ -85,25 +85,8 @@ const userData = ref({
   email: "dundub@gmail.com",
 });
 
-// Если данные пользователя есть в сторе, используем их
-watch(
-  () => user.value,
-  (newUser) => {
-    if (newUser) {
-      userData.value = {
-        name: data.value?.meta?.billing_first_name?.[0] || newUser.name,
-        phone: data.value?.meta?.billing_phone?.[0] || newUser.phone,
-        email: data.value?.meta?.billing_email?.[0] || newUser.email,
-      };
-    }
-  },
-  { immediate: true }
-);
-
-// Метод для переключения авторизации
 const toggleAuthorization = () => {
   if (!isAuthorized.value) {
-    // Если пользователь не авторизован, возвращаем данные по умолчанию
     userData.value = {
       name: "Константинопольская Кристина",
       phone: "+7 (918) 123 45 67",
@@ -111,58 +94,6 @@ const toggleAuthorization = () => {
     };
   }
 };
-
-// Обновление данных заказа при изменении userData и передача в billing и shipping
-watch(
-  userData,
-  (newUserData) => {
-    currentOrder.value = {
-      ...currentOrder.value,
-      user: {
-        name: newUserData.name,
-        phone: newUserData.phone,
-        email: newUserData.email,
-      },
-      billing: {
-        ...currentOrder.value.billing, // Сохраняем уже существующие данные в billing
-        first_name: newUserData.name,
-        phone: newUserData.phone,
-        email: newUserData.email,
-      },
-      shipping: {
-        ...currentOrder.value.shipping, // Сохраняем уже существующие данные в shipping
-        first_name: newUserData.name,
-        phone: newUserData.phone,
-        email: newUserData.email,
-      },
-    };
-  },
-  { deep: true } // Чтобы отслеживать все изменения внутри объекта userData
-);
-
-// Инициализация данных заказа при монтировании компонента
-onMounted(() => {
-  currentOrder.value = {
-    ...currentOrder.value,
-    user: {
-      name: userData.value.name,
-      phone: userData.value.phone,
-      email: userData.value.email,
-    },
-    billing: {
-      ...currentOrder.value.billing, // Сохраняем уже существующие данные в billing при монтировании
-      first_name: userData.value.name,
-      phone: userData.value.phone,
-      email: userData.value.email,
-    },
-    shipping: {
-      ...currentOrder.value.shipping, // Сохраняем уже существующие данные в shipping при монтировании
-      first_name: userData.value.name,
-      phone: userData.value.phone,
-      email: userData.value.email,
-    },
-  };
-});
 </script>
 
 <style scoped lang="scss">

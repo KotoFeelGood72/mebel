@@ -12,13 +12,14 @@
     </div>
     <div class="auth_main">
       <div class="loader" v-if="isLoad">
-        <Icons icon="eos-icons:bubble-loading" />
+        <Icons icon="svg-spinners:ring-resize" :size="50" />
       </div>
       <div class="auth_main__child" v-else>
         <EmailForm
           v-if="!showOtpForm && !showVerification"
           @submitEmail="sendOTP"
           v-model="email"
+          :load="isLoad"
         />
         <AuthVerification
           v-if="showOtpForm && !showVerification"
@@ -33,6 +34,8 @@
   </div>
 </template>
 
+
+
 <script setup lang="ts">
 import IconBtn from "../ui/IconBtn.vue";
 import AuthNew from "./auth/AuthNew.vue";
@@ -41,6 +44,11 @@ import EmailForm from "./auth/EmailForm.vue";
 import { useModalStore } from "@/stores/useModalStore";
 import { useRouter } from "vue-router";
 import { useUserStore, useUserStoreRefs } from "@/stores/useUserStore";
+
+
+// ddc-sellers@yandex.ru
+
+
 
 const { closeModal } = useModalStore();
 const {

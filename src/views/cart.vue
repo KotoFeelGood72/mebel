@@ -71,7 +71,9 @@
           </div>
           <div class="list-block">
             <BlockUserInfo />
-            <BlockDeliveryCalc />
+            <BlockDeliveryCalc
+              :defaultAddress="user.customer.billing.address_1"
+            />
             <BlockPayments />
           </div>
         </div>
@@ -99,6 +101,7 @@ import Qty from "@/components/ui/Qty.vue";
 import BlockUserInfo from "@/components/blocks/BlockUserInfo.vue";
 import BlockDeliveryCalc from "@/components/blocks/BlockDeliveryCalc.vue";
 import BlockCartTotals from "@/components/blocks/BlockCartTotals.vue";
+import { useUserStoreRefs } from "@/stores/useUserStore";
 // @ts-ignore
 import BlockPayments from "@/components/blocks/BlockPayments.vue";
 import { ref, computed, watch, onMounted } from "vue";
@@ -108,6 +111,7 @@ const { carts, currentOrder } = useCartStoreRefs();
 const { updateCartItem, removeCartItem, createOrder } = useCartStore();
 
 const { deliveryPrice } = useDelivery();
+const { user } = useUserStoreRefs();
 const selectedItems = ref<string[]>([]);
 const selectedMethod = ref("Оплата картой онлайн или через СБП");
 
@@ -180,6 +184,7 @@ const setLineItemsAndPrice = () => {
     ...currentOrder.value,
     line_items: lineItems,
     price: totalOrderPrice,
+    user_id: user.value.customer.ID,
   };
 };
 

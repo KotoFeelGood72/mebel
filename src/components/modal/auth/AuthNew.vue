@@ -3,12 +3,15 @@
     <div class="usernew__form">
       <div class="usernew__input">
         <p>Имя</p>
-        <Inputs v-model="user.user_data.name" placeholder="Поддубная Елена" />
+        <Inputs
+          v-model="user.customer.first_name"
+          placeholder="Поддубная Елена"
+        />
       </div>
       <div class="usernew__input">
         <p>Номер телефона</p>
         <InputPhone
-          v-model="user.user_data.phone"
+          v-model="user.customer.phone"
           placeholder="+7 (999) 999-99-99"
         />
       </div>
@@ -28,23 +31,11 @@ import Inputs from "@/components/ui/Inputs.vue";
 import InputPhone from "@/components/ui/InputPhone.vue";
 import DefaultBtn from "@/components/ui/DefaultBtn.vue";
 import { useUserStoreRefs, useUserStore } from "@/stores/useUserStore";
-// import { ref } from "vue";
-
-// const props = defineProps<{
-//   phone: string;
-//   name: string;
-//   onNext?: any;
-// }>();
 
 const { user } = useUserStoreRefs();
 const { handleNextStep } = useUserStore();
 
 const emit = defineEmits(["onNext"]);
-// const phone = ref<any>(props.phone);
-// const name = ref<any>(props.name);
-// const nextStep = () => {
-//   emit("onNext", { phone: phone.value, name: name.value });
-// };
 </script>
 
 <style scoped lang="scss">

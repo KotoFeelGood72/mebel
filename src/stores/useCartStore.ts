@@ -1,4 +1,5 @@
 import { defineStore, storeToRefs } from "pinia";
+
 import axios from "axios";
 
 export const useCartStore = defineStore("carts", {
@@ -11,6 +12,7 @@ export const useCartStore = defineStore("carts", {
     setPaymentMethod(methods: any) {
       this.paymentMethod = methods;
     },
+
     addCart(item: any) {
       console.log(item);
       const existingCartItem = this.carts.find(
