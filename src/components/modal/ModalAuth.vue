@@ -40,10 +40,7 @@ import AuthNew from "./auth/AuthNew.vue";
 import AuthVerification from "./auth/AuthVerification.vue";
 import EmailForm from "./auth/EmailForm.vue";
 import { useModalStore } from "@/stores/useModalStore";
-import { useRouter } from "vue-router";
 import { useUserStore, useUserStoreRefs } from "@/stores/useUserStore";
-
-// ddc-sellers@yandex.ru
 
 const { closeModal } = useModalStore();
 const {
@@ -54,7 +51,7 @@ const {
   showOtpForm,
   showVerification,
 } = useUserStoreRefs();
-const { loginUser, sendOTP, resendOTP, verifyOTP, logout } = useUserStore();
+const { sendOTP, resendOTP, verifyOTP } = useUserStore();
 </script>
 
 <style scoped lang="scss">
