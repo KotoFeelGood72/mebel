@@ -335,6 +335,7 @@ onMounted(async () => {
 
 .colors_slider {
   position: relative;
+  user-select: none;
 }
 
 .colors_navigation {
