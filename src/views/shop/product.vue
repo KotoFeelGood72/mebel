@@ -24,7 +24,7 @@
             </Swiper>
             <div class="products_navigation">
               <div class="products_prev">
-                <Icons name="bi:chevron-left" :size="30" />
+                <Icons icon="bi:chevron-left" :size="30" />
               </div>
               <div class="products-pagination">
                 <span class="fraction"
@@ -33,7 +33,7 @@
                 >
               </div>
               <div class="products_next">
-                <Icons name="bi:chevron-right" :size="30" />
+                <Icons icon="bi:chevron-right" :size="30" />
               </div>
             </div>
           </div>
@@ -74,13 +74,13 @@
                 <li>
                   <a href="#"
                     ><p>Характеристики</p>
-                    <Icons name="fluent:chevron-right-28-regular" />
+                    <Icons icon="fluent:chevron-right-28-regular" />
                   </a>
                 </li>
                 <li>
                   <a href="#"
                     ><p>Отзывы</p>
-                    <Icons name="fluent:chevron-right-28-regular" />
+                    <Icons icon="fluent:chevron-right-28-regular" />
                   </a>
                 </li>
               </ul>
@@ -172,6 +172,16 @@ watch(cartItem, (newVal) => {
     selectedColor.value = newVal.color;
   }
 });
+
+watch(
+  () => productPage.value,
+  (newValue) => {
+    if (newValue && newValue.gallery_images) {
+      totalSlides.value = newValue.gallery_images.length;
+    }
+  },
+  { immediate: true } // Немедленный запуск для первичной загрузки
+);
 
 const updateCart = () => {
   if (isCarts.value) {
