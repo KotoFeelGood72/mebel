@@ -50,6 +50,7 @@ function submitEmail() {
 <style scoped lang="scss">
 .form {
   padding-top: 2rem;
+
   & > p {
     font-size: 2rem;
     color: $gray;
@@ -70,6 +71,10 @@ function submitEmail() {
 
 .form_btn {
   margin-bottom: 3.5rem;
+  @include bp($point_2) {
+    width: 100%;
+    margin-bottom: 2rem;
+  }
 }
 
 .form__notice {
@@ -84,5 +89,22 @@ function submitEmail() {
 .loader {
   font-size: 10rem;
   color: $lbrown;
+}
+
+.form__main {
+  @include bp($point_2) {
+    @include flex-start;
+    flex-direction: column;
+    flex-grow: 1;
+    height: 100%;
+  }
+}
+
+.form_input {
+  @include bp($point_2) {
+    flex-grow: 1;
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>

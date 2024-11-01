@@ -56,12 +56,11 @@ export const useCartStore = defineStore("carts", {
           "https://fu.gleede.ru/wp-json/yandexpay/v1/create-order/",
           this.currentOrder
         );
-    
+
         if (response.data && response.data.payment_url) {
-          // Если есть ссылка на оплату, перенаправляем пользователя
           window.location.href = response.data.payment_url;
         }
-    
+
         // Очистка корзины и сброс текущего заказа
         this.carts = [];
         this.currentOrder = {
@@ -71,8 +70,7 @@ export const useCartStore = defineStore("carts", {
       } catch (error) {
         console.error("Ошибка при создании заказа:", error);
       }
-    }
-    
+    },
   },
   persist: true,
 });

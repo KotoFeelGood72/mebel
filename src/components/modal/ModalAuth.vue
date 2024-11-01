@@ -64,11 +64,24 @@ const { sendOTP, resendOTP, verifyOTP } = useUserStore();
   z-index: 101;
   height: 100%;
   padding: 4.5rem 3rem;
+
+  @include bp($point_2) {
+    max-width: 100%;
+    height: 70dvh;
+    bottom: 0;
+    top: auto;
+    align-items: flex-end;
+    padding: 2.5rem 2rem 3rem 2rem;
+  }
 }
 
 .auth_main {
   position: relative;
   min-height: 50rem;
+  @include bp($point_2) {
+    min-height: auto;
+    height: 100%;
+  }
 }
 
 .auth__head {
@@ -76,6 +89,11 @@ const { sendOTP, resendOTP, verifyOTP } = useUserStore();
   gap: 5rem;
   font-size: 3rem;
   margin-bottom: 3rem;
+  @include bp($point_2) {
+    flex-direction: column-reverse;
+    gap: 0;
+    margin-bottom: 0;
+  }
   h3 {
     font-family: $font_2;
     font-weight: 400;
@@ -84,6 +102,15 @@ const { sendOTP, resendOTP, verifyOTP } = useUserStore();
 
 .close-btn {
   color: $gray;
+
+  @include bp($point_2) {
+    width: 100%;
+    @include flex-end;
+    margin-bottom: -2rem;
+    position: relative;
+    z-index: 2;
+  }
+
   &:hover {
     color: $dark;
   }
@@ -96,5 +123,14 @@ const { sendOTP, resendOTP, verifyOTP } = useUserStore();
   transform: translate(-50%, -50%);
   font-size: 10rem;
   color: $lbrown;
+}
+
+.auth_main__child {
+  @include bp($point_2) {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
 }
 </style>

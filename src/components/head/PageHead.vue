@@ -110,7 +110,7 @@ defineProps<{
   .pagehead_main {
     padding-left: 14.4rem;
     @include bp($point_2) {
-      padding: 0;
+      padding-left: 0;
     }
   }
 }

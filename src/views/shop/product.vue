@@ -116,7 +116,6 @@ import { Swiper, SwiperSlide } from "swiper/vue";
 import { Navigation, Pagination } from "swiper/modules";
 import Breadcrumbs from "@/components/ui/Breadcrumbs.vue";
 import Qty from "@/components/ui/Qty.vue"; // Импортируем компонент для количества
-import { useProductsStore } from "@/stores/useProductsStore";
 import { useRoute } from "vue-router";
 import { ref, computed, onMounted } from "vue";
 import { useCartStore, useCartStoreRefs } from "@/stores/useCartStore";
@@ -132,7 +131,6 @@ const currentSlide = ref(1);
 
 const product = ref<any>();
 const totalSlides = ref();
-const { getProductBySlug } = useProductsStore();
 const route = useRoute();
 const toast = useToast();
 const breadcrumbs = ref([
@@ -240,7 +238,7 @@ onMounted(async () => {
 .products {
   padding-top: calc($header + 4.6rem);
   @include bp($point_2) {
-    padding-top: 7.5rem;
+    padding-top: 8.5rem;
   }
 }
 
@@ -261,7 +259,7 @@ onMounted(async () => {
   a {
     @include flex-center;
     width: 100%;
-    height: 100%
+    height: 100%;
   }
 
   @include bp($point_2) {

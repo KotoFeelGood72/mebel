@@ -49,14 +49,27 @@ async function logoutUser() {
   gap: 7.1rem;
   padding-bottom: 20rem;
 
+  @include bp($point_2) {
+    flex-direction: column;
+    gap: 0;
+    padding-bottom: 0;
+  }
+
   & > div {
     width: 50%;
+    @include bp($point_2) {
+      width: 100%;
+    }
     &:first-child {
       background-color: $light;
       padding: 3rem;
       position: relative;
       margin-bottom: 1.1rem;
       max-height: 33.1rem;
+      @include bp($point_2) {
+        padding: 3rem 1.5rem;
+        max-height: 100%;
+      }
     }
   }
 }
@@ -72,12 +85,27 @@ async function logoutUser() {
   line-height: 95%;
   transition: all 0.3s ease-in-out;
   color: $brown;
+  @include bp($point_2) {
+    position: static;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    border-color: transparent;
+  }
   a {
     color: inherit;
+    @include bp($point_2) {
+      display: inline-flex;
+      text-decoration: underline;
+    }
   }
   &:hover {
     border-color: transparent;
     color: $lbrown;
+    @include bp($point_2) {
+      display: inline-flex;
+      text-decoration: none;
+    }
   }
 }
 
@@ -85,6 +113,12 @@ async function logoutUser() {
   top: auto;
   bottom: 3rem;
   border-color: transparent;
+
+  @include bp($point_2) {
+    width: 100%;
+    margin-top: 2rem;
+    color: #b23e00;
+  }
   &:hover {
     color: $lbrown;
     border-color: $lbrown;
@@ -93,22 +127,35 @@ async function logoutUser() {
 
 .user__content {
   padding: 1.8rem 1.3rem 2.7rem 1.3rem;
+  @include bp($point_2) {
+    padding: 0 0 3rem 0;
+  }
   & > p {
     margin-bottom: 4.5rem;
     font-size: 2.4rem;
     font-family: $font_2;
     color: $dark;
+    @include bp($point_2) {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+    }
   }
 
   ul {
     li {
       &:not(:last-child) {
         margin-bottom: 4rem;
+        @include bp($point_2) {
+          margin-bottom: 2.5rem;
+        }
       }
       p {
         color: $gray;
         font-family: $font_2;
         margin-bottom: 1rem;
+        @include bp($point_2) {
+          font-size: 1.8rem;
+        }
       }
       span {
         font-weight: 400;

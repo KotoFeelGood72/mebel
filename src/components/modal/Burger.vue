@@ -34,6 +34,23 @@
         <li>ИНН 571000616047</li>
       </ul>
     </div>
+    <DefaultBtn
+      name="Войти"
+      type="primary"
+      color="brown"
+      size="small"
+      @click="openAuthModal()"
+      v-if="!user && user.token"
+    />
+    <div class="user-card" @click="targetUser">
+      <div class="user-icon">
+        <img src="@/assets/icons/user.svg" />
+      </div>
+      <div class="user_content">
+        <span>{{ user.email }}</span>
+        <p>{{ user.billing.first_name }}</p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -41,8 +58,27 @@
 import Socials from "../ui/Socials.vue";
 import { useModalStore } from "@/stores/useModalStore";
 import IconBtn from "../ui/IconBtn.vue";
+import DefaultBtn from "../ui/DefaultBtn.vue";
+import { useRouter } from "vue-router";
+import { useUserStoreRefs } from "@/stores/useUserStore";
 
-const { closeAllModals } = useModalStore();
+const { closeAllModals, openModal, closeModal } = useModalStore();
+const { user } = useUserStoreRefs();
+const router = useRouter();
+
+function openAuthModal() {
+  closeModal("burger");
+  openModal("auth");
+}
+
+const targetUser = () => {
+  if (!user.value) {
+    openModal("auth");
+  } else {
+    closeModal("auth");
+    router.push("profile");
+  }
+};
 </script>
 
 <style scoped lang="scss">
@@ -122,5 +158,21 @@ const { closeAllModals } = useModalStore();
     border-radius: 100%;
     background-color: $white;
   }
+}
+
+.user-card {
+  @include flex-start;
+  align-items: flex-start;
+  background-color: $light;
+  border-radius: 0.5rem;
+  padding: 1rem 2rem;
+  gap: 1.5rem;
+  font-size: 1.6rem;
+  color: $brown;
+  font-family: $font_2;
+}
+
+.user-icon {
+  @include flex-center;
 }
 </style>

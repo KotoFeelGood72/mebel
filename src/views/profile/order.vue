@@ -1,5 +1,5 @@
 <template>
-  <div class="order">
+  <div class="order" v-if="order">
     <div class="order_tabs">
       <!-- Табы -->
       <div
@@ -144,6 +144,10 @@ onMounted(async () => {
 .orders {
   background-color: $light;
   padding: 3.6rem 6.4rem 3.6rem 6.4rem;
+
+  @include bp($point_2) {
+    padding: 0;
+  }
 }
 
 :deep(.order-pagination) {

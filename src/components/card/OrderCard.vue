@@ -7,6 +7,20 @@
         :space-between="25"
         :modules="[Navigation, Pagination]"
         :speed="700"
+        :breakpoints="{
+          320: {
+            slidesPerView: 1.2,
+            spaceBetween: 10,
+          },
+          768: {
+            slidesPerView: 1,
+            spaceBetween: 10,
+          },
+          1024: {
+            slidesPerView: 5.5,
+            spaceBetween: 25,
+          },
+        }"
         :navigation="{
           prevEl: '.prev',
           nextEl: '.next',
@@ -17,17 +31,19 @@
           v-for="(item, i) in order.items"
           :key="'order-item-slide-' + i"
         >
-          <div class="order">
-            <div class="order_img">
-              <img :src="item.image_url" />
+          <RouterLink :to="`/shop/products/${item.product_id}`">
+            <div class="order">
+              <div class="order_img">
+                <img :src="item.image_url" />
+              </div>
+              <div class="order__content">
+                <h3>{{ item.name }}</h3>
+                <p>
+                  Цвет: <span>{{ item.color }}</span>
+                </p>
+              </div>
             </div>
-            <div class="order__content">
-              <h3>{{ item.name }}</h3>
-              <p>
-                Цвет: <span>{{ item.color }}</span>
-              </p>
-            </div>
-          </div>
+          </RouterLink>
         </SwiperSlide>
       </Swiper>
       <div class="order__nav">
@@ -65,6 +81,10 @@ const props = defineProps<{
   margin-bottom: 2rem;
   color: $gray;
   font-family: $font_2;
+
+  @include bp($point_2) {
+    padding: 2rem 0 0 2rem;
+  }
 }
 
 .order_img {
@@ -99,23 +119,38 @@ const props = defineProps<{
 .orders__main {
   border-bottom: 0.1rem solid #cbcbcb;
   position: relative;
+  @include bp($point_2) {
+    padding-left: 2rem;
+  }
   :deep(.swiper) {
     padding-bottom: 3.6rem;
+    @include bp($point_2) {
+      padding-bottom: 2.5rem;
+    }
   }
 }
 
 .orders__footer {
   padding: 2rem 0 2.7rem 0;
   border-bottom: 0.1rem solid #cbcbcb;
+  @include bp($point_2) {
+    padding: 2rem;
+  }
   p {
     margin: 2.5rem 0 1.5rem 0;
     font-size: 1.8rem;
     font-family: $font_2;
+    @include bp($point_2) {
+      margin: 2.5rem 0 1rem 0;
+    }
   }
 }
 
 .orders__total {
   padding-top: 2.4rem;
+  @include bp($point_2) {
+    padding: 2rem;
+  }
 }
 
 .order__nav {

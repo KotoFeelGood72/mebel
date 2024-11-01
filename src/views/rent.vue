@@ -57,8 +57,6 @@
                     320: {
                       slidesPerView: 1.2,
                       spaceBetween: 10,
-                      slidesOffsetBefore: 10,
-                      slidesOffsetAfter: 10,
                     },
                     768: {
                       slidesPerView: 1.5,
@@ -369,6 +367,7 @@ onMounted(async () => {
   margin-bottom: 3rem;
   @include bp($point_2) {
     margin-bottom: 0;
+    padding: 0 2rem;
   }
   h3 {
     font-size: 5rem;
@@ -411,6 +410,14 @@ onMounted(async () => {
   }
 }
 
+.colors {
+  .container {
+    @include bp($point_2) {
+      padding: 0;
+    }
+  }
+}
+
 .colors_slide__txt {
   :deep(span) {
     color: $brown;
@@ -427,6 +434,9 @@ onMounted(async () => {
 .colors_slider {
   position: relative;
   user-select: none;
+  @include bp($point_2) {
+    padding-left: 2rem;
+  }
 }
 
 .colors_navigation {
@@ -467,24 +477,40 @@ onMounted(async () => {
 .conditions_main {
   padding: 7rem 0;
   text-align: center;
+  @include bp($point_2) {
+    padding: 3rem 0;
+  }
   h3 {
     font-size: 4rem;
     margin-bottom: 9rem;
+    @include bp($point_2) {
+      font-size: 2.6rem;
+      margin-bottom: 3rem;
+    }
   }
 }
 
 .conditions_list {
   @include flex-space;
   gap: 2rem;
+  @include bp($point_2) {
+    flex-direction: column;
+  }
 }
 
 .conditions_item__img {
   @include flex-center;
   margin-bottom: 4rem;
+  @include bp($point_2) {
+    margin-bottom: 1rem;
+  }
   img {
     max-width: 17rem;
     height: 100%;
     object-fit: contain;
+    @include bp($point_2) {
+      max-width: 13rem;
+    }
   }
 }
 
@@ -496,6 +522,10 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   gap: 10rem;
+  @include bp($point_2) {
+    padding: 3rem 0;
+    gap: 6rem;
+  }
 }
 
 .rentxt__row {
@@ -505,6 +535,10 @@ onMounted(async () => {
     font-family: $font_2;
     font-weight: 500;
     margin-bottom: 4.5rem;
+    @include bp($point_2) {
+      font-size: 2.6rem;
+      margin-bottom: 3rem;
+    }
   }
 
   ul {
@@ -512,6 +546,10 @@ onMounted(async () => {
     flex-wrap: wrap;
     max-width: 130rem;
     gap: 4rem 16.5rem;
+    @include bp($point_2) {
+      gap: 2rem;
+      max-width: 100%;
+    }
     li {
       max-width: 56rem;
       p {
@@ -519,6 +557,10 @@ onMounted(async () => {
         font-family: $font_2;
         color: $brown;
         margin-bottom: 1.5rem;
+        @include bp($point_2) {
+          font-size: 2rem;
+          margin-bottom: 1rem;
+        }
       }
     }
   }
@@ -530,6 +572,9 @@ onMounted(async () => {
 
 .geo_main {
   padding: 8rem 0;
+  @include bp($point_2) {
+    padding: 3rem 0;
+  }
 
   h2 {
     margin-bottom: 4rem;
@@ -537,12 +582,27 @@ onMounted(async () => {
     font-family: $font_2;
     font-weight: 500;
     text-align: center;
+    @include bp($point_2) {
+      font-size: 2.2rem;
+      margin-bottom: 3rem;
+    }
   }
 }
 
 .geo_list {
   @include flex-space;
   justify-content: space-around;
+  @include bp($point_2) {
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  li {
+    @include bp($point_2) {
+      @include flex-center;
+      flex-direction: column;
+    }
+  }
 }
 
 .geo_item__img {
@@ -550,16 +610,28 @@ onMounted(async () => {
   flex-direction: column;
   @include flex-center;
   margin-bottom: 4rem;
+  @include bp($point_2) {
+    max-width: 16rem;
+    height: auto;
+    margin-bottom: 1.5rem;
+  }
 }
 
 .event_main {
   padding: 10rem 0 5rem 0;
+  @include bp($point_2) {
+    padding: 3rem 0;
+  }
 
   h3 {
     font-size: 5rem;
     font-family: $font_2;
     font-weight: 500;
     margin-bottom: 4.5rem;
+    @include bp($point_2) {
+      font-size: 2.6rem;
+      margin-bottom: 2.5rem;
+    }
   }
 }
 
@@ -569,6 +641,10 @@ onMounted(async () => {
   gap: 4rem 16.5rem;
   max-width: 129.2rem;
   margin-bottom: 8rem;
+  @include bp($point_2) {
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+  }
   li {
     max-width: 56rem;
     width: 100%;
@@ -579,6 +655,10 @@ onMounted(async () => {
       font-weight: 500;
       color: $brown;
       margin-bottom: 1.5rem;
+      @include bp($point_2) {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+      }
     }
   }
 }
@@ -591,11 +671,24 @@ onMounted(async () => {
   grid-template-areas:
     "one two four"
     "one free four";
-
+  @include bp($point_2) {
+    grid-template-areas:
+      "one  two"
+      "one   free"
+      "four  four";
+  }
   .event_grid__item {
     background-color: $black;
+    @include bp($point_2) {
+      width: 100%;
+    }
     img {
       transition: all 0.3s ease-in-out;
+      @include bp($point_2) {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
     }
     &:hover {
       img {
@@ -604,6 +697,10 @@ onMounted(async () => {
     }
     a {
       @include flex-center;
+      @include bp($point_2) {
+        width: 100%;
+        height: 100%;
+      }
     }
     &:nth-child(1) {
       grid-area: one;
@@ -612,14 +709,23 @@ onMounted(async () => {
     &:nth-child(2) {
       grid-area: two;
       height: 40.4rem;
+      @include bp($point_2) {
+        height: 16.9rem;
+      }
     }
 
     &:nth-child(3) {
       height: 29.8rem;
       grid-area: free;
+      @include bp($point_2) {
+        height: 12.8rem;
+      }
     }
     &:nth-child(4) {
       grid-area: four;
+      @include bp($point_2) {
+        height: 22.6rem;
+      }
     }
   }
 }

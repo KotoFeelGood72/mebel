@@ -24,6 +24,12 @@ import { RouterView } from "vue-router";
   padding-top: calc($header + 5.8rem);
   padding-bottom: 10rem;
   min-height: 100dvh;
+
+  @include bp($point_2) {
+    padding-top: 10.5rem;
+    padding-bottom: 3rem;
+    min-height: 100%;
+  }
 }
 
 .profile_head {
@@ -31,6 +37,9 @@ import { RouterView } from "vue-router";
   h1 {
     font-size: 4rem;
     margin-bottom: 2.5rem;
+    @include bp($point_2) {
+      font-size: 2.6rem;
+    }
   }
 }
 
@@ -38,6 +47,10 @@ import { RouterView } from "vue-router";
   @include flex-center;
   gap: 10rem;
   margin-bottom: 8.1rem;
+
+  @include bp($point_2) {
+    margin-bottom: 3rem;
+  }
   a {
     font-size: 1.8rem;
     @include flex-center;
