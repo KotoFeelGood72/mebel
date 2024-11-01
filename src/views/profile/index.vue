@@ -29,22 +29,17 @@
 
 <script setup lang="ts">
 import { useUserStoreRefs, useUserStore } from "@/stores/useUserStore";
-import { onMounted } from "vue";
 
 // definePageMeta({
 //   middleware: "auth",
 // });
 
 const { user } = useUserStoreRefs();
-const { logout, fetchUser } = useUserStore();
+const { logout } = useUserStore();
 
 async function logoutUser() {
   await logout();
 }
-
-onMounted(() => {
-  fetchUser();
-});
 </script>
 
 <style scoped lang="scss">

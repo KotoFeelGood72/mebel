@@ -26,8 +26,7 @@ export const useUserStore = defineStore("users", {
     async fetchUser() {
       try {
         const response = await api.get(`/users/user-${this.user.ID}.json`);
-        this.order = response.data
-        console.log("Данные пользователя:", response.data);
+        this.order = response.data;
       } catch (error) {
         console.error("Ошибка при получении данных пользователя:", error);
       }

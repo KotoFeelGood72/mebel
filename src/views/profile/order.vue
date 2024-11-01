@@ -39,75 +39,87 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 import OrderCard from "@/components/card/OrderCard.vue";
 import "swiper/swiper-bundle.css";
-import { useUserStoreRefs } from "@/stores/useUserStore";
+import { useUserStoreRefs, useUserStore } from "@/stores/useUserStore";
 // Активная вкладка
 const activeTab = ref<"active" | "completed">("active");
 
-// Пример данных заказов
-const activeOrders = ref([
-  {
-    num: "12234",
-    total: "60 500",
-    address: "г. Краснодар, ул. Восточно-кругликовская 77",
-    products: [
-      {
-        title: "Бескаркасное кресло Империал",
-        color: "Молочный",
-        img: "/img/about-1.jpg",
-      },
-      {
-        title: "Бескаркасное кресло Империал",
-        color: "Молочный",
-        img: "/img/about-1.jpg",
-      },
-      {
-        title: "Бескаркасное кресло Империал",
-        color: "Молочный",
-        img: "/img/about-1.jpg",
-      },
-      {
-        title: "Бескаркасное кресло Империал",
-        color: "Молочный",
-        img: "/img/about-1.jpg",
-      },
-      {
-        title: "Бескаркасное кресло Империал",
-        color: "Молочный",
-        img: "/img/about-1.jpg",
-      },
-      {
-        title: "Бескаркасное кресло Империал",
-        color: "Молочный",
-        img: "/img/about-1.jpg",
-      },
-      {
-        title: "Бескаркасное кресло Империал",
-        color: "Молочный",
-        img: "/img/about-1.jpg",
-      },
-    ],
-  },
-]);
+// // Пример данных заказов
+// const activeOrders = ref([
+//   {
+//     num: "12234",
+//     total: "60 500",
+//     address: "г. Краснодар, ул. Восточно-кругликовская 77",
+//     products: [
+//       {
+//         title: "Бескаркасное кресло Империал",
+//         color: "Молочный",
+//         img: "/img/about-1.jpg",
+//       },
+//       {
+//         title: "Бескаркасное кресло Империал",
+//         color: "Молочный",
+//         img: "/img/about-1.jpg",
+//       },
+//       {
+//         title: "Бескаркасное кресло Империал",
+//         color: "Молочный",
+//         img: "/img/about-1.jpg",
+//       },
+//       {
+//         title: "Бескаркасное кресло Империал",
+//         color: "Молочный",
+//         img: "/img/about-1.jpg",
+//       },
+//       {
+//         title: "Бескаркасное кресло Империал",
+//         color: "Молочный",
+//         img: "/img/about-1.jpg",
+//       },
+//       {
+//         title: "Бескаркасное кресло Империал",
+//         color: "Молочный",
+//         img: "/img/about-1.jpg",
+//       },
+//       {
+//         title: "Бескаркасное кресло Империал",
+//         color: "Молочный",
+//         img: "/img/about-1.jpg",
+//       },
+//     ],
+//   },
+// ]);
 
-const completedOrders = ref([
-  {
-    num: "54321",
-    total: "40 000",
-    address: "г. Москва, ул. Ленина 10",
-    products: [
-      {
-        title: "Бескаркасное кресло Империал",
-        color: "Чёрный",
-        img: "/img/about-1.jpg",
-      },
-    ],
-  },
-]);
+// const completedOrders = ref([
+//   {
+//     num: "54321",
+//     total: "40 000",
+//     address: "г. Москва, ул. Ленина 10",
+//     products: [
+//       {
+//         title: "Бескаркасное кресло Империал",
+//         color: "Чёрный",
+//         img: "/img/about-1.jpg",
+//       },
+//     ],
+//   },
+// ]);
 
-const {} = useUserStoreRefs();
+const { order } = useUserStoreRefs();
+const { fetchUser } = useUserStore();
+
+const activeOrders = computed(() =>
+  order.value.orders.filter((order: any) => order.status !== "completed")
+);
+const completedOrders = computed(() =>
+  order.value.orders.filter((order: any) => order.status === "completed")
+);
+
+onMounted(async () => {
+  await fetchUser();
+});
 </script>
 
 <style scoped lang="scss">
@@ -136,5 +148,11 @@ const {} = useUserStoreRefs();
 
 :deep(.order-pagination) {
   display: none !important;
+}
+
+.order_tab__content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
 }
 </style>

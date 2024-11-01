@@ -24,10 +24,11 @@
           />
           <div class="header__action">
             <div class="header_user" @click="targetUser()">
-              <IconBtn />
-              <p v-if="user">
-                {{ user.username }}
-              </p>
+              <img src="@/assets/icons/user.svg" v-if="!user" />
+              <div v-else class="icon-name">
+                <div class="circle"></div>
+                {{ firstLetter }}
+              </div>
             </div>
             <div class="header_carts" @click="nextCarts()">
               <div class="counter">{{ isCarts.length }}</div>
@@ -85,6 +86,9 @@ const nextCarts = () => {
 
 // Логика для добавления класса при прокрутке
 const isScrolled = ref(false);
+const firstLetter = computed(() =>
+  user.value?.username ? user.value.username.charAt(0).toUpperCase() : ""
+);
 
 const handleScroll = () => {
   if (window.scrollY > 100) {
@@ -248,6 +252,32 @@ onUnmounted(() => {
   color: $brown;
   @include bp($point_2, $direction: min) {
     display: none;
+  }
+}
+
+.icon-name {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 100%;
+  @include flex-center;
+  font-size: 2.2rem;
+  font-family: $font_3;
+  padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+  line-height: 0;
+  position: relative;
+  color: $brown;
+
+  .circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    z-index: -1;
+    background-color: $lbrown;
+    opacity: 0.3;
   }
 }
 </style>

@@ -32,7 +32,7 @@
             :key="`hits-item-${i}`"
             class="hits_item"
           >
-            <RouterLink :to="`/shop/products/${item.slug}`">
+            <RouterLink :to="`/shop/products/${item.id}`">
               <div class="hits_item__content">
                 <span>{{ getStockStatus(item.stock_status) }}</span>
                 <h3>{{ item.title }}</h3>

@@ -1,6 +1,6 @@
 <template>
   <div class="orders">
-    <div class="orders__head">№ {{ order.num }}</div>
+    <div class="orders__head">№ {{ order.order_id }}</div>
     <div class="orders__main">
       <Swiper
         :slides-per-view="5.5"
@@ -13,13 +13,16 @@
         }"
         :pagination="{ el: '.order-pagination', clickable: true }"
       >
-        <SwiperSlide v-for="(item, i) in order.products" :key="'order-item-slide-' + i">
+        <SwiperSlide
+          v-for="(item, i) in order.items"
+          :key="'order-item-slide-' + i"
+        >
           <div class="order">
             <div class="order_img">
-              <img :src="item.img" />
+              <img :src="item.image_url" />
             </div>
             <div class="order__content">
-              <h3>{{ item.title }}</h3>
+              <h3>{{ item.name }}</h3>
               <p>
                 Цвет: <span>{{ item.color }}</span>
               </p>
@@ -40,7 +43,7 @@
     <div class="orders__footer">
       <h4>Данные доставки</h4>
       <p>Адрес доставки</p>
-      <span>{{ order.address }}</span>
+      <span>{{ order.billing_address.address_1 }}</span>
     </div>
     <div class="orders__total">
       Сумма заказа: <b>{{ order.total }}</b>
