@@ -34,8 +34,6 @@
   </div>
 </template>
 
-
-
 <script setup lang="ts">
 import IconBtn from "../ui/IconBtn.vue";
 import AuthNew from "./auth/AuthNew.vue";
@@ -45,17 +43,13 @@ import { useModalStore } from "@/stores/useModalStore";
 import { useRouter } from "vue-router";
 import { useUserStore, useUserStoreRefs } from "@/stores/useUserStore";
 
-
 // ddc-sellers@yandex.ru
-
-
 
 const { closeModal } = useModalStore();
 const {
   email,
   otpCode,
   isLoad,
-  userData,
   otpErrorMessage,
   showOtpForm,
   showVerification,
