@@ -74,6 +74,10 @@ body {
   @supports (display: grid) {
     display: block;
   }
+
+  @include bp($point_2) {
+    font-size: 1.6rem;
+  }
 }
 
 a {

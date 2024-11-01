@@ -155,7 +155,7 @@ defineProps<{
   z-index: 99;
 
   @include bp($point_2) {
-    padding: 0 1.6rem 0 0;
+    // padding: 0 1.6rem 0 0;
     display: flex;
   }
 }

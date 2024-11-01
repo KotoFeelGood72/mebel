@@ -97,13 +97,20 @@ const isRent = computed(() => route.name === 'rent')
   right: 0;
   height: 100%;
   @include bp($point_2) {
-    position: static;
+    display: none;
 
   }
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+}
+
+.action_form {
+  @include bp($point_2) {
+    display: flex;
+    flex-direction: column;
   }
 }
 
@@ -135,6 +142,7 @@ const isRent = computed(() => route.name === 'rent')
   @include bp($point_2) {
     font-size: 1.4rem;
     margin-bottom: 2.5rem;
+    order: 0;
   }
   a {
     color: #6484D4;
@@ -146,6 +154,7 @@ const isRent = computed(() => route.name === 'rent')
   margin-bottom: 3.1rem;
   @include bp($point_2) {
     margin-bottom: 2rem;
+    order: 1;
   }
 }
 
@@ -153,6 +162,7 @@ const isRent = computed(() => route.name === 'rent')
   display: inline-flex;
   @include bp($point_2) {
     display: flex;
+    order: 3;
   }
 }
 
@@ -160,6 +170,10 @@ const isRent = computed(() => route.name === 'rent')
   // margin-right: -29rem;
   color: $gray;
   margin-bottom: 5rem;
+
+  @include bp($point_2) {
+    margin-bottom: 3.5rem;
+  }
 }
 
 .rent {

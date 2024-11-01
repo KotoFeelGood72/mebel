@@ -72,7 +72,7 @@
           <div class="list-block">
             <BlockUserInfo />
             <BlockDeliveryCalc :defaultAddress="user?.billing?.address_1" />
-            <BlockPayments />
+            <BlockPayments :total="totalWithDelivery" />
           </div>
         </div>
         <BlockCartTotals
@@ -100,6 +100,7 @@ import BlockUserInfo from "@/components/blocks/BlockUserInfo.vue";
 import BlockDeliveryCalc from "@/components/blocks/BlockDeliveryCalc.vue";
 import BlockCartTotals from "@/components/blocks/BlockCartTotals.vue";
 import { useUserStoreRefs } from "@/stores/useUserStore";
+import { useRouter } from "vue-router";
 // @ts-ignore
 import BlockPayments from "@/components/blocks/BlockPayments.vue";
 import { ref, computed, watch, onMounted } from "vue";
@@ -111,7 +112,7 @@ const { updateCartItem, removeCartItem, createOrder } = useCartStore();
 const { deliveryPrice } = useDelivery();
 const { user } = useUserStoreRefs();
 const selectedItems = ref<string[]>([]);
-const selectedMethod = ref("Оплата картой онлайн или через СБП");
+const router = useRouter();
 
 const hasSelectedItems = computed(() => {
   return selectedItems.value.length > 0;
@@ -156,6 +157,11 @@ const isAllSelected = computed(() => {
   );
 });
 
+// Добавим новое вычисляемое свойство для общей стоимости с учетом доставки
+const totalWithDelivery = computed(() => {
+  return totalPrice.value + deliveryPrice.value;
+});
+
 // Подсчет общей стоимости корзины
 const totalPrice = computed(() => {
   return carts.value.reduce((total: any, item: any) => {
@@ -189,7 +195,17 @@ const setLineItemsAndPrice = () => {
 };
 
 // Следим за изменениями в корзине и обновляем line_items и price
-watch(carts, setLineItemsAndPrice, { deep: true });
+watch([carts, deliveryPrice], setLineItemsAndPrice, { deep: true });
+
+watch(
+  carts,
+  (newCarts) => {
+    if (newCarts.length === 0) {
+      router.push("/"); // Редирект на главную страницу, если корзина пуста
+    }
+  },
+  { immediate: true } // Проверяем сразу при загрузке компонента
+);
 
 onMounted(() => {
   setLineItemsAndPrice();

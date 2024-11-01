@@ -68,6 +68,7 @@ const head = computed(() => {
       title: page.value.hero_title || "", // Если данные есть, то используем их
       txt: page.value.hero_txt || "",
       img: page.value.hero_img?.url || "",
+      imgMobile: page.value.hero_img_mobile?.url || "",
       btn: false,
     };
   }
@@ -88,6 +89,11 @@ onMounted(async () => {
   @include flex-space;
   gap: 10rem;
   padding: 4.2rem 0;
+
+  @include bp($point_2) {
+    flex-direction: column-reverse;
+    gap: 2rem;
+  }
 }
 
 .whats__content {
@@ -96,6 +102,10 @@ onMounted(async () => {
   h2 {
     font-size: 4rem;
     margin-bottom: 3rem;
+    @include bp($point_2) {
+      font-size: 2.6rem;
+      margin-bottom: 1rem;
+    }
   }
   p {
     color: $gray;
@@ -106,6 +116,10 @@ onMounted(async () => {
   @include flex-start;
   gap: 2rem;
   max-width: 70.4rem;
+  @include bp($point_2) {
+    max-width: 100%;
+    gap: 1rem;
+  }
   img {
     width: 100%;
     height: 100%;
@@ -129,10 +143,17 @@ onMounted(async () => {
 
 .propposal_main {
   padding: 10rem 0;
+  @include bp($point_2) {
+    padding: 3rem 0;
+  }
 
   & > h3 {
     font-size: 4rem;
     margin-bottom: 8rem;
+    @include bp($point_2) {
+      font-size: 2.6rem;
+      margin-bottom: 1.8rem;
+    }
   }
   p {
     color: $gray;
@@ -141,14 +162,24 @@ onMounted(async () => {
 .proposal_item__content {
   width: 50%;
 
+  @include bp($point_2) {
+    width: 100%;
+  }
   h3 {
     font-size: 3rem;
     color: $brown;
     margin-bottom: 2rem;
+    @include bp($point_2) {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
   }
 }
 .proposal_item__img {
   width: 50%;
+  @include bp($point_2) {
+    width: 100%;
+  }
   img {
     max-width: 80rem;
     width: 100%;
@@ -160,15 +191,27 @@ onMounted(async () => {
 .proposal_item {
   @include flex-start;
   gap: 2.9rem;
+
+  @include bp($point_2) {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
   &:not(:last-child) {
     margin-bottom: 8rem;
+    @include bp($point_2) {
+      margin-bottom: 3rem;
+    }
   }
   &:nth-child(2) {
     .proposal_item__img {
-      order: 1;
+      @include bp($point_2, $direction: min) {
+        order: 1;
+      }
     }
     .proposal_item__content {
-      order: 0;
+      @include bp($point_2, $direction: min) {
+        order: 0;
+      }
     }
   }
   &:last-child {
@@ -176,8 +219,14 @@ onMounted(async () => {
     .proposal_item__img {
       @include flex-center;
       order: 1;
+      @include bp($point_2) {
+        justify-content: flex-start;
+      }
       img {
         max-width: 33rem;
+        @include bp($point_2) {
+          max-width: 13.5rem;
+        }
       }
     }
     .proposal_item__content {

@@ -2,7 +2,7 @@
   <header class="header" :class="{ gray: isHome, scrolled: isScrolled }">
     <div class="container">
       <div class="header_top">
-        <div class="burger">
+        <div class="burger" @click="openModal('burger')">
           <Icons icon="iconamoon:menu-burger-horizontal-thin" :size="35" />
         </div>
         <div class="header_col__left">

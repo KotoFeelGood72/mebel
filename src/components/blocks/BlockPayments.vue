@@ -20,25 +20,78 @@
           <img v-if="method.logo" :src="method.logo" />
         </label>
       </div>
-      <div
-        class="split__w"
-        v-if="paymentMethod === 'Оплата картой онлайн или через СБП'"
-      >
-        <div id="split-widget"></div>
+      <div class="split__w" v-if="paymentMethod === 'Оплатить'">
+        <div class="loader" v-show="isLoading">
+          <Icons icon="svg-spinners:ring-resize" :size="50" />
+        </div>
+        <div v-show="!isLoading" id="split-widget"></div>
       </div>
     </div>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useCartStoreRefs } from "@/stores/useCartStore";
+import { onMounted, onUnmounted, ref, watch, nextTick } from "vue";
+import { useYaPay } from "@/services/useYaPay";
 
+const props = defineProps<{
+  total: number;
+}>();
 const { paymentMethod } = useCartStoreRefs();
-
+const { createPaymentSession, resetPaymentSession } = useYaPay();
 const paymentMethods = [
   { name: "Оплата картой онлайн или через СБП" },
   { name: "Оплатить", logo: "/img/split.png" },
 ];
+
+// Состояние загрузки
+const isLoading = ref(false);
+
+// Функция для инициализации виджета
+const initializeWidget = async () => {
+  isLoading.value = true; // Устанавливаем состояние загрузки
+  await nextTick(); // Ждем обновления DOM
+
+  const widgetContainer = document.querySelector("#split-widget");
+  if (widgetContainer) {
+    await resetPaymentSession(); // Очищаем текущую сессию перед созданием новой
+    await createPaymentSession({
+      amount: props.total,
+      widgetContainerId: "#split-widget",
+    });
+    setTimeout(() => {
+      isLoading.value = false; // Отключаем состояние загрузки после инициализации виджета
+    }, 500);
+  } else {
+    console.error('Элемент с ID "#split-widget" не найден.');
+    isLoading.value = false;
+  }
+};
+
+// Отслеживаем изменения в методе оплаты
+watch(paymentMethod, (newMethod) => {
+  if (newMethod === "Оплатить") {
+    initializeWidget(); // Инициализируем виджет при выборе метода "Оплатить"
+  } else {
+    resetPaymentSession(); // Очищаем сессию, если выбран другой метод
+  }
+});
+
+// Отслеживаем изменения в props.total
+watch(
+  () => props.total,
+  (newTotal) => {
+    if (paymentMethod.value === "Оплатить") {
+      initializeWidget(); // Обновляем виджет при изменении суммы, если выбран метод "Оплатить"
+    }
+  }
+);
+
+// Очищаем сессию при размонтировании компонента
+onUnmounted(() => {
+  resetPaymentSession();
+});
 </script>
 
 <style scoped lang="scss">
@@ -127,5 +180,11 @@ const paymentMethods = [
 
 .split__w {
   max-width: 50rem;
+}
+
+.loader {
+  height: 20rem;
+  @include flex-center;
+  color: $lbrown;
 }
 </style>

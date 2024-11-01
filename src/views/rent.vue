@@ -53,6 +53,24 @@
                   :slides-per-view="4"
                   :space-between="20"
                   :modules="[Navigation]"
+                  :breakpoints="{
+                    320: {
+                      slidesPerView: 1.2,
+                      spaceBetween: 10,
+                      slidesOffsetBefore: 10,
+                      slidesOffsetAfter: 10,
+                    },
+                    768: {
+                      slidesPerView: 1.5,
+                      spaceBetween: 10,
+                      slidesOffsetBefore: 10,
+                      slidesOffsetAfter: 10,
+                    },
+                    1024: {
+                      slidesPerView: 4,
+                      spaceBetween: 20,
+                    },
+                  }"
                   :navigation="{
                     prevEl: `.colors_prev`,
                     nextEl: `.colors_next`,
@@ -203,6 +221,7 @@ const head = computed(() => {
       title: page.value.hero_title || "",
       txt: page.value.hero_txt || "",
       img: page.value.hero_img?.url || "",
+      imgMobile: page.value.hero_img_mobile?.url || "",
       btn: false,
     };
   }
@@ -223,10 +242,24 @@ onMounted(async () => {
   @include flex-start;
   gap: 16.5rem;
   padding: 6rem 0;
+
+  @include bp($point_2) {
+    flex-direction: column-reverse;
+    gap: 4rem;
+    padding: 3rem 0;
+  }
 }
 
 .rentdesc__img {
   max-width: 70.3rem;
+  img {
+    @include bp($point_2) {
+      width: 100%;
+    }
+  }
+  @include bp($point_2) {
+    max-width: 100%;
+  }
 }
 
 .rentdesc__content {
@@ -237,9 +270,16 @@ onMounted(async () => {
         font-size: 3rem;
         font-weight: 600;
         margin-bottom: 2.5rem;
+        @include bp($point_2) {
+          font-size: 2.2rem;
+          margin-bottom: 1.5rem;
+        }
       }
       &:not(:last-child) {
         margin-bottom: 5rem;
+        @include bp($point_2) {
+          margin-bottom: 2.5rem;
+        }
       }
     }
   }
@@ -249,10 +289,18 @@ onMounted(async () => {
   padding: 10rem 0;
   @include flex-start;
   gap: 1rem;
+  @include bp($point_2) {
+    padding: 3rem 0;
+    flex-direction: column;
+  }
 
   h2 {
     font-size: 5rem;
     margin-bottom: 4rem;
+    @include bp($point_2) {
+      font-size: 2.6rem;
+      margin-bottom: 2.5rem;
+    }
   }
 }
 
@@ -263,9 +311,17 @@ onMounted(async () => {
     flex-wrap: wrap;
     gap: 3.5rem 15.8rem;
     margin-bottom: 5.7rem;
+    @include bp($point_2) {
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+    }
     li {
       @include flex-start;
       gap: 1.9rem;
+      @include bp($point_2) {
+        font-size: 2rem;
+        gap: 0.8rem;
+      }
       :deep(span) {
         color: $brown;
       }
@@ -273,23 +329,55 @@ onMounted(async () => {
   }
 }
 
+.price-icon {
+  img {
+    @include bp($point_2) {
+      width: 100%;
+    }
+  }
+  @include bp($point_2) {
+    width: 4rem;
+    @include flex-center;
+  }
+}
+
 .price_notice {
   color: $brown;
   font-size: 2.4rem;
   font-weight: 500;
+  @include bp($point_2) {
+    font-size: 1.6rem;
+    font-family: $font_2;
+    text-align: center;
+  }
 }
 
 .price_img {
   max-width: 70.5rem;
   @include flex-center;
+  @include bp($point_2) {
+    max-width: 100%;
+  }
+  img {
+    @include bp($point_2) {
+      width: 100%;
+    }
+  }
 }
 
 .colors_head {
   margin-bottom: 3rem;
+  @include bp($point_2) {
+    margin-bottom: 0;
+  }
   h3 {
     font-size: 5rem;
     margin-bottom: 2rem;
     font-family: $font_2;
+    @include bp($point_2) {
+      font-size: 2.6rem;
+      margin-bottom: 1.5rem;
+    }
   }
 }
 
@@ -331,6 +419,9 @@ onMounted(async () => {
 
 .color_slider {
   padding: 6rem 0 9.5rem 0;
+  @include bp($point_2) {
+    padding: 3rem 0;
+  }
 }
 
 .colors_slider {
@@ -346,6 +437,10 @@ onMounted(async () => {
   width: calc(100% + 3rem);
   @include flex-space;
   z-index: 11;
+
+  @include bp($point_2) {
+    display: none;
+  }
   div {
     @include flex-center;
     cursor: pointer;

@@ -10,6 +10,9 @@
     <transition name="modal">
       <ModalCallback v-if="modals.callback" class="modal-animate" />
     </transition>
+    <transition name="modal-left">
+      <Burger v-if="modals.burger" class="modal-animate" />
+    </transition>
     <transition name="fade-bg">
       <div v-if="isModalActive" class="page-bg" @click="closeAllModals"></div>
     </transition>
@@ -21,6 +24,7 @@
 <script setup lang="ts">
 import ModalAuth from "@/components/modal/ModalAuth.vue";
 import ModalCallback from "@/components/modal/ModalCallback.vue";
+import Burger from "@/components/modal/Burger.vue";
 import Header from "@/components/shared/Header.vue";
 import Footer from "@/components/shared/Footer.vue";
 import Preloader from "@/components/shared/Preloader.vue";
@@ -82,13 +86,37 @@ onMounted(async () => {
   transform: translateX(0%);
   opacity: 1;
 }
-Ы .modal-leave-from {
+.modal-leave-from {
   transform: translateX(0%);
   opacity: 1;
 }
 
 .modal-leave-to {
   transform: translateX(100%);
+  opacity: 0;
+}
+
+.modal-left-enter-active,
+.modal-left-leave-active {
+  transition: all 0.3s ease;
+}
+
+.modal-left-enter-from {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.modal-left-enter-to {
+  transform: translateX(0%);
+  opacity: 1;
+}
+.modal-left-leave-from {
+  transform: translateX(0%);
+  opacity: 1;
+}
+
+.modal-left-leave-to {
+  transform: translateX(-100%);
   opacity: 0;
 }
 </style>

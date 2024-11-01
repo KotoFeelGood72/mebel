@@ -15,8 +15,27 @@ declare global {
   }
 }
 
+function loadYandexSplitSDK() {
+  if (!window.YaPay) {
+    const script = document.createElement("script");
+    script.src = "https://pay.yandex.ru/sdk/v1/pay.js";
+    script.async = true;
+    script.onload = () => {
+      console.log("YaPay SDK загружен");
+    };
+    script.onerror = () => {
+      console.error("Ошибка при загрузке YaPay SDK");
+    };
+    document.head.appendChild(script);
+  } else {
+    console.log("YaPay SDK уже загружен");
+  }
+}
+
+// Создание приложения
 const app = createApp(App);
 
+// Подключаем Pinia
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 
@@ -32,3 +51,6 @@ app.component("Icons", Icons);
 app.component("MaskInput", MaskInput);
 
 app.mount("#app");
+
+// Загружаем SDK Яндекс Сплита при запуске приложения
+loadYandexSplitSDK();
