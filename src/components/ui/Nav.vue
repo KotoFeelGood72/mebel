@@ -30,7 +30,8 @@ const nav = ref<any>([
     @include bp($point_2) {
       font-size: 1.6rem;
     }
-    &.router-link-exact-active {
+    &.router-link-exact-active,
+    &.router-link-active {
       color: $brown;
       font-family: $font_2;
       font-weight: 500;

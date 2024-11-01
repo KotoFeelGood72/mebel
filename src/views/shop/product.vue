@@ -19,7 +19,9 @@
                 v-for="(item, i) in productPage.gallery_images"
                 :key="'products-item-slide-' + i"
               >
-                <img :src="item" />
+                <a :href="item" data-fancybox="products">
+                  <img :src="item" />
+                </a>
               </SwiperSlide>
             </Swiper>
             <div class="products_navigation">
@@ -255,6 +257,12 @@ onMounted(async () => {
 .products_slider {
   max-width: 99.5rem;
   margin-bottom: 3rem;
+
+  a {
+    @include flex-center;
+    width: 100%;
+    height: 100%
+  }
 
   @include bp($point_2) {
     max-width: 100%;
