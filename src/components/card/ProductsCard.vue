@@ -8,9 +8,10 @@
         :slides-per-view="1"
         :space-between="20"
         :modules="[Navigation, Pagination]"
+        :watchSlidesVisibility="true"
         :breakpoints="{
           320: {
-            slidesPerView: 1.2,
+            slidesPerView: 1.1,
             spaceBetween: 10,
             slidesOffsetBefore: 10,
             slidesOffsetAfter: 10,
@@ -234,6 +235,7 @@ const updateQuantity = (quantity: number) => {
   position: relative;
   @include bp($point_2) {
     max-width: 100%;
+    width: 100%;
   }
 
   :deep(.swiper) {

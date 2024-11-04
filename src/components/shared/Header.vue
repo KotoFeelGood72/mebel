@@ -74,7 +74,7 @@ const targetUser = () => {
     openModal("auth");
   } else {
     closeModal("auth");
-    router.push("profile");
+    router.push({ name: "user" });
   }
 };
 
@@ -84,7 +84,6 @@ const nextCarts = () => {
   }
 };
 
-// Логика для добавления класса при прокрутке
 const isScrolled = ref(false);
 const firstLetter = computed(() =>
   user.value?.username ? user.value.username.charAt(0).toUpperCase() : ""
@@ -92,7 +91,6 @@ const firstLetter = computed(() =>
 
 const handleScroll = () => {
   if (window.scrollY > 100) {
-    // Порог прокрутки, при котором добавляется класс
     isScrolled.value = true;
   } else {
     isScrolled.value = false;

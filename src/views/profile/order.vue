@@ -46,67 +46,6 @@ import { useUserStoreRefs, useUserStore } from "@/stores/useUserStore";
 // Активная вкладка
 const activeTab = ref<"active" | "completed">("active");
 
-// // Пример данных заказов
-// const activeOrders = ref([
-//   {
-//     num: "12234",
-//     total: "60 500",
-//     address: "г. Краснодар, ул. Восточно-кругликовская 77",
-//     products: [
-//       {
-//         title: "Бескаркасное кресло Империал",
-//         color: "Молочный",
-//         img: "/img/about-1.jpg",
-//       },
-//       {
-//         title: "Бескаркасное кресло Империал",
-//         color: "Молочный",
-//         img: "/img/about-1.jpg",
-//       },
-//       {
-//         title: "Бескаркасное кресло Империал",
-//         color: "Молочный",
-//         img: "/img/about-1.jpg",
-//       },
-//       {
-//         title: "Бескаркасное кресло Империал",
-//         color: "Молочный",
-//         img: "/img/about-1.jpg",
-//       },
-//       {
-//         title: "Бескаркасное кресло Империал",
-//         color: "Молочный",
-//         img: "/img/about-1.jpg",
-//       },
-//       {
-//         title: "Бескаркасное кресло Империал",
-//         color: "Молочный",
-//         img: "/img/about-1.jpg",
-//       },
-//       {
-//         title: "Бескаркасное кресло Империал",
-//         color: "Молочный",
-//         img: "/img/about-1.jpg",
-//       },
-//     ],
-//   },
-// ]);
-
-// const completedOrders = ref([
-//   {
-//     num: "54321",
-//     total: "40 000",
-//     address: "г. Москва, ул. Ленина 10",
-//     products: [
-//       {
-//         title: "Бескаркасное кресло Империал",
-//         color: "Чёрный",
-//         img: "/img/about-1.jpg",
-//       },
-//     ],
-//   },
-// ]);
-
 const { order } = useUserStoreRefs();
 const { fetchUser } = useUserStore();
 

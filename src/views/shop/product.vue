@@ -68,7 +68,7 @@
                     :initialQuantity="cartItem?.quantity || selectedQuantity"
                     v-if="isCarts"
                     @updateQuantity="updateQuantity"
-                    @clear="removeCart(product)"
+                    @clear="removeCart(productPage)"
                   />
                 </div>
               </div>
@@ -129,7 +129,6 @@ const { useGetProductPage, productPage } = useProductPage();
 
 const currentSlide = ref(1);
 
-const product = ref<any>();
 const totalSlides = ref();
 const route = useRoute();
 const toast = useToast();
@@ -215,19 +214,27 @@ const colorMap: Record<string, string> = {
 };
 
 // Обновление цвета
-const updateSelectedColor = (color: string) => {
-  selectedColor.value = color;
-  console.log(color);
-};
+// const updateSelectedColor = (color: string) => {
+//   selectedColor.value = color;
+//   console.log(color);
+// };
 
 onMounted(async () => {
-  useGetProductPage(String(route.params.id));
-  // product.value = await getProductBySlug(route.params.slug[1]);
-  if (cartItem.value) {
-    selectedQuantity.value = cartItem.value.quantity;
-    selectedColor.value = cartItem.value.color;
+  await useGetProductPage(String(route.params.id));
+
+  // Установка первого цвета по умолчанию, если ничего не выбрано
+  if (productPage.value?.attributes?.pa_colors && !selectedColor.value) {
+    selectedColor.value = productPage.value.attributes.pa_colors[0];
   }
 
+  // Синхронизация с корзиной, если товар уже добавлен
+  if (cartItem.value) {
+    selectedQuantity.value = cartItem.value.quantity;
+    selectedColor.value =
+      cartItem.value.color || productPage.value.attributes.pa_colors[0];
+  }
+
+  // Установка количества слайдов
   if (productPage.value && productPage.value.gallery_images) {
     totalSlides.value = productPage.value.gallery_images.length;
   }

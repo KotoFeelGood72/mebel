@@ -8,6 +8,7 @@ import Toast, { POSITION } from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import { MaskInput } from "vue-3-mask";
+import { createHead } from "@vueuse/head";
 
 declare global {
   interface Window {
@@ -49,6 +50,9 @@ app.use(Toast, {
 
 app.component("Icons", Icons);
 app.component("MaskInput", MaskInput);
+
+const head = createHead();
+app.use(head);
 
 app.mount("#app");
 

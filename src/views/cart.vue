@@ -181,30 +181,29 @@ const setLineItemsAndPrice = () => {
   }));
 
   // Добавляем стоимость доставки к общей стоимости заказа
-  const totalOrderPrice =
-    carts.value.reduce((total: any, item: any) => {
-      return total + item.price * item.quantity;
-    }, 0) + deliveryPrice.value;
+  // const totalOrderPrice =
+  //   carts.value.reduce((total: any, item: any) => {
+  //     return total + item.price * item.quantity;
+  //   }, 0) + deliveryPrice.value;
 
   currentOrder.value = {
     ...currentOrder.value,
     line_items: lineItems,
-    price: totalOrderPrice,
+    shipping_cost: deliveryPrice.value,
     user_id: user.value.ID,
   };
 };
 
-// Следим за изменениями в корзине и обновляем line_items и price
 watch([carts, deliveryPrice], setLineItemsAndPrice, { deep: true });
 
 watch(
   carts,
   (newCarts) => {
     if (newCarts.length === 0) {
-      router.push("/"); // Редирект на главную страницу, если корзина пуста
+      router.push("/");
     }
   },
-  { immediate: true } // Проверяем сразу при загрузке компонента
+  { immediate: true }
 );
 
 onMounted(() => {

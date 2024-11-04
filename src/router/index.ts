@@ -1,3 +1,103 @@
+// import { createRouter, createWebHistory } from "vue-router";
+// import setupGlobalLoadingMiddleware from "@/middleware/loading";
+
+// const router = createRouter({
+//   history: createWebHistory(import.meta.env.BASE_URL_ASSET),
+//   routes: [
+//     {
+//       path: "/",
+//       name: "home",
+//       component: () => import("@/views/index.vue"),
+//     },
+//     {
+//       path: "/privacy",
+//       name: "privacy",
+//       component: () => import("@/views/privacy.vue"),
+//     },
+//     {
+//       path: "/thanks",
+//       name: "thanks",
+//       component: () => import("@/views/thanks.vue"),
+//     },
+//     {
+//       path: "/offer-legal",
+//       name: "offer-legal",
+//       component: () => import("@/views/offer-legal.vue"),
+//     },
+//     {
+//       path: "/offer-physical",
+//       name: "offer-physical",
+//       component: () => import("@/views/offer-physical.vue"),
+//     },
+//     {
+//       path: "/profile",
+//       name: "profile",
+//       component: () => import("@/views/profile.vue"),
+//       redirect: "/profile/user",
+//       children: [
+//         {
+//           path: "user",
+//           name: "user",
+//           component: () => import("@/views/profile/index.vue"),
+//         },
+//         {
+//           path: "order",
+//           name: "order",
+//           component: () => import("@/views/profile/order.vue"),
+//         },
+//         {
+//           path: "edit",
+//           name: "edit",
+//           component: () => import("@/views/profile/edit.vue"),
+//         },
+//       ],
+//     },
+//     {
+//       path: "/rent",
+//       name: "rent",
+//       component: () => import("@/views/rent.vue"),
+//     },
+//     {
+//       path: "/design",
+//       name: "design",
+//       component: () => import("@/views/design.vue"),
+//     },
+//     {
+//       path: "/cart",
+//       name: "cart",
+//       component: () => import("@/views/cart.vue"),
+//     },
+//     {
+//       path: "/shop",
+//       name: "shop",
+//       redirect: "/shop/products",
+//       children: [
+//         {
+//           path: "/shop/products/:id",
+//           name: "product",
+//           component: () => import("@/views/shop/product.vue"),
+//         },
+//         {
+//           path: "/shop/products",
+//           name: "product-list",
+//           component: () => import("@/views/shop/index.vue"),
+//         },
+//       ],
+//     },
+//   ],
+//   scrollBehavior(to, from, savedPosition) {
+//     if (savedPosition) {
+//       return savedPosition;
+//     } else {
+//       return { top: 0 };
+//     }
+//   },
+// });
+
+// setupGlobalLoadingMiddleware(router);
+
+// export default router;
+
 import { createRouter, createWebHistory } from "vue-router";
 import setupGlobalLoadingMiddleware from "@/middleware/loading";
 
@@ -33,22 +133,29 @@ const router = createRouter({
       path: "/profile",
       name: "profile",
       component: () => import("@/views/profile.vue"),
-      redirect: "/profile/user",
+      meta: { requiresAuth: true },
       children: [
+        {
+          path: "",
+          redirect: "/profile/user",
+        },
         {
           path: "user",
           name: "user",
           component: () => import("@/views/profile/index.vue"),
+          meta: { requiresAuth: true },
         },
         {
           path: "order",
           name: "order",
           component: () => import("@/views/profile/order.vue"),
+          meta: { requiresAuth: true },
         },
         {
           path: "edit",
           name: "edit",
           component: () => import("@/views/profile/edit.vue"),
+          meta: { requiresAuth: true },
         },
       ],
     },
@@ -56,6 +163,7 @@ const router = createRouter({
       path: "/rent",
       name: "rent",
       component: () => import("@/views/rent.vue"),
+      meta: { requiresAuth: true },
     },
     {
       path: "/design",
@@ -70,7 +178,7 @@ const router = createRouter({
     {
       path: "/shop",
       name: "shop",
-      redirect: "/shop/products", // Перенаправляем на /shop/products по умолчанию
+      redirect: "/shop/products",
       children: [
         {
           path: "/shop/products/:id",
@@ -79,7 +187,7 @@ const router = createRouter({
         },
         {
           path: "/shop/products",
-          name: "product-list", // Заменил name для уникальности
+          name: "product-list",
           component: () => import("@/views/shop/index.vue"),
         },
       ],
@@ -95,5 +203,15 @@ const router = createRouter({
 });
 
 setupGlobalLoadingMiddleware(router);
+
+router.beforeEach((to, from, next) => {
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+  const user = localStorage.getItem("users");
+  if (requiresAuth && !user) {
+    next({ name: "home" });
+  } else {
+    next();
+  }
+});
 
 export default router;
