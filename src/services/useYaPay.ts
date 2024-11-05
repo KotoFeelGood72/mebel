@@ -169,7 +169,7 @@ export function useYaPay() {
       };
 
       // Обработчик на ошибки при открытии формы оплаты
-      function onFormOpenError(reason) {
+      function onFormOpenError(reason: any) {
         console.error(`Payment error — ${reason}`);
       }
 
