@@ -2,34 +2,42 @@
   <div class="action">
     <div class="container">
       <div class="action__main">
-        <div class="action_form__w" :class="{small: isHome, rent: isRent}">
+        <div class="action_form__w" :class="{ small: isHome, rent: isRent }">
           <h6>{{ title }}</h6>
           <div class="action__privacy" v-if="isHome">
             Отправляя заявку вы соглашаетесь на обработку своих
-            <RouterLink to="/privacy">персональных данных</RouterLink to="/privacy"> и принимаете <RouterLink to="/">политику
-            конфиденциальности.</RouterLink>
+            <RouterLink to="/privacy">персональных данных</RouterLink> и
+            принимаете
+            <RouterLink to="/">политику конфиденциальности.</RouterLink>
           </div>
           <div class="action_txt" v-if="txt && !isHome">
-          {{ txt }}
+            {{ txt }}
           </div>
           <div class="action_form">
-          <div class="action_form__input">
-           <InputPhone v-model="phone" placeholder="Номер телефона"/>
-          </div>
-          <div class="action__privacy" v-if="!isHome">
-            Отправляя заявку вы соглашаетесь на обработку своих
-            <RouterLink to="/privacy">персональных данных</RouterLink to="/privacy"> и принимаете <RouterLink to="/">политику
-            конфиденциальности.</RouterLink>
-          </div>
-          <div class="action_form__btn">
-          
-          <DefaultBtn
-            name="Отправить заявку"
-            type="primary"
-            color="brown"
-            size="normal"
-          />
-          </div>
+            <div class="action_form__input">
+              <InputPhone
+                v-model="formData.phone"
+                placeholder="Номер телефона"
+                :error="v$.phone.$error"
+              />
+            </div>
+            <div class="action__privacy" v-if="!isHome">
+              Отправляя заявку вы соглашаетесь на обработку своих
+              <RouterLink to="/privacy">персональных данных</RouterLink> и
+              принимаете
+              <RouterLink to="/">политику конфиденциальности.</RouterLink>
+            </div>
+            <div class="action_form__btn">
+              <DefaultBtn
+                :name="isLoading ? 'Отправка...' : 'Отправить заявку'"
+                type="primary"
+                color="brown"
+                size="normal"
+                @click="submitForm"
+                :icon="isLoading ? 'svg-spinners:ring-resize' : ''"
+                :disabled="isLoading"
+              />
+            </div>
           </div>
         </div>
         <div class="action__img">
@@ -41,35 +49,53 @@
 </template>
 
 <script setup lang="ts">
-import InputPhone from '../ui/InputPhone.vue';
-import DefaultBtn from '../ui/DefaultBtn.vue';
-import { useRoute } from 'vue-router';
-import { withDefaults, defineProps, ref, computed } from 'vue';
+import InputPhone from "../ui/InputPhone.vue";
+import DefaultBtn from "../ui/DefaultBtn.vue";
+import { useRoute } from "vue-router";
+import { withDefaults, defineProps, computed } from "vue";
+import { useFormHandler } from "@/composables/useFormHandler";
 
-const route = useRoute()
+const route = useRoute();
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
-    title?: string
-    txt?: string
-    img?: string
-  }>(), {
-    
-    title: 'Остались вопросы — с удовольствием ответим!',
-    txt: 'Свяжитесь с нами, чтобы обсудить ваши идеи и запросы. Наши специалисты всегда готовы предоставить консультацию и помочь на каждом этапе реализации вашего проекта. Вместе мы сможем создать нечто действительно выдающееся.',
-    img: 'http://fu.gleede.ru/wp-content/uploads/2024/11/action.jpg'
+    title?: string;
+    txt?: string;
+    img?: string;
+  }>(),
+  {
+    title: "Остались вопросы — с удовольствием ответим!",
+    txt: "Свяжитесь с нами, чтобы обсудить ваши идеи и запросы. Наши специалисты всегда готовы предоставить консультацию и помочь на каждом этапе реализации вашего проекта. Вместе мы сможем создать нечто действительно выдающееся.",
+    img: "http://fu.gleede.ru/wp-content/uploads/2024/11/action.jpg",
   }
-)
-const phone = ref<string>()
+);
 
-const isHome = computed(() => route.name === 'home')
-const isRent = computed(() => route.name === 'rent')
+const isPages = computed(() => {
+  switch (route.name) {
+    case "rent":
+      return "Страница аренда";
+    case "design":
+      return "Страница дизайна";
+    case "home":
+      return "Главная страница";
+  }
+});
+
+const formTitle = `Заявка на обратный звонок. Страница: ${isPages.value}`;
+const requireName = false;
+
+const { formData, isLoading, submitForm, v$ } = useFormHandler(
+  formTitle,
+  requireName
+);
+
+const isHome = computed(() => route.name === "home");
+const isRent = computed(() => route.name === "rent");
 </script>
 
 <style scoped lang="scss">
-
 .action {
-  background-color: #F0F1F5;
+  background-color: #f0f1f5;
   position: relative;
   margin-top: 5rem;
   .container {
@@ -89,7 +115,6 @@ const isRent = computed(() => route.name === 'rent')
   }
 }
 
-
 .action__img {
   max-width: 110rem;
   @include flex-center;
@@ -98,7 +123,6 @@ const isRent = computed(() => route.name === 'rent')
   height: 100%;
   @include bp($point_2) {
     display: none;
-
   }
   img {
     width: 100%;
@@ -115,12 +139,11 @@ const isRent = computed(() => route.name === 'rent')
 }
 
 .action_form__w {
-
   max-width: 84.3rem;
   @include bp($point_2) {
     padding: 1.6rem 1.6rem 5rem 1.6rem;
   }
-  
+
   &.small {
     max-width: 56.9rem;
   }
@@ -145,7 +168,7 @@ const isRent = computed(() => route.name === 'rent')
     order: 0;
   }
   a {
-    color: #6484D4;
+    color: #6484d4;
   }
 }
 
@@ -167,7 +190,6 @@ const isRent = computed(() => route.name === 'rent')
 }
 
 .action_txt {
-  // margin-right: -29rem;
   color: $gray;
   margin-bottom: 5rem;
 

@@ -4,41 +4,7 @@
       <div class="container">
         <Breadcrumbs :crumbs="breadcrumbs" />
         <div class="products_main">
-          <div class="products_slider" v-if="productPage.gallery_images">
-            <Swiper
-              :slides-per-view="1"
-              :space-between="20"
-              :modules="[Navigation, Pagination]"
-              :navigation="{
-                prevEl: `.products_prev`,
-                nextEl: `.products_next`,
-              }"
-              @slideChange="updateCurrentSlide"
-            >
-              <SwiperSlide
-                v-for="(item, i) in productPage.gallery_images"
-                :key="'products-item-slide-' + i"
-              >
-                <a :href="item" data-fancybox="products">
-                  <img :src="item" />
-                </a>
-              </SwiperSlide>
-            </Swiper>
-            <div class="products_navigation">
-              <div class="products_prev">
-                <Icons icon="bi:chevron-left" :size="30" />
-              </div>
-              <div class="products-pagination">
-                <span class="fraction"
-                  >{{ currentSlide }}
-                  <div class="total">/{{ totalSlides }}</div></span
-                >
-              </div>
-              <div class="products_next">
-                <Icons icon="bi:chevron-right" :size="30" />
-              </div>
-            </div>
-          </div>
+          <ProductsSlider :products="productPage" />
           <div class="products_content">
             <div class="products_content__head">
               <h3>{{ productPage.title }}</h3>
@@ -68,7 +34,7 @@
                     :initialQuantity="cartItem?.quantity || selectedQuantity"
                     v-if="isCarts"
                     @updateQuantity="updateQuantity"
-                    @clear="removeCart(productPage)"
+                    @clear="removeCart(productPage.id, selectedColor)"
                   />
                 </div>
               </div>
@@ -112,22 +78,18 @@ import SingleIdeas from "@/components/single/SingleIdeas.vue";
 import SingleAbout from "@/components/single/SingleAbout.vue";
 import ColorSelect from "@/components/ui/ColorSelect.vue";
 import AddToCart from "@/components/ui/AddToCart.vue";
-import { Swiper, SwiperSlide } from "swiper/vue";
-import { Navigation, Pagination } from "swiper/modules";
 import Breadcrumbs from "@/components/ui/Breadcrumbs.vue";
 import Qty from "@/components/ui/Qty.vue"; // Импортируем компонент для количества
 import { useRoute } from "vue-router";
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { useCartStore, useCartStoreRefs } from "@/stores/useCartStore";
 import { useToast } from "vue-toastification";
-import { watch } from "vue";
 import { useProductPage } from "@/services/useProductPage";
-import "swiper/swiper-bundle.css";
+
 const { removeCart, addCart, updateCartItem } = useCartStore();
 const { carts } = useCartStoreRefs();
 const { useGetProductPage, productPage } = useProductPage();
-
-const currentSlide = ref(1);
+import ProductsSlider from "@/components/ui/ProductsSlider.vue";
 
 const totalSlides = ref();
 const route = useRoute();
@@ -136,12 +98,18 @@ const breadcrumbs = ref([
   { text: "Каталог", href: "/shop" },
   { text: "Бескаркасное кресло империал" },
 ]);
-const isCarts = computed(() =>
-  carts.value.some((cart: any) => cart.id === productPage.value.id)
-);
 
+const isCarts = computed(() =>
+  carts.value.some(
+    (cart: any) =>
+      cart.id === productPage.value?.id && cart.color === selectedColor.value
+  )
+);
 const cartItem = computed(() =>
-  carts.value.find((cart: any) => cart.id === productPage.value?.id)
+  carts.value.find(
+    (cart: any) =>
+      cart.id === productPage.value?.id && cart.color === selectedColor.value
+  )
 );
 
 const selectedQuantity = ref(cartItem.value ? cartItem.value.quantity : 1);
@@ -153,7 +121,7 @@ const selectedColor = ref(
 
 const toggleCart = () => {
   if (isCarts.value) {
-    removeCart(productPage.value);
+    removeCart(productPage.value?.id, selectedColor.value);
     toast.error("Удалено из корзины");
   } else {
     addCart({
@@ -197,32 +165,9 @@ const updateQuantity = (quantity: number) => {
   updateCart();
 };
 
-// Обновляем текущее состояние слайда
-const updateCurrentSlide = (swiper: any) => {
-  currentSlide.value = swiper.realIndex + 1;
-};
-
-// Карта цветов
-const colorMap: Record<string, string> = {
-  Бежевый: "#D8D1B6",
-  Зелёный: "#547C51",
-  Серый: "#5B5E62",
-  Темный: "#342F2F",
-  ["Светло-жёлтый"]: "#EAECD7",
-  Черный: "#000000",
-  "Тёмно-серый": "#909090",
-};
-
-// Обновление цвета
-// const updateSelectedColor = (color: string) => {
-//   selectedColor.value = color;
-//   console.log(color);
-// };
-
 onMounted(async () => {
   await useGetProductPage(String(route.params.id));
 
-  // Установка первого цвета по умолчанию, если ничего не выбрано
   if (productPage.value?.attributes?.pa_colors && !selectedColor.value) {
     selectedColor.value = productPage.value.attributes.pa_colors[0];
   }
@@ -256,36 +201,6 @@ onMounted(async () => {
   @include bp($point_2) {
     flex-direction: column;
     gap: 2rem;
-  }
-}
-
-.products_slider {
-  max-width: 99.5rem;
-  margin-bottom: 3rem;
-
-  a {
-    @include flex-center;
-    width: 100%;
-    height: 100%;
-  }
-
-  @include bp($point_2) {
-    max-width: 100%;
-    margin-bottom: 0;
-  }
-
-  :deep(.swiper-slide) {
-    height: 78.4rem;
-    // height: 100%;
-    @include flex-center;
-    @include bp($point_2) {
-      height: 24rem;
-    }
-  }
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
   }
 }
 

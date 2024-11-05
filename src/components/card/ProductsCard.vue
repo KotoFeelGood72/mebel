@@ -1,76 +1,7 @@
 <template>
   <div class="products">
-    <div
-      :class="`products_slider products_slider_${products.id}`"
-      v-if="products && products.gallery_images"
-    >
-      <Swiper
-        :slides-per-view="1"
-        :space-between="20"
-        :modules="[Navigation, Pagination]"
-        :watchSlidesVisibility="true"
-        :breakpoints="{
-          320: {
-            slidesPerView: 1.1,
-            spaceBetween: 10,
-            slidesOffsetBefore: 10,
-            slidesOffsetAfter: 10,
-          },
-          768: {
-            slidesPerView: 1,
-            spaceBetween: 10,
-            slidesOffsetBefore: 10,
-            slidesOffsetAfter: 10,
-          },
-          1024: {
-            slidesPerView: 1,
-            spaceBetween: 10,
-          },
-        }"
-        :navigation="{
-          prevEl: `.products_prev_${products.id}`,
-          nextEl: `.products_next_${products.id}`,
-        }"
-        @slideChange="updateCurrentSlide"
-      >
-        <SwiperSlide
-          v-for="(item, i) in products.gallery_images"
-          :key="'products-item-slide-' + products.id"
-        >
-          <a :href="item" :data-fancybox="'fancy-products-' + products.id">
-            <img :src="item" />
-          </a>
-        </SwiperSlide>
-      </Swiper>
-      <div
-        class="products_navigation"
-        v-if="products.gallery_images && totalSlides > 2"
-      >
-        <div :class="`products_prev products_prev_${products.id}`">
-          <Icons icon="bi:chevron-left" :size="30" />
-        </div>
-        <div class="products-pagination">
-          <span class="fraction">
-            {{ currentSlide }}
-            <div class="total">/{{ totalSlides }}</div>
-          </span>
-        </div>
-        <div :class="`products_next products_next_${products.id}`">
-          <Icons icon="bi:chevron-right" :size="30" />
-        </div>
-      </div>
-    </div>
+    <ProductsSlider :products="products" />
     <div class="products_content">
-      <!-- <yandex-pay-badge
-        merchant-id="<YOUR_MERCHANT_ID>"
-        type="bnpl"
-        amount="1000.00"
-        size="l"
-        variant="detailed"
-        theme="light"
-        align="left"
-        color="primary"
-      /> -->
       <div class="products_content__head">
         <h3>{{ products.title }}</h3>
         <div class="products_description">
@@ -81,26 +12,11 @@
         >
       </div>
       <div class="products_content_bottom">
-        <ul class="products_color_select">
-          <li
-            v-for="(color, index) in products.attributes.pa_colors"
-            :key="index"
-          >
-            <input
-              type="radio"
-              :id="'color-' + index + '-' + products.id"
-              :value="color"
-              v-model="selectedColor"
-              @change="updateCart"
-            />
-            <label :for="'color-' + index + '-' + products.id">
-              <span :style="{ backgroundColor: colorMap[color] }"></span>
-            </label>
-          </li>
-        </ul>
-        <div class="products_color_selected">
-          Цвет: <span>{{ selectedColor }}</span>
-        </div>
+        <ColorSelect
+          :id="products.slug"
+          :colors="products.attributes.pa_colors"
+          v-model="selectedColor"
+        />
         <div class="products_prices">
           <p>{{ products.price }} ₽</p>
           <div class="products_prices__right">
@@ -114,7 +30,7 @@
               :initialQuantity="cartItem?.quantity || selectedQuantity"
               v-if="isCarts"
               @updateQuantity="updateQuantity"
-              @clear="removeCart(products)"
+              @clear="removeCart(products.id, selectedColor)"
             />
           </div>
         </div>
@@ -124,14 +40,13 @@
 </template>
 
 <script setup lang="ts">
-import { Swiper, SwiperSlide } from "swiper/vue";
-import "swiper/swiper-bundle.css";
-import { Navigation, Pagination } from "swiper/modules";
 import { useCartStore, useCartStoreRefs } from "@/stores/useCartStore";
 import AddToCart from "../ui/AddToCart.vue";
 import { ref, computed } from "vue";
 import Qty from "../ui/Qty.vue";
 import { useToast } from "vue-toastification";
+import ProductsSlider from "../ui/ProductsSlider.vue";
+import ColorSelect from "../ui/ColorSelect.vue";
 
 // Используем Pinia store
 const { addCart, removeCart, updateCartItem } = useCartStore();
@@ -147,17 +62,8 @@ const props = withDefaults(
   }
 );
 
-// Реактивные переменные
-const currentSlide = ref(1);
-const totalSlides = ref(
-  props.products?.gallery_images ? props.products.gallery_images.length : 0
-);
 const toast = useToast();
-const cartItem = computed(() =>
-  carts.value.find((cart: any) => cart.id === props.products?.id)
-);
 
-const selectedQuantity = ref(cartItem.value ? cartItem.value.quantity : 1);
 const selectedColor = ref(
   props.products?.attributes?.pa_colors &&
     props.products.attributes.pa_colors.length > 0
@@ -165,31 +71,25 @@ const selectedColor = ref(
     : null
 );
 
-// Карта цветов для визуального отображения
-const colorMap: Record<string, string> = {
-  Бежевый: "#D8D1B6",
-  Зелёный: "#547C51",
-  Серый: "#5B5E62",
-  Темный: "#342F2F",
-  ["Светло-жёлтый"]: "#EAECD7",
-  Черный: "#000000",
-  "Тёмно-серый": "#909090",
-};
-
-// Проверка, находится ли товар в корзине
+// Проверка, находится ли товар с конкретным цветом в корзине
 const isCarts = computed(() =>
-  carts.value.some((cart: any) => cart.id === props.products.id)
+  carts.value.some(
+    (cart: any) =>
+      cart.id === props.products.id && cart.color === selectedColor.value
+  )
+);
+const cartItem = computed(() =>
+  carts.value.find(
+    (cart: any) =>
+      cart.id === props.products.id && cart.color === selectedColor.value
+  )
 );
 
-// Обновляем текущее количество слайдов
-const updateCurrentSlide = (swiper: any) => {
-  currentSlide.value = swiper.realIndex + 1;
-};
+const selectedQuantity = ref(cartItem.value ? cartItem.value.quantity : 1);
 
-// Метод для добавления или удаления товара из корзины
 const toggleCart = () => {
   if (isCarts.value) {
-    removeCart(props.products);
+    removeCart(props.products.id, selectedColor.value);
     toast.error("Удалено из корзины");
   } else {
     addCart({
@@ -201,7 +101,6 @@ const toggleCart = () => {
   }
 };
 
-// Обновляем корзину при изменении цвета или количества
 const updateCart = () => {
   if (isCarts.value) {
     updateCartItem({
@@ -212,7 +111,6 @@ const updateCart = () => {
   }
 };
 
-// Обновляем количество товара
 const updateQuantity = (quantity: number) => {
   selectedQuantity.value = quantity;
   updateCart();
@@ -228,66 +126,6 @@ const updateQuantity = (quantity: number) => {
     flex-direction: column;
     gap: 1.8rem;
   }
-}
-
-.products_slider {
-  max-width: 74.5rem;
-  position: relative;
-  @include bp($point_2) {
-    max-width: 100%;
-    width: 100%;
-  }
-
-  :deep(.swiper) {
-    height: 60.5rem;
-    @include bp($point_2) {
-      height: 22.3rem;
-    }
-  }
-
-  .swiper-slide {
-    @include flex-center;
-    width: 100%;
-    height: 100%;
-  }
-
-  a,
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-}
-
-.products_navigation {
-  @include flex-space;
-  margin-top: 3rem;
-  user-select: none;
-
-  @include bp($point_2) {
-    display: none;
-  }
-
-  div {
-    cursor: pointer;
-    @include flex-center;
-
-    &.swiper-button-disabled {
-      opacity: 0.4;
-      pointer-events: none;
-    }
-  }
-}
-
-.fraction {
-  font-size: 2.4rem;
-  @include flex-center;
-  font-family: $font_2;
-}
-.total {
-  font-size: 2rem;
-  color: #ababab;
-  padding-left: 0.5rem;
 }
 
 .products_content {
@@ -335,63 +173,6 @@ const updateQuantity = (quantity: number) => {
   @include bp($point_2) {
     font-size: 1.6rem;
     margin-bottom: 2rem;
-  }
-}
-
-.products_color_select {
-  @include flex-start;
-  margin-bottom: 3.5rem;
-  gap: 2.1rem;
-  @include bp($point_2) {
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-  }
-  li {
-    width: 3.5rem;
-    height: 3.5rem;
-  }
-
-  input {
-    display: none;
-    &:checked + label {
-      border: 0.1rem solid $brown;
-      span {
-        transform: scale(0.8);
-      }
-    }
-  }
-
-  label {
-    width: 100%;
-    height: 100%;
-    @include flex-center;
-    cursor: pointer;
-    span {
-      transition: all 0.3s ease-in-out;
-      width: 100%;
-      @include flex-center;
-      height: 100%;
-    }
-  }
-}
-
-.products_color_selected {
-  margin-bottom: 7rem;
-  font-size: 2.4rem;
-  font-family: $font_2;
-  @include flex-start;
-  gap: 0.5rem;
-  @include bp($point_2) {
-    font-size: 1.6rem;
-    margin-bottom: 3rem;
-  }
-  span {
-    color: $brown;
-    font-size: 2rem;
-    font-family: $font_1;
-    @include bp($point_2) {
-      font-size: 1.6rem;
-    }
   }
 }
 

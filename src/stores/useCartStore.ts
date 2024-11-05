@@ -1,5 +1,4 @@
 import { defineStore, storeToRefs } from "pinia";
-
 import axios from "axios";
 
 export const useCartStore = defineStore("carts", {
@@ -14,9 +13,8 @@ export const useCartStore = defineStore("carts", {
     },
 
     addCart(item: any) {
-      console.log(item);
       const existingCartItem = this.carts.find(
-        (cart: any) => cart.id === item.id
+        (cart: any) => cart.id === item.id && cart.color === item.color
       );
       if (existingCartItem) {
         existingCartItem.quantity += 1;
@@ -24,21 +22,27 @@ export const useCartStore = defineStore("carts", {
         this.carts.push({ ...item, quantity: 1 });
       }
     },
-    removeCart(item: any) {
+
+    // Измененный метод removeCart с учетом цвета
+    removeCart(id: string, color: string) {
       const existingCartItem = this.carts.find(
-        (cart: any) => cart.id === item.id
+        (cart: any) => cart.id === id && cart.color === color
       );
       if (existingCartItem) {
         if (existingCartItem.quantity > 1) {
           existingCartItem.quantity -= 1;
         } else {
-          this.carts = this.carts.filter((cart: any) => cart.id !== item.id);
+          this.carts = this.carts.filter(
+            (cart: any) => !(cart.id === id && cart.color === color)
+          );
         }
       }
     },
+
     updateCartItem(updatedItem: any) {
       const existingCartItem = this.carts.find(
-        (cart: any) => cart.id === updatedItem.id
+        (cart: any) =>
+          cart.id === updatedItem.id && cart.color === updatedItem.color
       );
       if (existingCartItem) {
         existingCartItem.quantity =
@@ -47,9 +51,11 @@ export const useCartStore = defineStore("carts", {
         existingCartItem.price = updatedItem.price || existingCartItem.price;
       }
     },
+
     removeCartItem(itemId: string) {
       this.carts = this.carts.filter((cart: any) => cart.id !== itemId);
     },
+
     async createOrder() {
       try {
         const response = await axios.post(

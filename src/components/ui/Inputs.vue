@@ -1,16 +1,19 @@
-<!-- @format -->
-
 <template>
   <div class="input">
     <div class="input__w">
-      <input :type="type" :placeholder="placeholder" v-model="localValue" />
+      <input
+        :type="type"
+        :placeholder="placeholder"
+        v-model="localValue"
+        :class="{ error: error }"
+      />
     </div>
     <span v-if="error" class="input-message">{{ message }}</span>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, defineEmits } from "vue";
+import { computed, defineProps, defineEmits, watch } from "vue";
 
 const props = withDefaults(
   defineProps<{
@@ -45,5 +48,17 @@ input {
   color: $dark;
   padding: 1.4rem 1.5rem;
   width: 100%;
+
+  &.error {
+    border: 0.1rem solid red;
+    &::-webkit-input-placeholder {
+      color: red;
+    }
+  }
+}
+
+.input-message {
+  color: red;
+  font-size: 1.2rem;
 }
 </style>

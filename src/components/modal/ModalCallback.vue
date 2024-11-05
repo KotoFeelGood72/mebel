@@ -11,57 +11,55 @@
       </div>
     </div>
     <div class="callback__form">
-      <Inputs placeholder="Ваше имя" v-model="formData.name" />
+      <!-- Поле имени отображается только если requireName = true -->
+      <Inputs
+        v-if="requireName"
+        placeholder="Ваше имя"
+        v-model="formData.name"
+        :error="v$.name.$error"
+        message="Заполните ваше имя"
+      />
       <Divider :height="1" />
-      <InputPhone placeholder="Ваш телефон" v-model="formData.phone" />
+      <InputPhone
+        placeholder="Ваш телефон"
+        v-model="formData.phone"
+        message="Заполните ваш телефон"
+        :error="v$.phone.$error"
+      />
       <Divider :height="2" />
       <DefaultBtn
-        name="Отправить"
+        :name="isLoading ? 'Отправка...' : 'Отправить'"
         type="secondary"
         color="black"
         size="normal"
         @click="submitForm"
+        :icon="isLoading ? 'svg-spinners:ring-resize' : ''"
+        :disabled="isLoading"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
 import IconBtn from "../ui/IconBtn.vue";
 import Inputs from "../ui/Inputs.vue";
 import InputPhone from "../ui/InputPhone.vue";
-import { useModalStore } from "@/stores/useModalStore";
-import { useRouter } from "vue-router";
 import DefaultBtn from "../ui/DefaultBtn.vue";
 import Divider from "../ui/Divider.vue";
-// import { useTelegramBot } from "@/composables/useTelegramBot";
-
-// Используем composable для отправки данных в Telegram
-// const { sendMessage } = useTelegramBot();
-
-const formData = ref<any>({
-  name: "",
-  phone: "",
-});
+import { useFormHandler } from "@/composables/useFormHandler";
+import { useModalStore } from "@/stores/useModalStore";
 
 const { closeModal } = useModalStore();
-const router = useRouter();
 
-const submitForm = async () => {
-  if (formData.value.name && formData.value.phone) {
-    const message = `Новая заявка:\nИмя: ${formData.value.name}\nТелефон: ${formData.value.phone}`;
-    // const response = await sendMessage(message);
-    // if (response.success) {
-    //   alert("Заявка успешно отправлена!");
-    //   closeModal("callback");
-    // } else {
-    //   alert("Ошибка при отправке заявки.");
-    // }
-  } else {
-    alert("Пожалуйста, заполните все поля.");
-  }
-};
+// Используем useFormHandler с названием формы и флагом для имени
+const formTitle = "Заявка на обратный звонок";
+const requireName = true; // Установите в false, если поле имени не нужно
+
+// Подключаем useFormHandler и передаем параметры
+const { formData, isLoading, submitForm, v$ } = useFormHandler(
+  formTitle,
+  requireName
+);
 </script>
 
 <style scoped lang="scss">
