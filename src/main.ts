@@ -36,12 +36,15 @@ function loadYandexSplitSDK() {
 // Создание приложения
 const app = createApp(App);
 
+const head = createHead();
+
 // Подключаем Pinia
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 
 app.use(pinia);
 app.use(router);
+app.use(head);
 
 app.use(Toast, {
   position: POSITION.BOTTOM_LEFT,
@@ -50,10 +53,6 @@ app.use(Toast, {
 
 app.component("Icons", Icons);
 app.component("MaskInput", MaskInput);
-
-const head = createHead();
-app.use(head);
-
 app.mount("#app");
 
 // Загружаем SDK Яндекс Сплита при запуске приложения

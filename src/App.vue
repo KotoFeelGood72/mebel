@@ -1,21 +1,66 @@
 <template>
   <DefaultLayout>
+    <metainfo>
+      <template v-slot:title="{ content }">{{
+        content ? `${content} | SITE_NAME` : `SITE_NAME`
+      }}</template>
+    </metainfo>
     <router-view />
   </DefaultLayout>
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch } from "vue";
+import { watchEffect, onMounted, watch, computed } from "vue";
 import DefaultLayout from "@/layouts/DefaultLayout.vue";
 import { useRoute } from "vue-router";
 import { useModalStore } from "./stores/useModalStore";
 import { Fancybox } from "@fancyapps/ui";
 import "@fancyapps/ui/dist/fancybox/fancybox.css";
+import { useHead } from "@vueuse/head";
+import { usePage } from "./services/usePage";
+import { useProductPage } from "./services/useProductPage";
 
 const route = useRoute();
+const { meta } = usePage();
+const { productPage } = useProductPage();
 const { closeAllModals } = useModalStore();
 
 Fancybox.bind("[data-fancybox]");
+
+const isPagesMeta = computed(() => {
+  switch (route.name) {
+    case "cart":
+      return "Корзина";
+    case "edit":
+      return "Редактирование профиля";
+    case "order":
+      return "Заказы";
+    case "user":
+      return "Личный кабинет";
+    case "thanks":
+      return "Спасибо за покупку в магазине SoftPear";
+    case "shop":
+      return "Каталог";
+    case "product-list":
+      return "Каталог";
+  }
+});
+
+watchEffect(() => {
+  if (meta.value && meta.value.title) {
+    useHead({
+      title: meta.value.title,
+    });
+  } else if (isPagesMeta.value) {
+    useHead({
+      title: isPagesMeta.value,
+    });
+  } else {
+    useHead({
+      title: productPage.value?.title,
+    });
+  }
+});
 
 watch(
   () => route.fullPath,
