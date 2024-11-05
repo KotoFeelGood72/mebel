@@ -1,6 +1,9 @@
 <template>
   <div
-    :class="`products_slider products_slider_${products.id}`"
+    :class="[
+      `products_slider products_slider_${products.id}`,
+      { single_slider: single },
+    ]"
     v-if="products && products.gallery_images"
   >
     <Swiper
@@ -69,6 +72,7 @@ import { ref } from "vue";
 
 const props = defineProps<{
   products: any;
+  single?: boolean;
 }>();
 
 const currentSlide = ref(1);
@@ -140,5 +144,37 @@ const updateCurrentSlide = (swiper: any) => {
   font-size: 2rem;
   color: #ababab;
   padding-left: 0.5rem;
+}
+
+.single_slider {
+  max-width: 99.5rem;
+  margin-bottom: 3rem;
+  :deep(.swiper) {
+    height: auto;
+  }
+
+  a {
+    @include flex-center;
+    width: 100%;
+    height: 100%;
+  }
+
+  @include bp($point_2) {
+    max-width: 100%;
+    margin-bottom: 0;
+  }
+
+  :deep(.swiper-slide) {
+    height: 78.4rem;
+    @include flex-center;
+    @include bp($point_2) {
+      height: 24rem;
+    }
+  }
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
 </style>

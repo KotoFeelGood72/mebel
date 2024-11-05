@@ -4,7 +4,7 @@
       <div class="container">
         <Breadcrumbs :crumbs="breadcrumbs" />
         <div class="products_main">
-          <ProductsSlider :products="productPage" />
+          <ProductsSlider :products="productPage" :single="true" />
           <div class="products_content">
             <div class="products_content__head">
               <h3>{{ productPage.title }}</h3>
@@ -40,7 +40,7 @@
               </div>
               <ul class="products__nav">
                 <li>
-                  <a href="#"
+                  <a href="#character"
                     ><p>Характеристики</p>
                     <Icons icon="fluent:chevron-right-28-regular" />
                   </a>
@@ -67,6 +67,7 @@
       :title="productPage.acf.character_title"
       :img="productPage.acf.character_img.url"
       :list="productPage.acf.character_list"
+      id="character"
     />
     <SingleIdeas :gallery="productPage.acf.ideas_gallery" />
   </div>
@@ -265,36 +266,6 @@ onMounted(async () => {
       }
     }
   }
-}
-
-.products_navigation {
-  @include flex-space;
-  margin-top: 3rem;
-
-  @include bp($point_2) {
-    display: none;
-  }
-
-  .products_prev,
-  .products_next {
-    color: $brown;
-    cursor: pointer;
-  }
-  div {
-    @include flex-center;
-  }
-}
-
-.fraction {
-  font-size: 2.4rem;
-  @include flex-center;
-  font-family: $font_2;
-}
-
-.total {
-  font-size: 2rem;
-  color: #ababab;
-  padding-left: 0.5rem;
 }
 
 .product_cart__row {
