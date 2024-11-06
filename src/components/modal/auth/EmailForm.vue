@@ -13,6 +13,7 @@
           color="brown"
           size="normal"
           @click="submitEmail"
+          @keyup.enter="submitEmail"
           :icon="load ? 'svg-spinners:ring-resize' : ''"
         />
       </div>

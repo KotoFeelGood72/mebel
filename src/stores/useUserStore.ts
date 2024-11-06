@@ -1,4 +1,5 @@
 import { defineStore, storeToRefs } from "pinia";
+import { useModalStore } from "./useModalStore";
 import { auth, api } from "@/api/axios";
 
 export const useUserStore = defineStore("users", {
@@ -11,15 +12,16 @@ export const useUserStore = defineStore("users", {
     otpErrorMessage: "",
     showOtpForm: false,
     showVerification: false,
+    token: null as any,
   }),
 
   actions: {
     // Логин пользователя
     async loginUser(data: any) {
-      this.user = {
-        ...data.user_data,
-        token: data.token,
-      };
+      (this.token = data.token),
+        (this.user = {
+          ...data.user_data,
+        });
     },
 
     // Получение данных пользователя
@@ -44,8 +46,25 @@ export const useUserStore = defineStore("users", {
       } catch (error) {
         console.error("Ошибка выполнения запроса logout:", error);
       } finally {
+        // Сброс всех полей состояния
         this.user = null;
-        localStorage.removeItem("user");
+        this.token = null;
+        this.order = null;
+        this.isLoad = false;
+        this.email = "";
+        this.otpCode = "";
+        this.otpErrorMessage = "";
+        this.showOtpForm = false;
+        this.showVerification = false;
+
+        // Очистка хранилища Pinia с персистенцией
+        localStorage.removeItem("users"); // Удаляем данные из localStorage
+        sessionStorage.removeItem("users"); // Если есть в sessionStorage, удаляем и оттуда
+
+        // Если требуется, можно добавить перезагрузку страницы для полного сброса состояния
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 100);
       }
     },
 
@@ -86,6 +105,7 @@ export const useUserStore = defineStore("users", {
 
     // Верификация OTP
     async verifyOTP() {
+      const { closeAllModals } = useModalStore();
       try {
         this.isLoad = true;
         const response = await auth.post("/verify-otp", {
@@ -98,9 +118,10 @@ export const useUserStore = defineStore("users", {
           this.otpErrorMessage = "";
 
           // Если у пользователя нет имени, показываем форму для заполнения данных
-          if (this.user?.billing.first_name) {
-          } else {
+          if (!this.user?.billing.first_name) {
             this.showVerification = true;
+          } else {
+            closeAllModals();
           }
         }
       } catch (error: any) {
@@ -117,6 +138,7 @@ export const useUserStore = defineStore("users", {
 
     // Обновление профиля пользователя (имя, телефон и адресные данные)
     async handleNextStep(delivery: any = {}) {
+      const { closeAllModals } = useModalStore();
       try {
         this.isLoad = true; // Включаем прелоадер
 
@@ -150,7 +172,7 @@ export const useUserStore = defineStore("users", {
             last_name: response.data.updated_data.last_name,
           };
 
-          console.log("Профиль обновлен:", this.user);
+          closeAllModals();
         } else {
           console.warn(
             "Не удалось обновить профиль: данные отсутствуют в ответе"

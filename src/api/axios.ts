@@ -1,11 +1,11 @@
 import axios from "axios";
 
-// Вынесем получение токена в отдельную функцию
+// Функция для получения токена из `localStorage`
 const getToken = () => {
-  const userData = localStorage.getItem("user");
+  const userData = localStorage.getItem("users");
   if (userData) {
     const parsedUser = JSON.parse(userData);
-    return parsedUser?.user?.token?.token || null;
+    return parsedUser?.token || null;
   }
   return null;
 };
@@ -30,12 +30,12 @@ const auth = axios.create({
 const requestInterceptor = (config: any) => {
   const token = getToken();
   if (token) {
-    config.headers.Authorization = `Basic ${token}`;
+    config.headers.Authorization = `Bearer ${token}`; // Используем токен в формате Bearer
   }
   return config;
 };
 
-// Интерцептор для ошибок запросов
+// Интерцептор для обработки ошибок запросов
 const errorInterceptor = (error: any) => Promise.reject(error);
 
 // Применяем интерцепторы на запросы
@@ -45,10 +45,11 @@ auth.interceptors.request.use(requestInterceptor, errorInterceptor);
 // Интерцептор для ответов
 const responseInterceptor = (response: any) => response;
 
-// Обработка 401 ошибки для обоих API
+// Обработка ошибки 401 для обоих API
 const responseErrorInterceptor = (error: any) => {
   if (error.response && error.response.status === 401) {
-    localStorage.removeItem("user");
+    // Удаляем данные пользователя из localStorage и перенаправляем на страницу входа
+    localStorage.removeItem("users");
     window.location.href = "/login";
   }
   return Promise.reject(error);

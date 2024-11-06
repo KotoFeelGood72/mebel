@@ -86,7 +86,7 @@ const nextCarts = () => {
 
 const isScrolled = ref(false);
 const firstLetter = computed(() =>
-  user.value?.username ? user.value.username.charAt(0).toUpperCase() : ""
+  user.value?.email ? user.value.email.charAt(0).toUpperCase() : ""
 );
 
 const handleScroll = () => {
