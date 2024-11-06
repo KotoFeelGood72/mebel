@@ -48,11 +48,9 @@ import { useToast } from "vue-toastification";
 import ProductsSlider from "../ui/ProductsSlider.vue";
 import ColorSelect from "../ui/ColorSelect.vue";
 
-// Используем Pinia store
 const { addCart, removeCart, updateCartItem } = useCartStore();
 const { carts } = useCartStoreRefs();
 
-// Пропсы
 const props = withDefaults(
   defineProps<{
     products: any;
