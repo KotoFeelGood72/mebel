@@ -30,7 +30,6 @@ import Footer from "@/components/shared/Footer.vue";
 import Preloader from "@/components/shared/Preloader.vue";
 import { useModalStore, useModalStoreRefs } from "@/stores/useModalStore";
 import { useProductsStore } from "@/stores/useProductsStore";
-import { useUserStore } from "@/stores/useUserStore";
 import { useRoute } from "vue-router";
 import { computed, watch, onMounted } from "vue";
 
@@ -38,7 +37,6 @@ const route = useRoute();
 const { closeAllModals } = useModalStore();
 const { modals } = useModalStoreRefs();
 const { getAllProducts } = useProductsStore();
-const { fetchUser } = useUserStore();
 
 const isModalActive = computed(() => {
   return Object.values(modals.value).some((isActive) => isActive);
