@@ -21,17 +21,31 @@
     <!-- Контент табов -->
     <div class="order_tabs__contents">
       <div class="order_tab__content" v-if="activeTab === 'active'">
+        <div v-if="activeOrders.length === 0" class="order__placeholder">
+          Нет активных заказов
+        </div>
         <OrderCard
           v-for="(item, i) in activeOrders"
           :key="'active-orders-list-item-' + i"
           :order="item"
+          v-else
         />
       </div>
       <div class="order_tab__content" v-if="activeTab === 'completed'">
+        <div v-if="completedOrders.length === 0" class="order__placeholder">
+          <h3>У вас пока что нет заказов</h3>
+          <DefaultBtn
+            name="Перейти в каталог"
+            type="primary"
+            color="brown"
+            size="normal"
+          />
+        </div>
         <OrderCard
           v-for="(item, i) in completedOrders"
           :key="'completed-orders-list-item-' + i"
           :order="item"
+          v-else
         />
       </div>
     </div>
@@ -42,6 +56,7 @@
 import { onMounted, ref, computed } from "vue";
 import OrderCard from "@/components/card/OrderCard.vue";
 import "swiper/swiper-bundle.css";
+import DefaultBtn from "@/components/ui/DefaultBtn.vue";
 import { useUserStoreRefs, useUserStore } from "@/stores/useUserStore";
 // Активная вкладка
 const activeTab = ref<"active" | "completed">("active");
@@ -97,5 +112,17 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   gap: 1.6rem;
+}
+
+.order__placeholder {
+  @include flex-center;
+  flex-direction: column;
+  gap: 7.5rem;
+  padding: 5rem 0;
+
+  h3 {
+    font-size: 3rem;
+    font-family: $font_1;
+  }
 }
 </style>

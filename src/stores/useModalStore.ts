@@ -4,6 +4,7 @@ interface ModalsState {
   auth: boolean;
   callback: boolean;
   burger: boolean;
+  confirm: boolean;
 }
 
 export const useModalStore = defineStore("modal", {
@@ -12,6 +13,7 @@ export const useModalStore = defineStore("modal", {
       auth: false,
       callback: false,
       burger: false,
+      confirm: false,
     },
   }),
   actions: {

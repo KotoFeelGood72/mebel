@@ -12,7 +12,7 @@ import { withDefaults, defineProps, computed } from "vue";
 const props = withDefaults(
   defineProps<{
     type?: "secondary" | "primary";
-    color?: "gray" | "brown" | "light" | "white" | "black";
+    color?: "gray" | "brown" | "light" | "white" | "black" | "orange";
     size?: "xsmall" | "small" | "normal" | "xnormal" | "large";
     name: string;
     icon?: string;
@@ -130,6 +130,13 @@ const isSize = computed(() => props.size);
       &:hover {
         color: $brown;
         background-color: $white;
+      }
+    }
+    &.orange {
+      background-color: $orange;
+      color: $white;
+      &:hover {
+        background-color: #a03800;
       }
     }
     &.black {

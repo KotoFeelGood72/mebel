@@ -10,6 +10,9 @@
     <transition name="modal">
       <ModalCallback v-if="modals.callback" class="modal-animate" />
     </transition>
+    <transition name="modal">
+      <ModalConfirm v-if="modals.confirm" class="modal-animate" />
+    </transition>
     <transition name="modal-left">
       <Burger v-if="modals.burger" class="modal-animate" />
     </transition>
@@ -24,6 +27,7 @@
 <script setup lang="ts">
 import ModalAuth from "@/components/modal/ModalAuth.vue";
 import ModalCallback from "@/components/modal/ModalCallback.vue";
+import ModalConfirm from "@/components/modal/ModalConfirm.vue";
 import Burger from "@/components/modal/Burger.vue";
 import Header from "@/components/shared/Header.vue";
 import Footer from "@/components/shared/Footer.vue";

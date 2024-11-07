@@ -13,6 +13,7 @@ export const useUserStore = defineStore("users", {
     showOtpForm: false,
     showVerification: false,
     token: null as any,
+    loadUserDelete: false as boolean,
   }),
 
   actions: {
@@ -184,9 +185,23 @@ export const useUserStore = defineStore("users", {
         this.isLoad = false; // Отключаем прелоадер
       }
     },
+
+    // Удаление пользователя
+
+    async deleteUser() {
+      this.loadUserDelete = true;
+      try {
+        await auth.delete("/delete-account");
+      } catch (error) {
+        this.loadUserDelete = false;
+      } finally {
+        this.loadUserDelete = false;
+        this.logout();
+      }
+    },
   },
 
-  persist: true, // Включение персистентности для сохранения состояния
+  persist: true,
 });
 
 // Хук для использования `storeToRefs` в компонентах
