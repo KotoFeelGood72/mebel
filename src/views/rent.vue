@@ -157,7 +157,7 @@
               v-for="(item, i) in page.geo_list"
               :key="'geo-item-' + i"
             >
-              <a class="geo_item__img" :href="item.img.url" v-fancybox>
+              <a class="geo_item__img" :href="item.img.url">
                 <img :src="item.img.url" :alt="item.img.alt" />
               </a>
               <p>{{ item.title }}</p>

@@ -13,8 +13,8 @@
       </div>
       <div class="products_content_bottom">
         <ColorSelect
-          :id="products.slug"
-          :colors="products.attributes.pa_colors"
+          :id="products.id"
+          :colors="products.attributes.pa_colors || []"
           v-model="selectedColor"
         />
         <div class="products_prices">
