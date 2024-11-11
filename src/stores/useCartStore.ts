@@ -4,7 +4,7 @@ import axios from "axios";
 export const useCartStore = defineStore("carts", {
   state: () => ({
     carts: [] as any,
-    paymentMethod: "Оплата картой онлайн или через СБП" as any,
+    paymentMethod: "Оплатить" as any,
     currentOrder: {} as any,
   }),
   actions: {

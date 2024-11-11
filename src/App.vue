@@ -1,16 +1,11 @@
 <template>
   <DefaultLayout>
-    <metainfo>
-      <template v-slot:title="{ content }">{{
-        content ? `${content} | SITE_NAME` : `SITE_NAME`
-      }}</template>
-    </metainfo>
     <router-view />
   </DefaultLayout>
 </template>
 
 <script setup lang="ts">
-import { watchEffect, onMounted, watch, computed } from "vue";
+import { watch, computed, ref, onMounted } from "vue";
 import DefaultLayout from "@/layouts/DefaultLayout.vue";
 import { useRoute } from "vue-router";
 import { useModalStore } from "./stores/useModalStore";
@@ -27,6 +22,9 @@ const { closeAllModals } = useModalStore();
 
 Fancybox.bind("[data-fancybox]");
 
+// Определяем реактивное свойство для заголовка
+const title = ref("");
+
 const isPagesMeta = computed(() => {
   switch (route.name) {
     case "cart":
@@ -40,34 +38,54 @@ const isPagesMeta = computed(() => {
     case "thanks":
       return "Спасибо за покупку в магазине SoftPear";
     case "shop":
-      return "Каталог";
     case "product-list":
       return "Каталог";
+    default:
+      return "";
   }
 });
 
-watchEffect(() => {
-  if (meta.value && meta.value.title) {
-    useHead({
-      title: meta.value.title,
-    });
-  } else if (isPagesMeta.value) {
-    useHead({
-      title: isPagesMeta.value,
-    });
-  } else {
-    useHead({
-      title: productPage.value?.title,
-    });
-  }
+// Устанавливаем заголовок в зависимости от условий
+watch(
+  [meta, isPagesMeta, productPage],
+  () => {
+    if (meta.value?.title) {
+      title.value = decodeHtml(
+        `${meta.value.title} | Кресло мешок груша купить в Краснодаре от производителя`
+      );
+    } else if (isPagesMeta.value) {
+      title.value = decodeHtml(
+        `${isPagesMeta.value} | Кресло мешок груша купить в Краснодаре от производителя`
+      );
+    } else if (productPage.value?.title) {
+      title.value = decodeHtml(
+        `${productPage.value.title} | Кресло мешок груша купить в Краснодаре от производителя`
+      );
+    } else {
+      title.value = "Кресло мешок груша купить в Краснодаре от производителя";
+    }
+  },
+  { immediate: true }
+);
+
+// Применяем `useHead` с реактивным свойством `title`
+useHead({
+  title,
 });
 
+// Закрытие всех модальных окон при изменении маршрута
 watch(
   () => route.fullPath,
   () => {
     closeAllModals();
   }
 );
+
+function decodeHtml(html: any) {
+  const txt = document.createElement("textarea");
+  txt.innerHTML = html;
+  return txt.value;
+}
 </script>
 
 <style lang="scss">

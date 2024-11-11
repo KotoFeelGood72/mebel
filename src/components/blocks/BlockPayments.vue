@@ -42,29 +42,28 @@ const { paymentMethod } = useCartStoreRefs();
 const { createPaymentSession, resetPaymentSession } = useYaPay();
 const paymentMethods = [
   { name: "Оплата картой онлайн или через СБП" },
-  { name: "Оплатить", logo: "/img/split.png" },
+  {
+    name: "Оплатить",
+    logo: "https://fu.gleede.ru/wp-content/uploads/2024/11/split.png",
+  },
 ];
 
-// Состояние загрузки
-const isLoading = ref(false);
-
-// Функция для инициализации виджета
+const isLoading = ref<boolean>(false);
 const initializeWidget = async () => {
-  isLoading.value = true; // Устанавливаем состояние загрузки
-  await nextTick(); // Ждем обновления DOM
+  isLoading.value = true;
+  await nextTick();
 
   const widgetContainer = document.querySelector("#split-widget");
   if (widgetContainer) {
-    await resetPaymentSession(); // Очищаем текущую сессию перед созданием новой
+    await resetPaymentSession();
     await createPaymentSession({
       amount: props.total,
       widgetContainerId: "#split-widget",
     });
     setTimeout(() => {
-      isLoading.value = false; // Отключаем состояние загрузки после инициализации виджета
+      isLoading.value = false;
     }, 500);
   } else {
-    console.error('Элемент с ID "#split-widget" не найден.');
     isLoading.value = false;
   }
 };
@@ -78,7 +77,6 @@ watch(paymentMethod, (newMethod) => {
   }
 });
 
-// Отслеживаем изменения в props.total
 watch(
   () => props.total,
   (newTotal) => {
@@ -88,7 +86,6 @@ watch(
   }
 );
 
-// Очищаем сессию при размонтировании компонента
 onUnmounted(() => {
   resetPaymentSession();
 });
