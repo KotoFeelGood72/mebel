@@ -74,7 +74,7 @@ const targetUser = () => {
     openModal("auth");
   } else {
     closeModal("auth");
-    router.push({ name: "user" });
+    router.push({ name: "profile" });
   }
 };
 

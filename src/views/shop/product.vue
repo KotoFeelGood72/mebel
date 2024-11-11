@@ -15,13 +15,13 @@
               v-if="productPage && productPage.attributes?.pa_colors"
             >
               <ColorSelect
-                :id="productPage.slug"
+                :id="productPage.id"
                 :colors="productPage.attributes.pa_colors"
                 v-model="selectedColor"
               />
 
               <div class="products_prices">
-                <p>{{ productPage.price }} ₽</p>
+                <p>{{ variationPrice }} ₽</p>
                 <div class="product_cart__row">
                   <AddToCart
                     :center="true"
@@ -34,7 +34,7 @@
                     :initialQuantity="cartItem?.quantity || selectedQuantity"
                     v-if="isCarts"
                     @updateQuantity="updateQuantity"
-                    @clear="removeCart(productPage.id, selectedColor)"
+                    @clear="removeCart(findVariationId)"
                   />
                 </div>
               </div>
@@ -83,63 +83,30 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs.vue";
 import Qty from "@/components/ui/Qty.vue"; // Импортируем компонент для количества
 import { useRoute } from "vue-router";
 import { ref, computed, onMounted, watch } from "vue";
-import { useCartStore, useCartStoreRefs } from "@/stores/useCartStore";
-import { useToast } from "vue-toastification";
 import { useProductPage } from "@/services/useProductPage";
-
-const { removeCart, addCart, updateCartItem } = useCartStore();
-const { carts } = useCartStoreRefs();
+import { useProductVariation } from "@/composables/useProductVariation";
 const { useGetProductPage, productPage } = useProductPage();
 import ProductsSlider from "@/components/ui/ProductsSlider.vue";
 
 const totalSlides = ref();
 const route = useRoute();
-const toast = useToast();
 const breadcrumbs = ref([
   { text: "Каталог", href: "/shop" },
   { text: "Бескаркасное кресло империал" },
 ]);
 
-const isCarts = computed(() =>
-  carts.value.some(
-    (cart: any) =>
-      cart.id === productPage.value?.id && cart.color === selectedColor.value
-  )
-);
-const cartItem = computed(() =>
-  carts.value.find(
-    (cart: any) =>
-      cart.id === productPage.value?.id && cart.color === selectedColor.value
-  )
-);
-
-const selectedQuantity = ref(cartItem.value ? cartItem.value.quantity : 1);
-const selectedColor = ref(
-  cartItem.value
-    ? cartItem.value.color
-    : productPage.value?.attributes?.pa_colors[0] || ""
-);
-
-const toggleCart = () => {
-  if (isCarts.value) {
-    removeCart(productPage.value?.id, selectedColor.value);
-    toast.error("Удалено из корзины");
-  } else {
-    addCart({
-      ...productPage.value,
-      quantity: selectedQuantity.value,
-      color: selectedColor.value,
-    });
-    toast.success("Добавлено в корзину");
-  }
-};
-
-watch(cartItem, (newVal) => {
-  if (newVal) {
-    selectedQuantity.value = newVal.quantity;
-    selectedColor.value = newVal.color;
-  }
-});
+const {
+  selectedColor,
+  selectedSize,
+  variationPrice,
+  isCarts,
+  cartItem,
+  selectedQuantity,
+  toggleCart,
+  updateQuantity,
+  findVariationId,
+  removeCart,
+} = useProductVariation(productPage);
 
 watch(
   () => productPage.value,
@@ -148,42 +115,11 @@ watch(
       totalSlides.value = newValue.gallery_images.length;
     }
   },
-  { immediate: true } // Немедленный запуск для первичной загрузки
+  { immediate: true }
 );
-
-const updateCart = () => {
-  if (isCarts.value) {
-    updateCartItem({
-      id: productPage.value.id,
-      color: selectedColor.value,
-      quantity: selectedQuantity.value,
-    });
-  }
-};
-
-const updateQuantity = (quantity: number) => {
-  selectedQuantity.value = quantity;
-  updateCart();
-};
 
 onMounted(async () => {
   await useGetProductPage(String(route.params.id));
-
-  if (productPage.value?.attributes?.pa_colors && !selectedColor.value) {
-    selectedColor.value = productPage.value.attributes.pa_colors[0];
-  }
-
-  // Синхронизация с корзиной, если товар уже добавлен
-  if (cartItem.value) {
-    selectedQuantity.value = cartItem.value.quantity;
-    selectedColor.value =
-      cartItem.value.color || productPage.value.attributes.pa_colors[0];
-  }
-
-  // Установка количества слайдов
-  if (productPage.value && productPage.value.gallery_images) {
-    totalSlides.value = productPage.value.gallery_images.length;
-  }
 });
 </script>
 

@@ -34,12 +34,13 @@
                   <input
                     type="checkbox"
                     name="single-cart"
-                    :id="item.id"
-                    :checked="selectedItems.includes(item.id)"
-                    @change="toggleSelectItem(item.id)"
+                    :id="item.variationId"
+                    :checked="selectedItems.includes(item.variationId)"
+                    @change="toggleSelectItem(item.variationId)"
                   />
-                  <label :for="item.id"></label>
+                  <label :for="item.variationId"></label>
                 </div>
+
                 <div class="cart_item__img">
                   <img :src="item.thumbnail" alt="" />
                 </div>
@@ -63,7 +64,7 @@
                     @updateQuantity="
                       (quantity) => updateQuantity(item, quantity)
                     "
-                    @clear="removeCartItem(item.id)"
+                    @clear="removeCart(item.variationId)"
                   />
                 </div>
               </li>
@@ -107,7 +108,8 @@ import { ref, computed, watch, onMounted } from "vue";
 import { useCartStoreRefs, useCartStore } from "@/stores/useCartStore";
 import { useDelivery } from "@/composables/useDelivery";
 const { carts, currentOrder } = useCartStoreRefs();
-const { updateCartItem, removeCartItem, createOrder } = useCartStore();
+const { updateCartItem, removeCartItem, createOrder, removeCart } =
+  useCartStore();
 
 const { deliveryPrice } = useDelivery();
 const { user } = useUserStoreRefs();
@@ -124,27 +126,34 @@ const updateQuantity = (item: any, quantity: number) => {
   updateCartItem(item);
 };
 
-// Удаление выбранных товаров из корзины
 const deleteSelectedItems = () => {
-  selectedItems.value.forEach((itemId) => {
-    removeCartItem(itemId);
+  selectedItems.value.forEach((variationId) => {
+    const itemIndex = carts.value.findIndex(
+      (cartItem: any) => cartItem.variationId === variationId
+    );
+
+    if (itemIndex !== -1) {
+      carts.value.splice(itemIndex, 1);
+    }
   });
   selectedItems.value = [];
 };
 
 // Обработка выбора товара
-const toggleSelectItem = (itemId: string) => {
-  if (selectedItems.value.includes(itemId)) {
-    selectedItems.value = selectedItems.value.filter((id) => id !== itemId);
+const toggleSelectItem = (variationId: string) => {
+  if (selectedItems.value.includes(variationId)) {
+    selectedItems.value = selectedItems.value.filter(
+      (id) => id !== variationId
+    );
   } else {
-    selectedItems.value.push(itemId);
+    selectedItems.value.push(variationId);
   }
 };
 
 // Выбор всех товаров
 const toggleSelectAll = (event: Event) => {
   if ((event.target as HTMLInputElement).checked) {
-    selectedItems.value = carts.value.map((item: any) => item.id);
+    selectedItems.value = carts.value.map((item: any) => item.variationId);
   } else {
     selectedItems.value = [];
   }
@@ -177,14 +186,9 @@ const setLineItemsAndPrice = () => {
     quantity: item.quantity,
     price: item.price,
     color: item.color,
+    variation_id: item.variationId,
     thumbnail: item.thumbnail,
   }));
-
-  // Добавляем стоимость доставки к общей стоимости заказа
-  // const totalOrderPrice =
-  //   carts.value.reduce((total: any, item: any) => {
-  //     return total + item.price * item.quantity;
-  //   }, 0) + deliveryPrice.value;
 
   currentOrder.value = {
     ...currentOrder.value,

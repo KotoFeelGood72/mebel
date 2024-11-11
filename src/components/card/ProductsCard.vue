@@ -18,7 +18,7 @@
           v-model="selectedColor"
         />
         <div class="products_prices">
-          <p>{{ products.price }} ₽</p>
+          <p>{{ variationPrice }} ₽</p>
           <div class="products_prices__right">
             <AddToCart
               :active="isCarts"
@@ -30,7 +30,7 @@
               :initialQuantity="cartItem?.quantity || selectedQuantity"
               v-if="isCarts"
               @updateQuantity="updateQuantity"
-              @clear="removeCart(products.id, selectedColor)"
+              @clear="removeCart(findVariationId)"
             />
           </div>
         </div>
@@ -40,16 +40,11 @@
 </template>
 
 <script setup lang="ts">
-import { useCartStore, useCartStoreRefs } from "@/stores/useCartStore";
+import { useProductVariation } from "@/composables/useProductVariation";
 import AddToCart from "../ui/AddToCart.vue";
-import { ref, computed } from "vue";
-import Qty from "../ui/Qty.vue";
-import { useToast } from "vue-toastification";
 import ProductsSlider from "../ui/ProductsSlider.vue";
 import ColorSelect from "../ui/ColorSelect.vue";
-
-const { addCart, removeCart, updateCartItem } = useCartStore();
-const { carts } = useCartStoreRefs();
+import Qty from "../ui/Qty.vue";
 
 const props = withDefaults(
   defineProps<{
@@ -60,59 +55,18 @@ const props = withDefaults(
   }
 );
 
-const toast = useToast();
-
-const selectedColor = ref(
-  props.products?.attributes?.pa_colors &&
-    props.products.attributes.pa_colors.length > 0
-    ? props.products.attributes.pa_colors[0]
-    : null
-);
-
-// Проверка, находится ли товар с конкретным цветом в корзине
-const isCarts = computed(() =>
-  carts.value.some(
-    (cart: any) =>
-      cart.id === props.products.id && cart.color === selectedColor.value
-  )
-);
-const cartItem = computed(() =>
-  carts.value.find(
-    (cart: any) =>
-      cart.id === props.products.id && cart.color === selectedColor.value
-  )
-);
-
-const selectedQuantity = ref(cartItem.value ? cartItem.value.quantity : 1);
-
-const toggleCart = () => {
-  if (isCarts.value) {
-    removeCart(props.products.id, selectedColor.value);
-    toast.error("Удалено из корзины");
-  } else {
-    addCart({
-      ...props.products,
-      quantity: selectedQuantity.value,
-      color: selectedColor.value,
-    });
-    toast.success("Добавлено в корзину");
-  }
-};
-
-const updateCart = () => {
-  if (isCarts.value) {
-    updateCartItem({
-      id: props.products.id,
-      color: selectedColor.value,
-      quantity: selectedQuantity.value,
-    });
-  }
-};
-
-const updateQuantity = (quantity: number) => {
-  selectedQuantity.value = quantity;
-  updateCart();
-};
+const {
+  selectedColor,
+  selectedSize,
+  variationPrice,
+  isCarts,
+  cartItem,
+  selectedQuantity,
+  toggleCart,
+  updateQuantity,
+  findVariationId,
+  removeCart,
+} = useProductVariation(props.products);
 </script>
 
 <style scoped lang="scss">

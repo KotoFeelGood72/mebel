@@ -24,16 +24,32 @@ export const useCartStore = defineStore("carts", {
     },
 
     // Измененный метод removeCart с учетом цвета
-    removeCart(id: string, color: string) {
+    // removeCart(id: string, color: string) {
+    //   const existingCartItem = this.carts.find(
+    //     (cart: any) => cart.id === id && cart.color === color
+    //   );
+    //   if (existingCartItem) {
+    //     if (existingCartItem.quantity > 1) {
+    //       existingCartItem.quantity -= 1;
+    //     } else {
+    //       this.carts = this.carts.filter(
+    //         (cart: any) => !(cart.id === id && cart.color === color)
+    //       );
+    //     }
+    //   }
+    // },
+
+    removeCart(variationId: string) {
       const existingCartItem = this.carts.find(
-        (cart: any) => cart.id === id && cart.color === color
+        (cart: any) => cart.variationId === variationId
       );
+
       if (existingCartItem) {
         if (existingCartItem.quantity > 1) {
           existingCartItem.quantity -= 1;
         } else {
           this.carts = this.carts.filter(
-            (cart: any) => !(cart.id === id && cart.color === color)
+            (cart: any) => cart.variationId !== variationId
           );
         }
       }
