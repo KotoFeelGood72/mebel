@@ -11,8 +11,7 @@ export function useProductVariation(productData: any) {
   // Проверка: если productData не является ref, оборачиваем его в ref
   const product = isRef(productData) ? productData : ref(productData);
 
-  const selectedColor = ref(null);
-  const selectedSize = ref(null);
+  const selectedColor = ref<any>(null);
 
   // Отслеживание изменений product, чтобы обновлять данные, когда product обновится
   watch(
@@ -20,24 +19,18 @@ export function useProductVariation(productData: any) {
     (newProduct) => {
       if (newProduct && newProduct.attributes) {
         selectedColor.value = newProduct.attributes.pa_colors?.[0] || null;
-        selectedSize.value = newProduct.attributes.pa_sizes?.[0] || null;
       }
     },
     { immediate: true } // Запускаем немедленно, чтобы получить начальное значение
   );
 
   const findVariation = computed(() => {
-    if (!product.value || !selectedColor.value || !selectedSize.value)
-      return null;
+    if (!product.value || !selectedColor.value) return null;
 
-    const selectedColorLower = selectedColor.value;
-    const selectedSizeLower = selectedSize.value;
+    const selectedColorLower = selectedColor.value.toLowerCase();
 
     return product.value.variations.find((v: any) => {
-      return (
-        v.attributes.pa_colors === selectedColorLower &&
-        v.attributes.pa_sizes === selectedSizeLower
-      );
+      return v.attributes.pa_colors === selectedColorLower;
     });
   });
 
@@ -59,6 +52,7 @@ export function useProductVariation(productData: any) {
 
   const toggleCart = () => {
     const variationId = findVariationId.value;
+    console.log(product);
 
     if (!variationId) {
       toast.error("Выберите корректную вариацию товара.");
@@ -75,7 +69,6 @@ export function useProductVariation(productData: any) {
         variationId: variationId,
         quantity: selectedQuantity.value,
         color: selectedColor.value,
-        size: selectedSize.value,
         price: variationPrice.value,
       });
       toast.success("Добавлено в корзину");
@@ -98,7 +91,6 @@ export function useProductVariation(productData: any) {
 
   return {
     selectedColor,
-    selectedSize,
     variationPrice,
     isCarts,
     cartItem,
