@@ -30,8 +30,8 @@ export function useProductVariation(productData: any) {
     if (!product.value || !selectedColor.value || !selectedSize.value)
       return null;
 
-    const selectedColorLower = selectedColor.value.toLowerCase();
-    const selectedSizeLower = selectedSize.value.toLowerCase();
+    const selectedColorLower = selectedColor.value;
+    const selectedSizeLower = selectedSize.value;
 
     return product.value.variations.find((v: any) => {
       return (
