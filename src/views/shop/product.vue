@@ -92,12 +92,25 @@ const totalSlides = ref();
 const route = useRoute();
 const breadcrumbs = ref([
   { text: "Каталог", href: "/shop" },
-  { text: "Бескаркасное кресло империал" },
+  { text: productPage?.value?.title },
 ]);
+
+watch(
+  () => productPage.value,
+  (newValue) => {
+    if (newValue && newValue.title) {
+      // Обновляем второй элемент хлебных крошек, когда данные productPage доступны
+      breadcrumbs.value = [
+        { text: "Каталог", href: "/shop" },
+        { text: newValue.title },
+      ];
+    }
+  },
+  { immediate: true }
+);
 
 const {
   selectedColor,
-  selectedSize,
   variationPrice,
   isCarts,
   cartItem,

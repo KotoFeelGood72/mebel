@@ -57,7 +57,6 @@ const props = withDefaults(
 
 const {
   selectedColor,
-  selectedSize,
   variationPrice,
   isCarts,
   cartItem,
