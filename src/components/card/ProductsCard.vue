@@ -1,5 +1,5 @@
 <template>
-  <div class="products">
+  <div class="products" v-if="products">
     <ProductsSlider :products="products" />
     <div class="products_content">
       <div class="products_content__head">
@@ -7,9 +7,7 @@
         <div class="products_description">
           {{ products.acf.about_txt_product }}
         </div>
-        <RouterLink :to="`/shop/products/${products.id}`"
-          >Подробнее о товаре</RouterLink
-        >
+        <RouterLink :to="`/shop/products/${products.id}`">Подробнее о товаре</RouterLink>
       </div>
       <div class="products_content_bottom">
         <ColorSelect
@@ -45,6 +43,7 @@ import AddToCart from "../ui/AddToCart.vue";
 import ProductsSlider from "../ui/ProductsSlider.vue";
 import ColorSelect from "../ui/ColorSelect.vue";
 import Qty from "../ui/Qty.vue";
+import { ref } from "vue";
 
 const props = withDefaults(
   defineProps<{
@@ -54,6 +53,8 @@ const props = withDefaults(
     products: null,
   }
 );
+
+const productRef = ref(props.products);
 
 const {
   selectedColor,
@@ -65,7 +66,7 @@ const {
   updateQuantity,
   findVariationId,
   removeCart,
-} = useProductVariation(props.products);
+} = useProductVariation(productRef);
 </script>
 
 <style scoped lang="scss">

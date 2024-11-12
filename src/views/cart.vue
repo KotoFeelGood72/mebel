@@ -61,9 +61,7 @@
                   <div class="cart_item__price">{{ item.price }} Р</div>
                   <Qty
                     :initialQuantity="item.quantity"
-                    @updateQuantity="
-                      (quantity) => updateQuantity(item, quantity)
-                    "
+                    @updateQuantity="(quantity) => updateQuantity(item, quantity)"
                     @clear="removeCart(item.variationId)"
                   />
                 </div>
@@ -108,8 +106,7 @@ import { ref, computed, watch, onMounted } from "vue";
 import { useCartStoreRefs, useCartStore } from "@/stores/useCartStore";
 import { useDelivery } from "@/composables/useDelivery";
 const { carts, currentOrder } = useCartStoreRefs();
-const { updateCartItem, removeCartItem, createOrder, removeCart } =
-  useCartStore();
+const { updateCartItem, removeCartItem, createOrder, removeCart } = useCartStore();
 
 const { deliveryPrice } = useDelivery();
 const { user } = useUserStoreRefs();
@@ -142,9 +139,7 @@ const deleteSelectedItems = () => {
 // Обработка выбора товара
 const toggleSelectItem = (variationId: string) => {
   if (selectedItems.value.includes(variationId)) {
-    selectedItems.value = selectedItems.value.filter(
-      (id) => id !== variationId
-    );
+    selectedItems.value = selectedItems.value.filter((id) => id !== variationId);
   } else {
     selectedItems.value.push(variationId);
   }
@@ -161,9 +156,7 @@ const toggleSelectAll = (event: Event) => {
 
 // Проверка, все ли товары выбраны
 const isAllSelected = computed(() => {
-  return (
-    carts.value.length > 0 && selectedItems.value.length === carts.value.length
-  );
+  return carts.value.length > 0 && selectedItems.value.length === carts.value.length;
 });
 
 // Добавим новое вычисляемое свойство для общей стоимости с учетом доставки
@@ -194,9 +187,26 @@ const setLineItemsAndPrice = () => {
     ...currentOrder.value,
     line_items: lineItems,
     shipping_cost: deliveryPrice.value,
-    user_id: user.value.ID,
+    user_id: user.value?.ID,
   };
 };
+
+function loadYandexSplitSDK() {
+  if (!window.YaPay) {
+    const script = document.createElement("script");
+    script.src = "https://pay.yandex.ru/sdk/v1/pay.js";
+    script.async = true;
+    script.onload = () => {
+      console.log("YaPay SDK загружен");
+    };
+    script.onerror = () => {
+      console.error("Ошибка при загрузке YaPay SDK");
+    };
+    document.head.appendChild(script);
+  } else {
+    console.log("YaPay SDK уже загружен");
+  }
+}
 
 watch([carts, deliveryPrice], setLineItemsAndPrice, { deep: true });
 
@@ -211,6 +221,7 @@ watch(
 );
 
 onMounted(() => {
+  loadYandexSplitSDK();
   setLineItemsAndPrice();
 });
 </script>

@@ -1,5 +1,4 @@
-// composables/useProductVariation.ts
-import { ref, computed, watch, isRef } from "vue";
+import { ref, computed, watch } from "vue";
 import { useToast } from "vue-toastification";
 import { useCartStore, useCartStoreRefs } from "@/stores/useCartStore";
 
@@ -8,16 +7,18 @@ export function useProductVariation(productData: any) {
   const { addCart, removeCart, updateCartItem } = useCartStore();
   const { carts } = useCartStoreRefs();
 
-  // Проверка: если productData не является ref, оборачиваем его в ref
-  const product = isRef(productData) ? productData : ref(productData);
-
+  // Используем productData напрямую как ref
+  // const product = productData;
   const selectedColor = ref<any>(null);
+
+  // console.log(productData)
 
   // Отслеживание изменений product, чтобы обновлять данные, когда product обновится
   watch(
-    product,
+    productData,
     (newProduct) => {
       if (newProduct && newProduct.attributes) {
+        console.log(newProduct.variations, 'newProduct');
         selectedColor.value = newProduct.attributes.pa_colors?.[0] || null;
       }
     },
@@ -25,11 +26,11 @@ export function useProductVariation(productData: any) {
   );
 
   const findVariation = computed(() => {
-    if (!product.value || !selectedColor.value) return null;
+    if (!productData.value || !selectedColor.value) return null;
 
-    const selectedColorLower = selectedColor.value.toLowerCase();
+    const selectedColorLower = selectedColor.value
 
-    return product.value.variations.find((v: any) => {
+    return productData.value.variations.find((v: any) => {
       return v.attributes.pa_colors === selectedColorLower;
     });
   });
@@ -37,7 +38,7 @@ export function useProductVariation(productData: any) {
   const findVariationId = computed(() => findVariation.value?.id || null);
 
   const variationPrice = computed(
-    () => findVariation.value?.price || product.value?.price || 0
+    () => findVariation.value?.price || productData.value?.price || 0
   );
 
   const isCarts = computed(() =>
@@ -52,7 +53,6 @@ export function useProductVariation(productData: any) {
 
   const toggleCart = () => {
     const variationId = findVariationId.value;
-    console.log(product);
 
     if (!variationId) {
       toast.error("Выберите корректную вариацию товара.");
@@ -64,8 +64,8 @@ export function useProductVariation(productData: any) {
       toast.error("Удалено из корзины");
     } else {
       addCart({
-        id: product.value?.id,
-        thumbnail: product.value?.thumbnail,
+        id: productData.value?.id,
+        thumbnail: productData.value?.thumbnail,
         variationId: variationId,
         quantity: selectedQuantity.value,
         color: selectedColor.value,

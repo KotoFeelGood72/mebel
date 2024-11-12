@@ -7,6 +7,7 @@ import router from "./router";
 import Toast, { POSITION } from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
+import { useRouter } from "vue-router";
 import { MaskInput } from "vue-3-mask";
 import { createHead } from "@vueuse/head";
 
@@ -16,22 +17,22 @@ declare global {
   }
 }
 
-function loadYandexSplitSDK() {
-  if (!window.YaPay) {
-    const script = document.createElement("script");
-    script.src = "https://pay.yandex.ru/sdk/v1/pay.js";
-    script.async = true;
-    script.onload = () => {
-      console.log("YaPay SDK загружен");
-    };
-    script.onerror = () => {
-      console.error("Ошибка при загрузке YaPay SDK");
-    };
-    document.head.appendChild(script);
-  } else {
-    console.log("YaPay SDK уже загружен");
-  }
-}
+// function loadYandexSplitSDK() {
+//   if (!window.YaPay) {
+//     const script = document.createElement("script");
+//     script.src = "https://pay.yandex.ru/sdk/v1/pay.js";
+//     script.async = true;
+//     script.onload = () => {
+//       console.log("YaPay SDK загружен");
+//     };
+//     script.onerror = () => {
+//       console.error("Ошибка при загрузке YaPay SDK");
+//     };
+//     document.head.appendChild(script);
+//   } else {
+//     console.log("YaPay SDK уже загружен");
+//   }
+// }
 
 // Создание приложения
 const app = createApp(App);
@@ -56,4 +57,4 @@ app.component("MaskInput", MaskInput);
 app.mount("#app");
 
 // Загружаем SDK Яндекс Сплита при запуске приложения
-loadYandexSplitSDK();
+// loadYandexSplitSDK();

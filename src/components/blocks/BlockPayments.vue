@@ -69,13 +69,17 @@ const initializeWidget = async () => {
 };
 
 // Отслеживаем изменения в методе оплаты
-watch(paymentMethod, (newMethod) => {
-  if (newMethod === "Оплатить") {
-    initializeWidget(); // Инициализируем виджет при выборе метода "Оплатить"
-  } else {
-    resetPaymentSession(); // Очищаем сессию, если выбран другой метод
-  }
-});
+watch(
+  paymentMethod,
+  (newMethod) => {
+    if (newMethod === "Оплатить") {
+      initializeWidget(); // Инициализируем виджет при выборе метода "Оплатить"
+    } else {
+      resetPaymentSession(); // Очищаем сессию, если выбран другой метод
+    }
+  },
+  { immediate: true }
+);
 
 watch(
   () => props.total,
