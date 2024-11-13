@@ -73,7 +73,6 @@ const targetUser = () => {
   if (!token.value) {
     openModal("auth");
   } else {
-    console.log("token.value", token.value);
     closeModal("auth");
     router.push({ name: "profile" });
   }

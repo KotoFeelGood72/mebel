@@ -1,7 +1,7 @@
 <template>
   <div class="ver_main">
     <div class="ver_head">
-      <p>Мы отправим SMS-сообщение с кодом подтверждения</p>
+      <p>Мы отправим E-Mail уведомление с кодом подтверждения</p>
     </div>
     <div class="ver__form">
       <p>Введите код</p>

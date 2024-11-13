@@ -30,10 +30,6 @@
 <script setup lang="ts">
 import { useUserStoreRefs, useUserStore } from "@/stores/useUserStore";
 
-// definePageMeta({
-//   middleware: "auth",
-// });
-
 const { user } = useUserStoreRefs();
 const { logout } = useUserStore();
 

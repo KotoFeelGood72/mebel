@@ -19,8 +19,9 @@
       </div>
       <div class="form__notice">
         Нажимая кнопку “Подтвердить номер”, Вы принимаете условия
-        <RouterLink>Программы лояльности</RouterLink> и обработку персональных
-        данных на условиях <RouterLink>Политики конфиденциальности</RouterLink>
+        <RouterLink to="/privacy">Программы лояльности</RouterLink> и обработку
+        персональных данных на условиях
+        <RouterLink to="/privacy">Политики конфиденциальности</RouterLink>
       </div>
     </div>
   </div>

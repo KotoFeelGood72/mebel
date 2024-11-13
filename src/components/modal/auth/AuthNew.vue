@@ -1,16 +1,19 @@
 <template>
   <div class="usernew">
-    <!-- <div class="loader">
-      <Icons icon="svg-spinners:pulse-3" :size="100" />
-    </div> -->
     <div class="usernew__form">
       <div class="usernew__input">
         <p>Имя</p>
-        <Inputs v-model="user.billing.first_name" placeholder="Поддубная Елена" />
+        <Inputs
+          v-model="user.billing.first_name"
+          placeholder="Поддубная Елена"
+        />
       </div>
       <div class="usernew__input">
         <p>Номер телефона</p>
-        <InputPhone v-model="user.billing.phone" placeholder="+7 (999) 999-99-99" />
+        <InputPhone
+          v-model="user.billing.phone"
+          placeholder="+7 (999) 999-99-99"
+        />
       </div>
       <DefaultBtn
         name="Продолжить"
