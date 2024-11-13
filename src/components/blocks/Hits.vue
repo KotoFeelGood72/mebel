@@ -3,7 +3,7 @@
     <div class="container">
       <div class="hits_main p10">
         <div class="hits__title">
-          <h2>{{ title }}</h2>
+          <h2>{{ title ? title : "Хиты продаж" }}</h2>
         </div>
         <swiper
           :slides-per-view="3"
@@ -34,7 +34,7 @@
           >
             <RouterLink :to="`/shop/products/${item.id}`">
               <div class="hits_item__content">
-                <span>{{ getStockStatus(item.stock_status) }}</span>
+                <span>{{ getStockStatus(item.stock) }}</span>
                 <h3>{{ item.title }}</h3>
                 <div class="hits_item__price">
                   <span>{{ item.price }} ₽</span>
@@ -59,12 +59,12 @@ import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/swiper-bundle.css";
 
 defineProps<{
-  title: string;
+  title?: string;
   products: any;
 }>();
 
 const getStockStatus = (status: string) => {
-  return status === "instock" ? "В наличии" : status;
+  return status === "In stock" ? "В наличии" : "Не в наличии";
 };
 </script>
 

@@ -47,9 +47,13 @@ const paymentMethods = [
     logo: "https://fu.gleede.ru/wp-content/uploads/2024/11/split.png",
   },
 ];
-
+const widgetInitialized = ref(false);
 const isLoading = ref<boolean>(false);
+
 const initializeWidget = async () => {
+  // Проверяем, инициализирован ли уже виджет
+  if (widgetInitialized.value) return;
+
   isLoading.value = true;
   await nextTick();
 
@@ -60,6 +64,7 @@ const initializeWidget = async () => {
       amount: props.total,
       widgetContainerId: "#split-widget",
     });
+    widgetInitialized.value = true; // Устанавливаем флаг, чтобы указать, что виджет инициализирован
     setTimeout(() => {
       isLoading.value = false;
     }, 500);
@@ -68,7 +73,6 @@ const initializeWidget = async () => {
   }
 };
 
-// Отслеживаем изменения в методе оплаты
 watch(
   paymentMethod,
   (newMethod) => {
@@ -76,6 +80,7 @@ watch(
       initializeWidget(); // Инициализируем виджет при выборе метода "Оплатить"
     } else {
       resetPaymentSession(); // Очищаем сессию, если выбран другой метод
+      widgetInitialized.value = false; // Сбрасываем флаг инициализации, чтобы можно было создать виджет снова
     }
   },
   { immediate: true }
@@ -84,7 +89,7 @@ watch(
 watch(
   () => props.total,
   (newTotal) => {
-    if (paymentMethod.value === "Оплатить") {
+    if (paymentMethod.value === "Оплатить" && widgetInitialized.value) {
       initializeWidget(); // Обновляем виджет при изменении суммы, если выбран метод "Оплатить"
     }
   }
@@ -92,6 +97,7 @@ watch(
 
 onUnmounted(() => {
   resetPaymentSession();
+  widgetInitialized.value = false; // Сбрасываем флаг инициализации при демонтировании компонента
 });
 </script>
 

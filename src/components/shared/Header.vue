@@ -24,7 +24,7 @@
           />
           <div class="header__action">
             <div class="header_user" @click="targetUser()">
-              <img src="@/assets/icons/user.svg" v-if="!user" />
+              <img src="@/assets/icons/user.svg" v-if="!token" />
               <div v-else class="icon-name">
                 <div class="circle"></div>
                 {{ firstLetter }}
@@ -59,7 +59,7 @@ import { useCartStoreRefs } from "@/stores/useCartStore";
 const route = useRoute();
 const router = useRouter();
 const { openModal, closeModal } = useModalStore();
-const { user } = useUserStoreRefs();
+const { user, token } = useUserStoreRefs();
 const { carts } = useCartStoreRefs();
 
 const isHome = computed(() => route.name != "home");
@@ -70,9 +70,10 @@ const isCallBackModal = () => {
 };
 
 const targetUser = () => {
-  if (!user.value) {
+  if (!token.value) {
     openModal("auth");
   } else {
+    console.log("token.value", token.value);
     closeModal("auth");
     router.push({ name: "profile" });
   }

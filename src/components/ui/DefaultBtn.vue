@@ -1,5 +1,8 @@
 <template>
-  <div class="button" :class="['button', isColorSheme, isType, isSize]">
+  <div
+    class="button"
+    :class="['button', isColorSheme, isType, isSize, { disable: disable }]"
+  >
     <div class="btn-icon" v-if="icon">
       <Icons :icon="icon" />
     </div>
@@ -16,11 +19,13 @@ const props = withDefaults(
     size?: "xsmall" | "small" | "normal" | "xnormal" | "large";
     name: string;
     icon?: string;
+    disable?: boolean;
   }>(),
   {
     type: "secondary",
     color: "light",
     name: "Купить",
+    disable: false,
   }
 );
 
@@ -39,6 +44,12 @@ const isSize = computed(() => props.size);
   overflow: hidden;
   @include flex-center;
   gap: 1rem;
+
+  &.disable {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: none;
+  }
   @include bp($point_2) {
     width: 100%;
   }

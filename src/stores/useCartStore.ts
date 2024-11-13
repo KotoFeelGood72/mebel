@@ -1,4 +1,5 @@
 import { defineStore, storeToRefs } from "pinia";
+import { useUserStoreRefs } from "./useUserStore";
 import axios from "axios";
 
 export const useCartStore = defineStore("carts", {
@@ -22,22 +23,6 @@ export const useCartStore = defineStore("carts", {
         this.carts.push({ ...item, quantity: 1 });
       }
     },
-
-    // Измененный метод removeCart с учетом цвета
-    // removeCart(id: string, color: string) {
-    //   const existingCartItem = this.carts.find(
-    //     (cart: any) => cart.id === id && cart.color === color
-    //   );
-    //   if (existingCartItem) {
-    //     if (existingCartItem.quantity > 1) {
-    //       existingCartItem.quantity -= 1;
-    //     } else {
-    //       this.carts = this.carts.filter(
-    //         (cart: any) => !(cart.id === id && cart.color === color)
-    //       );
-    //     }
-    //   }
-    // },
 
     removeCart(variationId: string) {
       const existingCartItem = this.carts.find(
@@ -73,6 +58,14 @@ export const useCartStore = defineStore("carts", {
     },
 
     async createOrder() {
+      const { user } = useUserStoreRefs();
+      this.currentOrder.billing = {
+        ...this.currentOrder.billing,
+        first_name: user.value.billing.first_name,
+        phone: user.value.billing.phone,
+        email: user.value.billing.email,
+        address_1: user.value.billing.address,
+      };
       try {
         const response = await axios.post(
           "https://fu.gleede.ru/wp-json/yandexpay/v1/create-order/",

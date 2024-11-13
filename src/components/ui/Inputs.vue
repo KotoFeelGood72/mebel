@@ -21,7 +21,7 @@ const props = withDefaults(
     placeholder?: string;
     message?: string;
     error?: boolean;
-    modelValue: string;
+    modelValue: any;
   }>(),
   {
     type: "text",

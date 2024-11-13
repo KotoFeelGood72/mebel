@@ -18,7 +18,6 @@ export function useProductVariation(productData: any) {
     productData,
     (newProduct) => {
       if (newProduct && newProduct.attributes) {
-        console.log(newProduct.variations, 'newProduct');
         selectedColor.value = newProduct.attributes.pa_colors?.[0] || null;
       }
     },
@@ -28,7 +27,7 @@ export function useProductVariation(productData: any) {
   const findVariation = computed(() => {
     if (!productData.value || !selectedColor.value) return null;
 
-    const selectedColorLower = selectedColor.value
+    const selectedColorLower = selectedColor.value.toLowerCase();
 
     return productData.value.variations.find((v: any) => {
       return v.attributes.pa_colors === selectedColorLower;

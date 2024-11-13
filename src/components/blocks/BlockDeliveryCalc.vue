@@ -1,3 +1,4 @@
+//
 <template>
   <div class="delivery">
     <div class="delivery__address">
@@ -8,11 +9,15 @@
         v-model="query"
         @input="fetchSuggestions"
         placeholder="Введите адрес"
+        :class="{ error: v$.query.$error }"
       />
+      <span v-if="v$.query.$error" class="error">
+        Адрес обязателен для заполнения.
+      </span>
       <ul class="delivery_siqqestion" v-if="suggestions.length">
         <li
           v-for="suggestion in suggestions"
-          :key="suggestion"
+          :key="suggestion.value"
           @click="onSuggestionSelect(suggestion)"
         >
           {{ suggestion.value }}
@@ -23,19 +28,21 @@
 </template>
 
 <script setup lang="ts">
+import { ref, watch, onMounted, computed } from "vue";
+import useVuelidate from "@vuelidate/core";
+import { required } from "@vuelidate/validators";
 import { useDelivery } from "@/composables/useDelivery";
 import { useCartStoreRefs } from "@/stores/useCartStore";
-import { useUserStore, useUserStoreRefs } from "@/stores/useUserStore";
-import { watch, ref, onMounted } from "vue";
+import { useUserStore } from "@/stores/useUserStore";
 
 const props = defineProps<{
   defaultAddress?: string;
 }>();
 
+// Подключаем useDelivery и используем основные данные
 const {
   query,
   suggestions,
-  deliveryPrice,
   fetchSuggestions,
   selectSuggestion,
   selectedAddress,
@@ -44,32 +51,35 @@ const {
 const { currentOrder } = useCartStoreRefs();
 const { handleNextStep } = useUserStore();
 
+// Определяем правила валидации для поля адреса
+const rules = computed(() => ({
+  query: { required },
+}));
+
+// Используем Vuelidate
+const v$ = useVuelidate(rules, { query });
+
 // Инициализируем query при монтировании, если defaultAddress задан
 onMounted(async () => {
   if (props.defaultAddress) {
     try {
-      // Используем fetchSuggestions для получения подсказок на основе defaultAddress
-      query.value = props.defaultAddress; // Устанавливаем значение по умолчанию в query
-      await fetchSuggestions(); // Вызываем функцию для получения подсказок
+      query.value = props.defaultAddress;
+      await fetchSuggestions();
 
-      // Проверяем, есть ли предложения, и выбираем первое
       if (suggestions.value.length > 0) {
         const suggestion = suggestions.value[0];
-
-        // Устанавливаем query на основе первой подсказки и сохраняем адрес
         query.value = suggestion.value;
         selectedAddress.value = JSON.stringify(suggestion.data);
-
-        // Передаем результат в selectSuggestion для расчета стоимости
         selectSuggestion(suggestion);
       }
     } catch (error) {
       console.error("Ошибка при обработке defaultAddress:", error);
-      query.value = props.defaultAddress; // В случае ошибки просто отображаем текст
+      query.value = props.defaultAddress;
     }
   }
 });
 
+// Функция выбора подсказки
 function onSuggestionSelect(suggestion: any) {
   const addressData =
     typeof suggestion.data === "string"
@@ -86,13 +96,11 @@ function onSuggestionSelect(suggestion: any) {
     state: addressData.region_with_type || "",
   };
 
-  // Вызываем handleNextStep с сформированным deliveryData
   handleNextStep(deliveryData);
-
-  // Вызываем selectSuggestion для расчета стоимости доставки
   selectSuggestion(suggestion);
 }
 
+// Следим за изменением selectedAddress и обновляем currentOrder
 watch([selectedAddress], (newAddress: any) => {
   const addressData = JSON.parse(newAddress);
   currentOrder.value = {

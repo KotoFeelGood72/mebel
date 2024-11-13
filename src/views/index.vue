@@ -1,7 +1,7 @@
 <template>
   <div class="home" v-if="page">
     <HeroSlider :slides="page.slider" />
-    <Hits :title="page.title_hit" :products="products" />
+    <Hits :title="page.title_hit" :products="hits" />
     <RecomendedBlock />
     <ActionBlock />
   </div>
@@ -17,7 +17,7 @@ import { usePage } from "@/services/usePage";
 import { useProducts } from "@/services/useProducts";
 
 const { useGetPage, page, meta } = usePage();
-const { useGetProducts, products } = useProducts();
+const { useGetProducts, hits } = useProducts();
 
 onMounted(async () => {
   await useGetPage("114");

@@ -46,7 +46,7 @@ watch(internalSelectedColor, (newValue) => {
 });
 
 const colorMap: Record<string, string> = {
-  бежевый: "#D8D1B6",
+  Бежевый: "#D8D1B6",
   Зелёный: "#547C51",
   Серый: "#5B5E62",
   Темный: "#342F2F",

@@ -1,6 +1,7 @@
 import { api } from "@/api/axios";
 import { ref } from "vue";
 
+const hits = ref<any>(null);
 const products = ref<any>(null);
 
 export function useProducts() {
@@ -11,7 +12,7 @@ export function useProducts() {
         products.value = response.data;
       } else {
         const response = await api.get(`/products/tag-popular.json`);
-        products.value = response.data;
+        hits.value = response.data;
       }
     } catch (error) {}
   };
@@ -19,5 +20,6 @@ export function useProducts() {
   return {
     useGetProducts,
     products,
+    hits,
   };
 }

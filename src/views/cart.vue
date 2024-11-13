@@ -61,7 +61,9 @@
                   <div class="cart_item__price">{{ item.price }} Р</div>
                   <Qty
                     :initialQuantity="item.quantity"
-                    @updateQuantity="(quantity) => updateQuantity(item, quantity)"
+                    @updateQuantity="
+                      (quantity) => updateQuantity(item, quantity)
+                    "
                     @clear="removeCart(item.variationId)"
                   />
                 </div>
@@ -70,7 +72,11 @@
           </div>
           <div class="list-block">
             <BlockUserInfo />
-            <BlockDeliveryCalc :defaultAddress="user?.billing?.address_1" />
+            <BlockDeliveryCalc
+              :defaultAddress="
+                user?.billing?.address_1 || user?.billing?.address
+              "
+            />
             <BlockPayments :total="totalWithDelivery" />
           </div>
         </div>
@@ -84,7 +90,8 @@
             color="brown"
             size="normal"
             type="primary"
-            @click="createOrder"
+            :disable="!isCheckUser"
+            @click="createNewOrder"
           />
         </BlockCartTotals>
       </div>
@@ -100,13 +107,12 @@ import BlockDeliveryCalc from "@/components/blocks/BlockDeliveryCalc.vue";
 import BlockCartTotals from "@/components/blocks/BlockCartTotals.vue";
 import { useUserStoreRefs } from "@/stores/useUserStore";
 import { useRouter } from "vue-router";
-// @ts-ignore
 import BlockPayments from "@/components/blocks/BlockPayments.vue";
 import { ref, computed, watch, onMounted } from "vue";
 import { useCartStoreRefs, useCartStore } from "@/stores/useCartStore";
 import { useDelivery } from "@/composables/useDelivery";
 const { carts, currentOrder } = useCartStoreRefs();
-const { updateCartItem, removeCartItem, createOrder, removeCart } = useCartStore();
+const { updateCartItem, createOrder, removeCart } = useCartStore();
 
 const { deliveryPrice } = useDelivery();
 const { user } = useUserStoreRefs();
@@ -139,7 +145,9 @@ const deleteSelectedItems = () => {
 // Обработка выбора товара
 const toggleSelectItem = (variationId: string) => {
   if (selectedItems.value.includes(variationId)) {
-    selectedItems.value = selectedItems.value.filter((id) => id !== variationId);
+    selectedItems.value = selectedItems.value.filter(
+      (id) => id !== variationId
+    );
   } else {
     selectedItems.value.push(variationId);
   }
@@ -156,8 +164,38 @@ const toggleSelectAll = (event: Event) => {
 
 // Проверка, все ли товары выбраны
 const isAllSelected = computed(() => {
-  return carts.value.length > 0 && selectedItems.value.length === carts.value.length;
+  return (
+    carts.value.length > 0 && selectedItems.value.length === carts.value.length
+  );
 });
+
+const isCheckUser = computed(() => {
+  const billing = user.value.billing;
+
+  // Проверяем, что необходимые поля заполнены
+  return (
+    !!billing &&
+    !!billing.address &&
+    !!billing.first_name &&
+    !!billing.phone &&
+    !!billing.email
+  );
+});
+
+const createNewOrder = () => {
+  if (isCheckUser) {
+    createOrder();
+  }
+};
+
+watch(
+  () => user.value.billing,
+  (newBilling) => {
+    console.log("Данные billing обновлены:", newBilling);
+    console.log("Статус заполненности данных:", isCheckUser.value);
+  },
+  { deep: true }
+);
 
 // Добавим новое вычисляемое свойство для общей стоимости с учетом доставки
 const totalWithDelivery = computed(() => {
@@ -187,7 +225,7 @@ const setLineItemsAndPrice = () => {
     ...currentOrder.value,
     line_items: lineItems,
     shipping_cost: deliveryPrice.value,
-    user_id: user.value?.ID,
+    user_id: user.value?.ID || 0,
   };
 };
 

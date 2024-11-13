@@ -2,13 +2,17 @@
   <div class="userInfo">
     <div class="userInfo__head">
       <h3>Информация о покупателе</h3>
-      <p v-if="!user && !user?.token">Авторизуйтесь, чтобы отслеживать свой заказ</p>
+      <p v-if="!token">Авторизуйтесь, чтобы отслеживать свой заказ</p>
     </div>
 
-    <div class="user_toggle__w" v-if="!user && !user?.token">
+    <div class="user_toggle__w" v-if="!token">
       <div class="user__toggle">
         <label class="switch">
-          <input type="checkbox" v-model="isAuthorized" @change="toggleAuthorization" />
+          <input
+            type="checkbox"
+            v-model="isAuthorized"
+            @change="toggleAuthorization"
+          />
           <span class="slider round"></span>
         </label>
         <span>Продолжить без авторизации</span>
@@ -27,60 +31,121 @@
         <div v-else class="userInfoForm">
           <div class="userInfoForm__input">
             <p>Имя*</p>
-            <Inputs v-model="user.billing.first_name" placeholder="Поддубная Елена" />
+            <Inputs
+              v-model="userData.name"
+              placeholder="Поддубная Елена"
+              :class="{ error: v$.name.$error && isAuthorized }"
+            />
+            <span v-if="v$.name.$error && isAuthorized" class="error">
+              Имя обязательно и должно быть длиной не менее 2 символов.
+            </span>
           </div>
+
           <div class="userInfoForm__input">
             <p>Телефон*</p>
-            <InputPhone v-model="user.billing.phone" placeholder="+7 (918) 123 45 67" />
+            <InputPhone
+              v-model="userData.phone"
+              placeholder="+7 (918) 123 45 67"
+              :class="{ error: v$.phone.$error && isAuthorized }"
+            />
+            <span v-if="v$.phone.$error && isAuthorized" class="error">
+              Телефон обязателен.
+            </span>
           </div>
+
           <div class="userInfoForm__input">
             <p>E-mail</p>
-            <Inputs v-model="user.email" placeholder="dundub@gmail.com" type="email" />
+            <Inputs
+              v-model="userData.email"
+              placeholder="dundub@gmail.com"
+              type="email"
+              :class="{ error: v$.email.$error && isAuthorized }"
+            />
+            <span v-if="v$.email.$error && isAuthorized" class="error">
+              Введите корректный e-mail.
+            </span>
           </div>
         </div>
       </div>
     </div>
 
     <div class="userInfoData" v-else>
-      <p><strong>Имя:</strong> {{ user.billing.first_name }}</p>
-      <p><strong>Телефон:</strong> {{ user.billing.phone }}</p>
-      <p><strong>Email:</strong> {{ user.billing.email }}</p>
+      <p>
+        <strong>Имя:</strong> {{ user?.billing?.first_name || "Не указано" }}
+      </p>
+      <p>
+        <strong>Телефон:</strong> {{ user?.billing?.phone || "Не указано" }}
+      </p>
+      <p><strong>Email:</strong> {{ user?.billing?.email || "Не указано" }}</p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from "vue";
+import { ref, computed, watch, watchEffect } from "vue";
+import useVuelidate from "@vuelidate/core";
+import { required, email, minLength } from "@vuelidate/validators";
 import { useUserStoreRefs } from "@/stores/useUserStore";
 import { useModalStore } from "@/stores/useModalStore";
 import DefaultBtn from "../ui/DefaultBtn.vue";
 import Inputs from "../ui/Inputs.vue";
 import InputPhone from "../ui/InputPhone.vue";
 
-const { user } = useUserStoreRefs();
+const { user, token } = useUserStoreRefs();
 const { openModal } = useModalStore();
+const isAuthorized = ref<boolean>(false);
 
-const isAuthorized = ref(false);
-
-// Данные пользователя по умолчанию
+// Создаем реактивные данные для хранения значений формы
 const userData = ref({
-  name: "Константинопольская Кристина",
-  phone: "+7 (918) 123 45 67",
-  email: "dundub@gmail.com",
+  name: user.value.billing?.first_name || "",
+  phone: user.value.billing?.phone || "",
+  email: user.value.billing?.email || "",
 });
 
+watchEffect(() => {
+  user.value.billing.first_name = userData.value.name;
+  user.value.billing.phone = userData.value.phone;
+  user.value.billing.email = userData.value.email;
+});
+
+// Обновляем userData, если изменяются данные в user.billing
+watch(user, () => {
+  userData.value = {
+    name: user.value.billing?.first_name || "",
+    phone: user.value.billing?.phone || "",
+    email: user.value.billing?.email || "",
+  };
+});
+
+// Определяем правила валидации
+const rules = computed(() => ({
+  name: { required, minLength: minLength(2) },
+  phone: { required },
+  email: { required, email },
+}));
+
+// Используем Vuelidate
+const v$ = useVuelidate(rules, userData);
+
+// Функция переключения авторизации и сброса валидации
 const toggleAuthorization = () => {
-  if (!isAuthorized.value) {
-    userData.value = {
-      name: "Константинопольская Кристина",
-      phone: "+7 (918) 123 45 67",
-      email: "dundub@gmail.com",
-    };
+  if (isAuthorized.value) {
+    // v$.value.$touch(); // Активируем валидацию, если авторизация включена
+  } else {
+    v$.value.$reset(); // Сбрасываем валидацию, если авторизация выключена
   }
 };
+
+// Следим за изменениями isAuthorized
+watch(isAuthorized, toggleAuthorization);
 </script>
 
 <style scoped lang="scss">
+.error {
+  color: red;
+  font-size: 0.9rem;
+}
+
 .user__toggle {
   @include flex-start;
   gap: 1.7rem;
