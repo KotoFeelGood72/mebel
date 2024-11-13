@@ -241,55 +241,6 @@ export const useUserStore = defineStore("users", {
       }
     },
 
-    // Обновление профиля пользователя (имя, телефон и адресные данные)
-    // async handleNextStep(delivery: any = {}) {
-    //   const { closeAllModals } = useModalStore();
-    //   try {
-    //     this.isLoad = true; // Включаем прелоадер
-
-    //     // Формируем данные для отправки
-    //     const payload = {
-    //       email: this.email,
-    //       name: this.user.billing.first_name,
-    //       phone: this.user.billing.phone,
-    //       state: delivery.state || null,
-    //       country: delivery.country || null,
-    //       postcode: delivery.postcode || null,
-    //       city: delivery.city || null,
-    //       address: delivery.address || null,
-    //     };
-
-    //     // Фильтруем null значения, чтобы не отправлять ненужные поля
-    //     const filteredPayload = Object.fromEntries(
-    //       Object.entries(payload).filter(([_, v]) => v != null)
-    //     );
-
-    //     // Запрос на обновление профиля
-    //     const response = await auth.post("/update-profile", filteredPayload);
-
-    //     if (response.data && response.data.updated_data) {
-    //       // Обновляем состояние `user` с новыми данными
-    //       this.user = response.data.updated_data;
-    //       this.user = {
-    //         ...this.user,
-    //         email: response.data.updated_data.email,
-    //         first_name: response.data.updated_data.first_name,
-    //         last_name: response.data.updated_data.last_name,
-    //       };
-
-    //       closeAllModals();
-    //     } else {
-    //       console.warn(
-    //         "Не удалось обновить профиль: данные отсутствуют в ответе"
-    //       );
-    //     }
-    //   } catch (error) {
-    //     console.error("Ошибка при обновлении профиля:", error);
-    //   } finally {
-    //     this.isLoad = false; // Отключаем прелоадер
-    //   }
-    // },
-
     async handleNextStep(delivery: any = {}) {
       const { closeAllModals } = useModalStore();
       try {
@@ -373,6 +324,15 @@ export const useUserStore = defineStore("users", {
         this.loadUserDelete = false;
         this.logout();
       }
+    },
+
+    clearBilling() {
+      this.user.billing = {
+        first_name: "",
+        phone: "",
+        email: "",
+        address_1: "",
+      };
     },
   },
 

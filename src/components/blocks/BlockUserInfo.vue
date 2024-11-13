@@ -85,13 +85,14 @@
 import { ref, computed, watch, watchEffect } from "vue";
 import useVuelidate from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
-import { useUserStoreRefs } from "@/stores/useUserStore";
+import { useUserStoreRefs, useUserStore } from "@/stores/useUserStore";
 import { useModalStore } from "@/stores/useModalStore";
 import DefaultBtn from "../ui/DefaultBtn.vue";
 import Inputs from "../ui/Inputs.vue";
 import InputPhone from "../ui/InputPhone.vue";
 
 const { user, token } = useUserStoreRefs();
+const { clearBilling } = useUserStore();
 const { openModal } = useModalStore();
 const isAuthorized = ref<boolean>(false);
 
@@ -130,7 +131,12 @@ const v$ = useVuelidate(rules, userData);
 // Функция переключения авторизации и сброса валидации
 const toggleAuthorization = () => {
   if (isAuthorized.value) {
-    // v$.value.$touch(); // Активируем валидацию, если авторизация включена
+    clearBilling();
+    userData.value = {
+      name: user.value.billing?.first_name || "",
+      phone: user.value.billing?.phone || "",
+      email: user.value.billing?.email || "",
+    };
   } else {
     v$.value.$reset(); // Сбрасываем валидацию, если авторизация выключена
   }
