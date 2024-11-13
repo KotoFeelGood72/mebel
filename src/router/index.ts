@@ -17,7 +17,17 @@ const router = createRouter({
     {
       path: "/thanks",
       name: "thanks",
-      component: () => import("@/views/success-page.vue"),
+      component: () => import("@/views/thanks.vue"),
+    },
+    {
+      path: "/error",
+      name: "error",
+      component: () => import("@/views/error.vue"),
+    },
+    {
+      path: "/cansel",
+      name: "cansel",
+      component: () => import("@/views/cansel.vue"),
     },
     {
       path: "/offer-legal",
