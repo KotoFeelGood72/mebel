@@ -40,7 +40,7 @@
       color="brown"
       size="small"
       @click="openAuthModal()"
-      v-if="!user && user.token"
+      v-if="!token"
     />
     <div class="user-card" @click="targetUser">
       <div class="user-icon">
@@ -63,7 +63,7 @@ import { useRouter } from "vue-router";
 import { useUserStoreRefs } from "@/stores/useUserStore";
 
 const { closeAllModals, openModal, closeModal } = useModalStore();
-const { user } = useUserStoreRefs();
+const { user, token } = useUserStoreRefs();
 const router = useRouter();
 
 function openAuthModal() {

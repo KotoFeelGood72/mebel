@@ -51,10 +51,10 @@
                       <p>Цвет:</p>
                       <span>{{ item.color }}</span>
                     </li>
-                    <li>
+                    <!-- <li>
                       <p>Размеры:</p>
                       <span>180х150</span>
-                    </li>
+                    </li> -->
                   </ul>
                 </div>
                 <div class="cart_item__action">
@@ -174,8 +174,7 @@ const isCheckUser = computed(() => {
 
   // Проверяем, что необходимые поля заполнены
   return (
-    !!billing &&
-    !!billing.address &&
+    !!billing.address_1 &&
     !!billing.first_name &&
     !!billing.phone &&
     !!billing.email
@@ -187,15 +186,6 @@ const createNewOrder = () => {
     createOrder();
   }
 };
-
-watch(
-  () => user.value.billing,
-  (newBilling) => {
-    console.log("Данные billing обновлены:", newBilling);
-    console.log("Статус заполненности данных:", isCheckUser.value);
-  },
-  { deep: true }
-);
 
 // Добавим новое вычисляемое свойство для общей стоимости с учетом доставки
 const totalWithDelivery = computed(() => {
@@ -215,7 +205,6 @@ const setLineItemsAndPrice = () => {
     product_id: item.id,
     name: item.title,
     quantity: item.quantity,
-    price: item.price,
     color: item.color,
     variation_id: item.variationId,
     thumbnail: item.thumbnail,

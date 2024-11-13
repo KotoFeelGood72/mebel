@@ -35,13 +35,13 @@ import Preloader from "@/components/shared/Preloader.vue";
 import { useModalStore, useModalStoreRefs } from "@/stores/useModalStore";
 import { useProductsStore } from "@/stores/useProductsStore";
 import { useRoute } from "vue-router";
-import { computed, watch, onMounted } from "vue";
+import { computed, watch, onMounted, onUnmounted } from "vue";
 
 const route = useRoute();
 const { closeAllModals } = useModalStore();
 const { modals } = useModalStoreRefs();
 const { getAllProducts } = useProductsStore();
-
+let scrollPosition = 0;
 const isModalActive = computed(() => {
   return Object.values(modals.value).some((isActive) => isActive);
 });
@@ -53,14 +53,24 @@ watch(
   }
 );
 
+watch(
+  isModalActive,
+  (active) => {
+    if (active) {
+      document.body.classList.add("fixed");
+    } else {
+      document.body.classList.remove("fixed");
+    }
+  },
+  { immediate: true }
+);
+onUnmounted(() => {
+  // Удаляем класс fixed при размонтировании компонента, чтобы избежать утечек
+  document.body.classList.remove("fixed");
+});
+
 onMounted(async () => {
   await getAllProducts();
-  // await fetchUser();
-
-  // Убираем прелоадер через 1.5 секунды после загрузки
-  // setTimeout(() => {
-  //   isLoading.value = false;
-  // }, 1500);
 });
 </script>
 
@@ -120,5 +130,11 @@ onMounted(async () => {
 .modal-left-leave-to {
   transform: translateX(-100%);
   opacity: 0;
+}
+
+body {
+  &.fixed {
+    overflow: hidden;
+  }
 }
 </style>

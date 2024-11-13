@@ -6,6 +6,7 @@
       :class="{ error: error }"
       type="tel"
       v-model="localValue"
+      :value="localValue"
       mask="+7 (###) ###-##-##"
       :placeholder="placeholder"
     />
@@ -16,12 +17,22 @@
 <script setup lang="ts">
 import { computed, defineEmits, defineProps, watch, ref, nextTick } from "vue";
 
-const props = defineProps<{
-  modelValue: any;
-  placeholder: string;
-  message?: string;
-  error?: boolean;
-}>();
+const props = withDefaults(
+  defineProps<{
+    modelValue: any;
+    placeholder: string;
+    message?: string;
+    error?: boolean;
+    white?: boolean;
+  }>(),
+  {
+    modelValue: "",
+    placeholder: "",
+    message: "",
+    error: false,
+    white: false,
+  }
+);
 
 const emit = defineEmits(["update:modelValue"]);
 const isVisible = ref(true);

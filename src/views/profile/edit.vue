@@ -16,6 +16,15 @@
           />
         </div>
         <div class="edit_input">
+          <p>Номер телефона</p>
+          <InputPhone
+            placeholder="+7 (999) 999-99-99"
+            v-model="user.billing.phone"
+            :white="false"
+            class="min-input"
+          />
+        </div>
+        <div class="edit_input">
           <p>E-mail</p>
           <Inputs placeholder="elrnadub@gmail.com" v-model="user.email" />
         </div>
@@ -44,6 +53,7 @@ import DefaultBtn from "@/components/ui/DefaultBtn.vue";
 import { useUserStoreRefs, useUserStore } from "@/stores/useUserStore";
 import { useToast } from "vue-toastification";
 import { useModalStore } from "@/stores/useModalStore";
+import InputPhone from "@/components/ui/InputPhone.vue";
 import { ref } from "vue";
 
 const { user } = useUserStoreRefs();

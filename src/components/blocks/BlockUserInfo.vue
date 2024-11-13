@@ -8,11 +8,7 @@
     <div class="user_toggle__w" v-if="!token">
       <div class="user__toggle">
         <label class="switch">
-          <input
-            type="checkbox"
-            v-model="isAuthorized"
-            @change="toggleAuthorization"
-          />
+          <input type="checkbox" v-model="isAuthorized" />
           <span class="slider round"></span>
         </label>
         <span>Продолжить без авторизации</span>
@@ -32,38 +28,26 @@
           <div class="userInfoForm__input">
             <p>Имя*</p>
             <Inputs
-              v-model="userData.name"
+              v-model="user.billing.first_name"
               placeholder="Поддубная Елена"
-              :class="{ error: v$.name.$error && isAuthorized }"
             />
-            <span v-if="v$.name.$error && isAuthorized" class="error">
-              Имя обязательно и должно быть длиной не менее 2 символов.
-            </span>
           </div>
 
           <div class="userInfoForm__input">
             <p>Телефон*</p>
             <InputPhone
-              v-model="userData.phone"
+              v-model="user.billing.phone"
               placeholder="+7 (918) 123 45 67"
-              :class="{ error: v$.phone.$error && isAuthorized }"
             />
-            <span v-if="v$.phone.$error && isAuthorized" class="error">
-              Телефон обязателен.
-            </span>
           </div>
 
           <div class="userInfoForm__input">
             <p>E-mail</p>
             <Inputs
-              v-model="userData.email"
+              v-model="user.billing.email"
               placeholder="dundub@gmail.com"
               type="email"
-              :class="{ error: v$.email.$error && isAuthorized }"
             />
-            <span v-if="v$.email.$error && isAuthorized" class="error">
-              Введите корректный e-mail.
-            </span>
           </div>
         </div>
       </div>
@@ -82,68 +66,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, watchEffect } from "vue";
-import useVuelidate from "@vuelidate/core";
-import { required, email, minLength } from "@vuelidate/validators";
-import { useUserStoreRefs, useUserStore } from "@/stores/useUserStore";
+import { ref } from "vue";
+import { useUserStoreRefs } from "@/stores/useUserStore";
 import { useModalStore } from "@/stores/useModalStore";
 import DefaultBtn from "../ui/DefaultBtn.vue";
 import Inputs from "../ui/Inputs.vue";
 import InputPhone from "../ui/InputPhone.vue";
 
 const { user, token } = useUserStoreRefs();
-const { clearBilling } = useUserStore();
+
 const { openModal } = useModalStore();
 const isAuthorized = ref<boolean>(false);
-
-// Создаем реактивные данные для хранения значений формы
-const userData = ref({
-  name: user.value.billing?.first_name || "",
-  phone: user.value.billing?.phone || "",
-  email: user.value.billing?.email || "",
-});
-
-watchEffect(() => {
-  user.value.billing.first_name = userData.value.name;
-  user.value.billing.phone = userData.value.phone;
-  user.value.billing.email = userData.value.email;
-});
-
-// Обновляем userData, если изменяются данные в user.billing
-watch(user, () => {
-  userData.value = {
-    name: user.value.billing?.first_name || "",
-    phone: user.value.billing?.phone || "",
-    email: user.value.billing?.email || "",
-  };
-});
-
-// Определяем правила валидации
-const rules = computed(() => ({
-  name: { required, minLength: minLength(2) },
-  phone: { required },
-  email: { required, email },
-}));
-
-// Используем Vuelidate
-const v$ = useVuelidate(rules, userData);
-
-// Функция переключения авторизации и сброса валидации
-const toggleAuthorization = () => {
-  if (isAuthorized.value) {
-    clearBilling();
-    userData.value = {
-      name: user.value.billing?.first_name || "",
-      phone: user.value.billing?.phone || "",
-      email: user.value.billing?.email || "",
-    };
-  } else {
-    v$.value.$reset(); // Сбрасываем валидацию, если авторизация выключена
-  }
-};
-
-// Следим за изменениями isAuthorized
-watch(isAuthorized, toggleAuthorization);
 </script>
 
 <style scoped lang="scss">
