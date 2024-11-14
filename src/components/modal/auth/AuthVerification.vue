@@ -23,16 +23,17 @@
     </div>
     <div class="form__notice">
       Нажимая кнопку “Подтвердить номер”, Вы принимаете условия
-      <RouterLink to="/">Программы лояльности</RouterLink> и обработку
-      персональных данных на условиях
+      <RouterLink to="/">Программы лояльности</RouterLink> и обработку персональных данных
+      на условиях
       <RouterLink to="/">Политики конфиденциальности</RouterLink>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from "vue";
+import { ref, computed, onMounted, onUnmounted } from "vue";
 import Vue3OtpInput from "vue3-otp-input";
+import { useOtpTimer } from "@/composables/useOtpTimer";
 
 const props = defineProps<{
   modelValue?: string;
@@ -41,65 +42,30 @@ const props = defineProps<{
 
 const emit = defineEmits(["update:modelValue", "verify", "resendOtp"]);
 
-// Устанавливаем таймер: берем значение из localStorage или 180 по умолчанию
-const timer = ref(Number(localStorage.getItem("otp_timer")) || 180);
 const errorMessage = ref("");
 
-// Флаг для отображения кнопки повторной отправки, если истек срок кода
-const canResend = ref(false);
+// Подключаем таймер из composables
+const {
+  timer,
+  canResend,
+  formattedTime,
+  startTimer,
+  resetTimer,
+  clearCountdown,
+} = useOtpTimer();
 
 const localValue = computed({
   get: () => props.modelValue,
   set: (newValue) => emit("update:modelValue", newValue),
 });
 
-watch(
-  () => props.modelValue,
-  (newValue) => {
-    localValue.value = newValue;
-  }
-);
-
-const formattedTime = computed(() => {
-  const minutes = Math.floor(timer.value / 60)
-    .toString()
-    .padStart(2, "0");
-  const seconds = (timer.value % 60).toString().padStart(2, "0");
-  return `${minutes}:${seconds}`;
-});
-
-onMounted(() => {
-  startTimer();
-});
-
-let countdown: any = null;
-
-const startTimer = () => {
-  canResend.value = false; // Скрываем кнопку "Запросить код повторно" при запуске таймера
-
-  countdown = setInterval(() => {
-    if (timer.value > 0) {
-      timer.value--;
-      // Обновляем значение таймера в localStorage каждую секунду
-      localStorage.setItem("otp_timer", timer.value.toString());
-    } else {
-      clearInterval(countdown);
-      localStorage.removeItem("otp_timer"); // Удаляем таймер из localStorage, когда он доходит до 0
-      canResend.value = true; // Показываем кнопку "Запросить код повторно" при истечении таймера
-    }
-  }, 1000);
-};
-
 const resendCode = () => {
   if (timer.value === 0 || canResend.value) {
-    // Разрешаем повторную отправку при истечении таймера или ошибке
     console.log("Повторная отправка кода...");
     errorMessage.value = "";
     localValue.value = "";
     emit("resendOtp");
-    timer.value = 180;
-    canResend.value = false;
-    localStorage.setItem("otp_timer", "180"); // Сбрасываем значение таймера в localStorage
+    resetTimer();
     startTimer();
   }
 };
@@ -109,12 +75,19 @@ const nextStep = async (value: any) => {
     emit("verify", value);
   } catch (error: any) {
     if (error.response?.status === 400) {
-      errorMessage.value =
-        "Срок действия кода истек. Пожалуйста, запросите новый код.";
-      canResend.value = true; // Активируем кнопку "Запросить код повторно" при ошибке 400
+      errorMessage.value = "Срок действия кода истек. Пожалуйста, запросите новый код.";
+      canResend.value = true;
     }
   }
 };
+
+onMounted(() => {
+  startTimer();
+});
+
+onUnmounted(() => {
+  clearCountdown();
+});
 </script>
 
 <style scoped lang="scss">

@@ -1,4 +1,6 @@
 import { defineStore, storeToRefs } from "pinia";
+import { useOtpTimer } from "@/composables/useOtpTimer";
+import { useUserStoreRefs } from "./useUserStore";
 
 interface ModalsState {
   auth: boolean;
@@ -22,11 +24,22 @@ export const useModalStore = defineStore("modal", {
     },
     closeModal(modalName: keyof ModalsState): void {
       this.modals[modalName] = false;
+      const {resetTimer} = useOtpTimer()
+      const {showOtpForm, email} = useUserStoreRefs()
+
+      showOtpForm.value = false
+      email.value = ''
+      resetTimer()
     },
     closeAllModals() {
       Object.keys(this.modals).forEach((modalName) => {
         this.modals[modalName as keyof ModalsState] = false;
       });
+      const {resetTimer} = useOtpTimer()
+      resetTimer()
+      const {showOtpForm, email} = useUserStoreRefs()
+      email.value = ''
+      showOtpForm.value = false
     },
   },
 });
