@@ -83,6 +83,7 @@ function onSuggestionSelect(suggestion: any) {
 
   handleNextStep(deliveryData);
   selectSuggestion(suggestion);
+  console.log(suggestion);
 }
 
 // Следим за изменением selectedAddress и обновляем currentOrder

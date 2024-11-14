@@ -289,6 +289,7 @@ export const useUserStore = defineStore("users", {
         if (error.response && error.response.status === 404) {
           // Если ошибка 404, записываем данные напрямую в store
           this.user.billing = {
+            ...this.user.billing,
             state: delivery.state || null,
             country: delivery.country || null,
             postcode: delivery.postcode || null,
@@ -296,6 +297,7 @@ export const useUserStore = defineStore("users", {
             address: delivery.address || null,
           };
           this.user.shipping = {
+            ...this.user.shipping,
             state: delivery.state || null,
             country: delivery.country || null,
             postcode: delivery.postcode || null,
@@ -324,15 +326,6 @@ export const useUserStore = defineStore("users", {
         this.loadUserDelete = false;
         this.logout();
       }
-    },
-
-    clearBilling() {
-      this.user.billing = {
-        first_name: "",
-        phone: "",
-        email: "",
-        address_1: "",
-      };
     },
   },
 

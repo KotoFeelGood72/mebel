@@ -4,7 +4,6 @@
       <h3>Информация о покупателе</h3>
       <p v-if="!token">Авторизуйтесь, чтобы отслеживать свой заказ</p>
     </div>
-
     <div class="user_toggle__w" v-if="!token">
       <div class="user__toggle">
         <label class="switch">
@@ -66,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useUserStoreRefs } from "@/stores/useUserStore";
 import { useModalStore } from "@/stores/useModalStore";
 import DefaultBtn from "../ui/DefaultBtn.vue";
@@ -76,7 +75,15 @@ import InputPhone from "../ui/InputPhone.vue";
 const { user, token } = useUserStoreRefs();
 
 const { openModal } = useModalStore();
-const isAuthorized = ref<boolean>(false);
+const isUserComplete = computed(() => {
+  return (
+    !!token &&
+    !!user.value.billing.first_name &&
+    !!user.value.billing.phone &&
+    !!user.value.billing.email
+  );
+});
+const isAuthorized = ref<boolean>(isUserComplete.value);
 </script>
 
 <style scoped lang="scss">

@@ -78,7 +78,6 @@ export const useCartStore = defineStore("carts", {
 
         // Очистка корзины и сброс текущего заказа
         this.carts = [];
-        this.clearBilling();
         this.currentOrder = {
           line_items: [],
           price: 0,
@@ -86,14 +85,6 @@ export const useCartStore = defineStore("carts", {
       } catch (error) {
         console.error("Ошибка при создании заказа:", error);
       }
-    },
-    clearBilling() {
-      this.currentOrder.billing = {
-        first_name: "",
-        phone: "",
-        email: "",
-        address_1: "",
-      };
     },
   },
   persist: true,
