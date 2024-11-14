@@ -174,10 +174,11 @@ const isCheckUser = computed(() => {
 
   // Проверяем, что необходимые поля заполнены
   return (
-    !!billing.address_1 &&
-    !!billing.first_name &&
-    !!billing.phone &&
-    !!billing.email
+    !!billing.address_1 ||
+    (billing.address &&
+      !!billing.first_name &&
+      !!billing.phone &&
+      !!billing.email)
   );
 });
 

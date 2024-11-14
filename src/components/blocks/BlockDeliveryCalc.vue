@@ -9,11 +9,7 @@
         v-model="query"
         @input="fetchSuggestions"
         placeholder="Введите адрес"
-        :class="{ error: v$.query.$error }"
       />
-      <span v-if="v$.query.$error" class="error">
-        Адрес обязателен для заполнения.
-      </span>
       <ul class="delivery_siqqestion" v-if="suggestions.length">
         <li
           v-for="suggestion in suggestions"
@@ -29,8 +25,6 @@
 
 <script setup lang="ts">
 import { ref, watch, onMounted, computed } from "vue";
-import useVuelidate from "@vuelidate/core";
-import { required } from "@vuelidate/validators";
 import { useDelivery } from "@/composables/useDelivery";
 import { useCartStoreRefs } from "@/stores/useCartStore";
 import { useUserStore } from "@/stores/useUserStore";
@@ -51,15 +45,6 @@ const {
 const { currentOrder } = useCartStoreRefs();
 const { handleNextStep } = useUserStore();
 
-// Определяем правила валидации для поля адреса
-const rules = computed(() => ({
-  query: { required },
-}));
-
-// Используем Vuelidate
-const v$ = useVuelidate(rules, { query });
-
-// Инициализируем query при монтировании, если defaultAddress задан
 onMounted(async () => {
   if (props.defaultAddress) {
     try {
