@@ -5,11 +5,11 @@
         <input
           type="radio"
           :id="'color-' + index + '-' + id"
-          :value="color"
+          :value="color.attributes.pa_colors"
           v-model="internalSelectedColor"
         />
         <label :for="'color-' + index + '-' + id">
-          <span :style="{ backgroundColor: colorMap[color] }"></span>
+          <span :style="{ backgroundColor: colorMap[color.attributes.pa_colors] }"></span>
         </label>
       </li>
     </ul>
@@ -22,7 +22,7 @@
 <script setup lang="ts">
 import { watch, ref } from "vue";
 const props = defineProps<{
-  colors: string[];
+  colors: any[];
   id: number;
   modelValue?: any;
 }>();
@@ -46,13 +46,15 @@ watch(internalSelectedColor, (newValue) => {
 });
 
 const colorMap: Record<string, string> = {
-  Бежевый: "#D8D1B6",
-  Зелёный: "#547C51",
-  Серый: "#5B5E62",
-  Темный: "#342F2F",
-  ["Светло-жёлтый"]: "#EAECD7",
-  Черный: "#000000",
-  "Тёмно-серый": "#909090",
+  ["зеленый"]: "#008000", // Зеленый
+  ["молочный"]: "#FFFDD0", // Молочный
+  ["графитовый"]: "#2F4F4F", // Графитовый
+  ["серый"]: "#808080", // Серый
+  ["угольно-черный"]: "#0C0C0C", // Угольно-черный
+  ["блэк"]: "#000000", // Черный (Black)
+  ["синий"]: "#0000FF", // Синий
+  ["коричневый"]: "#A52A2A", // Коричневый
+  ["розовый"]: "#FFC0CB", // Розовый
 };
 </script>
 

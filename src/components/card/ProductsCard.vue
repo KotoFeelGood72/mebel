@@ -12,7 +12,7 @@
       <div class="products_content_bottom">
         <ColorSelect
           :id="products.id"
-          :colors="products.attributes.pa_colors || []"
+          :colors="products.variations"
           v-model="selectedColor"
         />
         <div class="products_prices">
