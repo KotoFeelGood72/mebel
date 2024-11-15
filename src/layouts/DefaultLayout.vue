@@ -1,5 +1,5 @@
 <template>
-  <main class="main">
+  <div class="main">
     <Header />
     <div class="content">
       <slot />
@@ -21,7 +21,7 @@
     </transition>
     <Preloader />
     <Footer />
-  </main>
+  </div>
 </template>
 
 <script setup lang="ts">

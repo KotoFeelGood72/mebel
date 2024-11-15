@@ -24,9 +24,7 @@
     <div class="burger-info">
       <nav>
         <RouterLink to="/offer-physical"> Оферта для физических лиц</RouterLink>
-        <RouterLink to="/offer-legal">
-          Оферта для юридических лиц и ИП</RouterLink
-        >
+        <RouterLink to="/offer-legal"> Оферта для юридических лиц и ИП</RouterLink>
         <RouterLink to="/privacy"> Политика конфиденциальности</RouterLink>
       </nav>
       <ul class="burger-company__info">
@@ -42,7 +40,7 @@
       @click="openAuthModal()"
       v-if="!token"
     />
-    <div class="user-card" @click="targetUser">
+    <div class="user-card" @click="targetUser" v-else-if="token && user">
       <div class="user-icon">
         <img src="@/assets/icons/user.svg" />
       </div>

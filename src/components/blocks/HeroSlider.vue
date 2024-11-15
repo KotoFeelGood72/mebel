@@ -11,10 +11,7 @@
         }"
         :pagination="{ el: '.hero-pagination', clickable: true }"
       >
-        <SwiperSlide
-          v-for="(item, i) in slides"
-          :key="'hero-item-slide-' + item.id"
-        >
+        <SwiperSlide v-for="(item, i) in slides" :key="'hero-item-slide-' + item.id">
           <div class="hero_slide">
             <div class="hero_slide__content">
               <p>{{ item.headtitle }}</p>
@@ -81,7 +78,9 @@ defineProps<{
   position: relative;
 
   @include bp($point_2) {
-    padding: 4rem 0 0 1.6rem;
+    padding: 4rem 1.6rem;
+    width: 100%;
+    // padding: 4rem 0 0 1.6rem;
   }
 
   .hero_slide__content {
@@ -89,6 +88,7 @@ defineProps<{
     @include bp($point_2) {
       max-width: 100%;
       z-index: 1;
+      width: 100%;
       position: relative;
       padding-bottom: 7rem;
     }
@@ -125,7 +125,8 @@ defineProps<{
       @include bp($point_2) {
         font-size: 1.6rem;
         margin-bottom: 3rem;
-        max-width: 80%;
+        max-width: 28rem;
+        display: flex;
       }
     }
   }
