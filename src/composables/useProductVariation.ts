@@ -69,6 +69,7 @@ export function useProductVariation(productData: any) {
         quantity: selectedQuantity.value,
         color: selectedColor.value,
         price: variationPrice.value,
+        title: productData.value.title
       });
       toast.success("Добавлено в корзину");
     }

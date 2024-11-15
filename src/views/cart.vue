@@ -51,19 +51,13 @@
                       <p>Цвет:</p>
                       <span>{{ item.color }}</span>
                     </li>
-                    <!-- <li>
-                      <p>Размеры:</p>
-                      <span>180х150</span>
-                    </li> -->
                   </ul>
                 </div>
                 <div class="cart_item__action">
                   <div class="cart_item__price">{{ item.price }} Р</div>
                   <Qty
                     :initialQuantity="item.quantity"
-                    @updateQuantity="
-                      (quantity) => updateQuantity(item, quantity)
-                    "
+                    @updateQuantity="(quantity) => updateQuantity(item, quantity)"
                     @clear="removeCart(item.variationId)"
                   />
                 </div>
@@ -73,9 +67,7 @@
           <div class="list-block">
             <BlockUserInfo />
             <BlockDeliveryCalc
-              :defaultAddress="
-                user?.billing?.address_1 || user?.billing?.address
-              "
+              :defaultAddress="user?.billing?.address_1 || user?.billing?.address"
             />
             <BlockPayments :total="totalWithDelivery" />
           </div>
@@ -145,9 +137,7 @@ const deleteSelectedItems = () => {
 // Обработка выбора товара
 const toggleSelectItem = (variationId: string) => {
   if (selectedItems.value.includes(variationId)) {
-    selectedItems.value = selectedItems.value.filter(
-      (id) => id !== variationId
-    );
+    selectedItems.value = selectedItems.value.filter((id) => id !== variationId);
   } else {
     selectedItems.value.push(variationId);
   }
@@ -164,9 +154,7 @@ const toggleSelectAll = (event: Event) => {
 
 // Проверка, все ли товары выбраны
 const isAllSelected = computed(() => {
-  return (
-    carts.value.length > 0 && selectedItems.value.length === carts.value.length
-  );
+  return carts.value.length > 0 && selectedItems.value.length === carts.value.length;
 });
 
 const isCheckUser = computed(() => {
@@ -175,17 +163,12 @@ const isCheckUser = computed(() => {
   // Проверяем, что необходимые поля заполнены
   return (
     !!billing.address_1 ||
-    (billing.address &&
-      !!billing.first_name &&
-      !!billing.phone &&
-      !!billing.email)
+    (billing.address && !!billing.first_name && !!billing.phone && !!billing.email)
   );
 });
 
 const createNewOrder = () => {
-  if (isCheckUser) {
-    createOrder();
-  }
+  createOrder();
 };
 
 // Добавим новое вычисляемое свойство для общей стоимости с учетом доставки
@@ -423,7 +406,7 @@ onMounted(() => {
   margin-bottom: 3.2rem;
   @include bp($point_2) {
     margin-bottom: 0;
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
 }
 
