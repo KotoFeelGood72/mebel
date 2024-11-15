@@ -72,7 +72,6 @@ const router = createRouter({
       path: "/rent",
       name: "rent",
       component: () => import("@/views/rent.vue"),
-      meta: { requiresAuth: true },
     },
     {
       path: "/design",
