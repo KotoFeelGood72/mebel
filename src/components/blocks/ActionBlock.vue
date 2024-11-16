@@ -116,7 +116,7 @@ const isRent = computed(() => route.name === "rent");
 }
 
 .action__img {
-  max-width: 110rem;
+  max-width: 50%;
   @include flex-center;
   position: absolute;
   right: 0;
