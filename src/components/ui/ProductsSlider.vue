@@ -1,12 +1,16 @@
 <template>
   <div
     :class="[
-      `products_slider products_slider_${gallery.id}`,
+      `products_slider products_slider_${gallery?.id}`,
       { single_slider: gallery },
     ]"
     v-if="gallery"
   >
+    <div v-if="loading" class="loader">
+      <Icons icon="svg-spinners:ring-resize" :size="100" />
+    </div>
     <Swiper
+      v-else
       :slides-per-view="1"
       :space-between="20"
       :modules="[Navigation, Pagination]"
@@ -33,17 +37,22 @@
         prevEl: `.products_prev_${gallery.id}`,
         nextEl: `.products_next_${gallery.id}`,
       }"
+      @swiper="onSwiperInit"
     >
       <SwiperSlide
         v-for="(item, i) in gallery.gallery_images"
-        :key="'products-item-slide-' + gallery.id"
+        :key="'products-item-slide-' + gallery.id + '-' + i"
       >
         <a :href="item" :data-fancybox="'fancy-products-' + gallery.id">
           <img :src="item" />
         </a>
       </SwiperSlide>
     </Swiper>
-    <div class="products_navigation" v-if="gallery.gallery_images">
+
+    <div
+      class="products_navigation"
+      v-if="gallery && gallery.gallery_images && !loading"
+    >
       <div :class="`products_prev products_prev_${gallery.id}`">
         <Icons icon="iconamoon:arrow-left-2-thin" :size="70" />
       </div>
@@ -58,11 +67,44 @@
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/swiper-bundle.css";
-import { ref, computed } from "vue";
+import { ref, watch } from "vue";
 
 const props = defineProps<{
   gallery: any;
 }>();
+
+// Управляем загрузкой
+const loading = ref(true);
+
+// Ссылка на экземпляр Swiper
+const swiperInstance = ref<any>(null);
+
+// Метод для инициализации Swiper
+const onSwiperInit = (swiper: any) => {
+  swiperInstance.value = swiper;
+};
+
+// Слушатель изменений props
+watch(
+  () => props.gallery,
+  (newGallery, oldGallery) => {
+    if (newGallery && newGallery !== oldGallery) {
+      // Отображаем загрузчик
+      loading.value = true;
+
+      // Сбрасываем на первый слайд
+      if (swiperInstance.value) {
+        swiperInstance.value.slideTo(0, 0); // Аргументы: индекс, скорость перехода (0 = мгновенно)
+      }
+
+      // Симуляция загрузки
+      setTimeout(() => {
+        loading.value = false;
+      }, 1000); // Задержка для демонстрации загрузки
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <style scoped lang="scss">
@@ -95,6 +137,17 @@ const props = defineProps<{
     height: 100%;
     object-fit: cover;
   }
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60rem;
+  font-size: 1.5rem;
+  color: $lbrown;
+  border-radius: 1rem;
+  background-color: #b5a59679;
 }
 
 .products_navigation {
@@ -138,11 +191,6 @@ const props = defineProps<{
   font-size: 2.4rem;
   @include flex-center;
   font-family: $font_2;
-}
-.total {
-  font-size: 2rem;
-  color: #ababab;
-  padding-left: 0.5rem;
 }
 
 .single_slider {
