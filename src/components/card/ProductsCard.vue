@@ -1,13 +1,15 @@
 <template>
   <div class="products" v-if="products">
-    <ProductsSlider :products="products" />
+    <ProductsSlider :gallery="activeVariation" />
     <div class="products_content">
       <div class="products_content__head">
         <h3>{{ products.title }}</h3>
         <div class="products_description">
           {{ products.acf.about_txt_product }}
         </div>
-        <RouterLink :to="`/shop/products/${products.id}`">Подробнее о товаре</RouterLink>
+        <RouterLink :to="`/shop/products/${products.id}`"
+          >Подробнее о товаре</RouterLink
+        >
       </div>
       <div class="products_content_bottom">
         <ColorSelect
@@ -43,7 +45,7 @@ import AddToCart from "../ui/AddToCart.vue";
 import ProductsSlider from "../ui/ProductsSlider.vue";
 import ColorSelect from "../ui/ColorSelect.vue";
 import Qty from "../ui/Qty.vue";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 const props = withDefaults(
   defineProps<{
@@ -67,6 +69,19 @@ const {
   findVariationId,
   removeCart,
 } = useProductVariation(productRef);
+
+const activeVariation = ref(null);
+
+// Watcher для обновления активной вариации
+watch(
+  selectedColor,
+  (newColor) => {
+    activeVariation.value = productRef.value?.variations?.find(
+      (variation: any) => variation.attributes?.pa_colors === newColor
+    );
+  },
+  { immediate: true }
+);
 </script>
 
 <style scoped lang="scss">

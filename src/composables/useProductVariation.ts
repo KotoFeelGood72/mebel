@@ -17,8 +17,16 @@ export function useProductVariation(productData: any) {
   watch(
     productData,
     (newProduct) => {
-      if (newProduct && newProduct.attributes) {
-        selectedColor.value = newProduct.attributes.pa_colors?.[0] || null;
+      if (
+        newProduct &&
+        newProduct.variations &&
+        newProduct.variations.length > 0
+      ) {
+        // Берем цвет из первой доступной вариации
+        selectedColor.value =
+          newProduct.variations[0].attributes.pa_colors || null;
+      } else {
+        selectedColor.value = null;
       }
     },
     { immediate: true } // Запускаем немедленно, чтобы получить начальное значение
@@ -69,7 +77,7 @@ export function useProductVariation(productData: any) {
         quantity: selectedQuantity.value,
         color: selectedColor.value,
         price: variationPrice.value,
-        title: productData.value.title
+        title: productData.value.title,
       });
       toast.success("Добавлено в корзину");
     }

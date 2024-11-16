@@ -1,10 +1,10 @@
 <template>
   <div
     :class="[
-      `products_slider products_slider_${products.id}`,
-      { single_slider: single },
+      `products_slider products_slider_${gallery.id}`,
+      { single_slider: gallery },
     ]"
-    v-if="products && products.gallery_images"
+    v-if="gallery"
   >
     <Swiper
       :slides-per-view="1"
@@ -30,35 +30,25 @@
         },
       }"
       :navigation="{
-        prevEl: `.products_prev_${products.id}`,
-        nextEl: `.products_next_${products.id}`,
+        prevEl: `.products_prev_${gallery.id}`,
+        nextEl: `.products_next_${gallery.id}`,
       }"
-      @slideChange="updateCurrentSlide"
     >
       <SwiperSlide
-        v-for="(item, i) in products.gallery_images"
-        :key="'products-item-slide-' + products.id"
+        v-for="(item, i) in gallery.gallery_images"
+        :key="'products-item-slide-' + gallery.id"
       >
-        <a :href="item" :data-fancybox="'fancy-products-' + products.id">
+        <a :href="item" :data-fancybox="'fancy-products-' + gallery.id">
           <img :src="item" />
         </a>
       </SwiperSlide>
     </Swiper>
-    <div
-      class="products_navigation"
-      v-if="products.gallery_images && totalSlides > 2"
-    >
-      <div :class="`products_prev products_prev_${products.id}`">
-        <Icons icon="bi:chevron-left" :size="30" />
+    <div class="products_navigation" v-if="gallery.gallery_images">
+      <div :class="`products_prev products_prev_${gallery.id}`">
+        <Icons icon="iconamoon:arrow-left-2-thin" :size="70" />
       </div>
-      <div class="products-pagination">
-        <span class="fraction">
-          {{ currentSlide }}
-          <div class="total">/{{ totalSlides }}</div>
-        </span>
-      </div>
-      <div :class="`products_next products_next_${products.id}`">
-        <Icons icon="bi:chevron-right" :size="30" />
+      <div :class="`products_next products_next_${gallery.id}`">
+        <Icons icon="iconamoon:arrow-right-2-thin" :size="70" />
       </div>
     </div>
   </div>
@@ -68,26 +58,17 @@
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/swiper-bundle.css";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 const props = defineProps<{
-  products: any;
-  single?: boolean;
+  gallery: any;
 }>();
-
-const currentSlide = ref(1);
-const totalSlides = ref(
-  props.products?.gallery_images ? props.products.gallery_images.length : 0
-);
-
-const updateCurrentSlide = (swiper: any) => {
-  currentSlide.value = swiper.realIndex + 1;
-};
 </script>
 
 <style scoped lang="scss">
 .products_slider {
-  max-width: 74.5rem;
+  width: 50%;
+  min-width: 50%;
   position: relative;
   @include bp($point_2) {
     max-width: 100%;
@@ -95,7 +76,8 @@ const updateCurrentSlide = (swiper: any) => {
   }
 
   :deep(.swiper) {
-    height: 60.5rem;
+    height: 60rem !important;
+    height: 100%;
     @include bp($point_2) {
       height: 22.3rem;
     }
@@ -117,20 +99,37 @@ const updateCurrentSlide = (swiper: any) => {
 
 .products_navigation {
   @include flex-space;
-  margin-top: 3rem;
   user-select: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  z-index: 11;
+  pointer-events: none;
 
   @include bp($point_2) {
     display: none;
   }
 
   div {
+    pointer-events: all;
     cursor: pointer;
     @include flex-center;
+    height: 100%;
+    background-color: #b5a59617;
+    backdrop-filter: blur(2px);
+    color: $brown;
+    transition: all 0.3s ease-in-out;
+    &:hover {
+      background-color: #b5a59680;
+    }
 
     &.swiper-button-disabled {
       opacity: 0.4;
       pointer-events: none;
+      color: $gray;
     }
   }
 }
@@ -164,13 +163,6 @@ const updateCurrentSlide = (swiper: any) => {
     margin-bottom: 0;
   }
 
-  :deep(.swiper-slide) {
-    height: 78.4rem;
-    @include flex-center;
-    @include bp($point_2) {
-      height: 24rem;
-    }
-  }
   img {
     width: 100%;
     height: 100%;

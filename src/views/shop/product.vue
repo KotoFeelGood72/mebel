@@ -4,7 +4,7 @@
       <div class="container">
         <Breadcrumbs :crumbs="breadcrumbs" />
         <div class="products_main">
-          <ProductsSlider :products="productPage" :single="true" />
+          <ProductsSlider :gallery="activeVariation" :single="true" />
           <div class="products_content">
             <div class="products_content__head">
               <h3>{{ productPage.title }}</h3>
@@ -16,7 +16,7 @@
             >
               <ColorSelect
                 :id="productPage.id"
-                :colors="productPage.attributes.pa_colors"
+                :colors="productPage.variations"
                 v-model="selectedColor"
               />
 
@@ -90,6 +90,7 @@ import ProductsSlider from "@/components/ui/ProductsSlider.vue";
 
 const totalSlides = ref();
 const route = useRoute();
+const activeVariation = ref(null);
 const breadcrumbs = ref([
   { text: "Каталог", href: "/shop" },
   { text: productPage?.value?.title },
@@ -131,6 +132,15 @@ watch(
   { immediate: true }
 );
 
+watch(
+  selectedColor,
+  (newColor) => {
+    activeVariation.value = productPage.value?.variations?.find(
+      (variation: any) => variation.attributes?.pa_colors === newColor
+    );
+  },
+  { immediate: true }
+);
 onMounted(async () => {
   await useGetProductPage(String(route.params.id));
 });
@@ -146,7 +156,7 @@ onMounted(async () => {
 
 .products_main {
   @include flex-start;
-  gap: 16.5rem;
+  gap: 10rem;
   align-items: flex-start;
   @include bp($point_2) {
     flex-direction: column;
