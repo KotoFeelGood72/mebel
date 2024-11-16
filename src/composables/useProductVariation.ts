@@ -61,18 +61,20 @@ export function useProductVariation(productData: any) {
   const toggleCart = () => {
     const variationId = findVariationId.value;
 
+    console.log(variationId);
+
     if (!variationId) {
       toast.error("Выберите корректную вариацию товара.");
       return;
     }
-
+    const variationThumbnail = findVariation.value?.gallery_images?.[0] || "";
     if (isCarts.value) {
       removeCart(variationId);
       toast.error("Удалено из корзины");
     } else {
       addCart({
         id: productData.value?.id,
-        thumbnail: productData.value?.thumbnail,
+        thumbnail: variationThumbnail,
         variationId: variationId,
         quantity: selectedQuantity.value,
         color: selectedColor.value,
