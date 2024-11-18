@@ -5,10 +5,10 @@
       <ul class="products_list p10">
         <li
           class="products_item"
-          v-for="item in products"
+          v-for="(item, idx) in products"
           :key="'products-item' + item.id"
         >
-          <ProductsCard :products="item" />
+          <ProductsCard :products="item" :reverse="idx % 2 !== 0" />
         </li>
       </ul>
     </div>

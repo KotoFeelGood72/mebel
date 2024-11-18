@@ -1,6 +1,6 @@
 <template>
-  <div class="products" v-if="products">
-    <ProductsSlider :gallery="activeVariation" />
+  <div class="products" v-if="products" :class="{ reverse: reverse }">
+    <ProductsSlider :gallery="activeVariation" class="product-sliders" />
     <div class="products_content">
       <div class="products_content__head">
         <h3>{{ products.title }}</h3>
@@ -50,9 +50,11 @@ import { ref, watch } from "vue";
 const props = withDefaults(
   defineProps<{
     products: any;
+    reverse: boolean;
   }>(),
   {
     products: null,
+    reverse: false,
   }
 );
 
@@ -92,6 +94,16 @@ watch(
   @include bp($point_2) {
     flex-direction: column;
     gap: 1.8rem;
+  }
+
+  &.reverse {
+    .products_content {
+      order: 0;
+    }
+
+    :deep(.product-sliders) {
+      order: 1;
+    }
   }
 }
 

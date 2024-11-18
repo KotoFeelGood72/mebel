@@ -1,70 +1,89 @@
 <template>
-  <div
-    :class="[
-      `products_slider products_slider_${gallery?.id}`,
-      { single_slider: gallery },
-    ]"
-    v-if="gallery"
-  >
-    <div v-if="loading" class="loader">
-      <Icons icon="svg-spinners:ring-resize" :size="100" />
-    </div>
-    <Swiper
-      v-else
-      :slides-per-view="1"
-      :space-between="20"
-      :modules="[Navigation, Pagination]"
-      :watchSlidesVisibility="true"
-      :breakpoints="{
-        320: {
-          slidesPerView: 1.1,
-          spaceBetween: 10,
-          slidesOffsetBefore: 10,
-          slidesOffsetAfter: 10,
-        },
-        768: {
-          slidesPerView: 1,
-          spaceBetween: 10,
-          slidesOffsetBefore: 10,
-          slidesOffsetAfter: 10,
-        },
-        1024: {
-          slidesPerView: 1,
-          spaceBetween: 10,
-        },
-      }"
-      :navigation="{
-        prevEl: `.products_prev_${gallery.id}`,
-        nextEl: `.products_next_${gallery.id}`,
-      }"
-      @swiper="onSwiperInit"
-    >
-      <SwiperSlide
-        v-for="(item, i) in gallery.gallery_images"
-        :key="'products-item-slide-' + gallery.id + '-' + i"
-      >
-        <a :href="item" :data-fancybox="'fancy-products-' + gallery.id">
-          <img :src="item" />
-        </a>
-      </SwiperSlide>
-    </Swiper>
-
+  <div class="products-sliders">
     <div
-      class="products_navigation"
-      v-if="gallery && gallery.gallery_images && !loading"
+      :class="[
+        `products_slider products_slider_${gallery?.id}`,
+        { single_slider: gallery },
+      ]"
+      v-if="gallery"
     >
-      <div :class="`products_prev products_prev_${gallery.id}`">
-        <Icons icon="iconamoon:arrow-left-2-thin" :size="70" />
+      <div v-if="loading" class="loader">
+        <Icons icon="svg-spinners:ring-resize" :size="100" />
       </div>
-      <div :class="`products_next products_next_${gallery.id}`">
-        <Icons icon="iconamoon:arrow-right-2-thin" :size="70" />
+      <Swiper
+        v-else
+        :slides-per-view="1"
+        :space-between="20"
+        :modules="[Navigation, Pagination, Thumbs]"
+        :watchSlidesVisibility="true"
+        :thumbs="{ swiper: thumbsSwiper }"
+        :breakpoints="{
+          320: {
+            slidesPerView: 1.1,
+            spaceBetween: 10,
+            slidesOffsetBefore: 10,
+            slidesOffsetAfter: 10,
+          },
+          768: {
+            slidesPerView: 1,
+            spaceBetween: 10,
+            slidesOffsetBefore: 10,
+            slidesOffsetAfter: 10,
+          },
+          1024: {
+            slidesPerView: 1,
+            spaceBetween: 10,
+          },
+        }"
+        :navigation="{
+          prevEl: `.products_prev_${gallery.id}`,
+          nextEl: `.products_next_${gallery.id}`,
+        }"
+        @swiper="onSwiperInit"
+      >
+        <SwiperSlide
+          v-for="(item, i) in gallery.gallery_images"
+          :key="'products-item-slide-' + gallery.id + '-' + i"
+        >
+          <a :href="item" :data-fancybox="'fancy-products-' + gallery.id">
+            <img :src="item" />
+          </a>
+        </SwiperSlide>
+      </Swiper>
+
+      <div
+        class="products_navigation"
+        v-if="gallery && gallery.gallery_images && !loading"
+      >
+        <div :class="`products_prev products_prev_${gallery.id}`">
+          <Icons icon="iconamoon:arrow-left-2-thin" :size="70" />
+        </div>
+        <div :class="`products_next products_next_${gallery.id}`">
+          <Icons icon="iconamoon:arrow-right-2-thin" :size="70" />
+        </div>
       </div>
+    </div>
+    <div class="products_thumbnails">
+      <Swiper
+        v-if="gallery.gallery_images"
+        :slides-per-view="5"
+        :space-between="10"
+        :modules="[Thumbs]"
+        @swiper="setThumbsSwiper"
+      >
+        <SwiperSlide
+          v-for="(item, i) in gallery.gallery_images"
+          :key="'products-thumbnail-slide-' + gallery.id + '-' + i"
+        >
+          <img :src="item" />
+        </SwiperSlide>
+      </Swiper>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Navigation, Pagination } from "swiper/modules";
+import { Navigation, Pagination, Thumbs } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/swiper-bundle.css";
 import { ref, watch } from "vue";
@@ -78,6 +97,14 @@ const loading = ref(true);
 
 // Ссылка на экземпляр Swiper
 const swiperInstance = ref<any>(null);
+
+// Ссылка на слайдер для миниатюр
+const thumbsSwiper = ref<any>(null);
+
+// Метод для установки слайдера миниатюр
+const setThumbsSwiper = (swiper: any) => {
+  thumbsSwiper.value = swiper;
+};
 
 // Метод для инициализации Swiper
 const onSwiperInit = (swiper: any) => {
@@ -108,9 +135,11 @@ watch(
 </script>
 
 <style scoped lang="scss">
-.products_slider {
+.products-sliders {
   width: 50%;
   min-width: 50%;
+}
+.products_slider {
   position: relative;
   @include bp($point_2) {
     max-width: 100%;
@@ -118,7 +147,7 @@ watch(
   }
 
   :deep(.swiper) {
-    height: 60rem !important;
+    height: 55rem !important;
     height: 100%;
     @include bp($point_2) {
       height: 22.3rem;
@@ -143,7 +172,7 @@ watch(
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 60rem;
+  height: 55rem;
   font-size: 1.5rem;
   color: $lbrown;
   border-radius: 1rem;
@@ -194,8 +223,7 @@ watch(
 }
 
 .single_slider {
-  max-width: 99.5rem;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
   :deep(.swiper) {
     height: auto;
   }
@@ -215,6 +243,33 @@ watch(
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+}
+
+.products_thumbnails {
+  margin-top: 1rem;
+  max-width: 100%;
+
+  :deep(.swiper) {
+    height: 12rem !important;
+  }
+  .swiper-slide {
+    width: auto;
+    height: auto;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      // border: 0.2rem solid transparent;
+      transition: border-color 0.3s ease;
+    }
+  }
+}
+
+:deep(.swiper-slide-thumb-active) {
+  img {
+    border: 0.2rem solid $brown;
   }
 }
 </style>

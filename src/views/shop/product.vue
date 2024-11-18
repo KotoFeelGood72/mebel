@@ -8,7 +8,9 @@
           <div class="products_content">
             <div class="products_content__head">
               <h3>{{ productPage.title }}</h3>
-              <div class="products_art">Артикул {{ productPage.sku }}</div>
+              <div class="products_art">
+                Артикул: {{ productPage.meta._sku[0] }}
+              </div>
             </div>
             <div
               class="products_content_bottom"
