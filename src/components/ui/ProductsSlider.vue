@@ -70,6 +70,20 @@
         :space-between="10"
         :modules="[Thumbs]"
         @swiper="setThumbsSwiper"
+        :breakpoints="{
+          320: {
+            slidesPerView: 4,
+            spaceBetween: 5,
+          },
+          768: {
+            slidesPerView: 4,
+            spaceBetween: 5,
+          },
+          1024: {
+            slidesPerView: 5,
+            spaceBetween: 5,
+          },
+        }"
       >
         <SwiperSlide
           v-for="(item, i) in gallery.gallery_images"
@@ -138,6 +152,10 @@ watch(
 .products-sliders {
   width: 50%;
   min-width: 50%;
+
+  @include bp($point_2) {
+    width: 100%;
+  }
 }
 .products_slider {
   position: relative;
@@ -150,7 +168,7 @@ watch(
     height: 55rem !important;
     height: 100%;
     @include bp($point_2) {
-      height: 22.3rem;
+      height: 22.3rem !important;
     }
   }
 
@@ -177,6 +195,10 @@ watch(
   color: $lbrown;
   border-radius: 1rem;
   background-color: #b5a59679;
+
+  @include bp($point_2) {
+    height: 22.3rem;
+  }
 }
 
 .products_navigation {
@@ -250,8 +272,15 @@ watch(
   margin-top: 1rem;
   max-width: 100%;
 
+  @include bp($point_2) {
+    padding: 0 1rem;
+  }
+
   :deep(.swiper) {
     height: 12rem !important;
+    @include bp($point_2) {
+      height: 7rem !important;
+    }
   }
   .swiper-slide {
     width: auto;
