@@ -57,7 +57,9 @@
                   <div class="cart_item__price">{{ item.price }} Р</div>
                   <Qty
                     :initialQuantity="item.quantity"
-                    @updateQuantity="(quantity) => updateQuantity(item, quantity)"
+                    @updateQuantity="
+                      (quantity) => updateQuantity(item, quantity)
+                    "
                     @clear="removeCart(item.variationId)"
                   />
                 </div>
@@ -67,15 +69,17 @@
           <div class="list-block">
             <BlockUserInfo />
             <BlockDeliveryCalc
-              :defaultAddress="user?.billing?.address_1 || user?.billing?.address"
+              :defaultAddress="
+                user?.billing?.address_1 || user?.billing?.address
+              "
             />
             <BlockPayments :total="totalWithDelivery" />
           </div>
         </div>
         <BlockCartTotals
           :total="totalPrice"
-          :delivery="deliveryPrice"
-          :length="carts.length"
+          :delivery="totalDeliveryPrice"
+          :length="totalQuantity"
         >
           <DefaultBtn
             name="Оплатить"
@@ -137,11 +141,19 @@ const deleteSelectedItems = () => {
 // Обработка выбора товара
 const toggleSelectItem = (variationId: string) => {
   if (selectedItems.value.includes(variationId)) {
-    selectedItems.value = selectedItems.value.filter((id) => id !== variationId);
+    selectedItems.value = selectedItems.value.filter(
+      (id) => id !== variationId
+    );
   } else {
     selectedItems.value.push(variationId);
   }
 };
+
+const totalQuantity = computed(() => {
+  return carts.value.reduce((total: number, item: any) => {
+    return total + item.quantity;
+  }, 0);
+});
 
 // Выбор всех товаров
 const toggleSelectAll = (event: Event) => {
@@ -154,7 +166,9 @@ const toggleSelectAll = (event: Event) => {
 
 // Проверка, все ли товары выбраны
 const isAllSelected = computed(() => {
-  return carts.value.length > 0 && selectedItems.value.length === carts.value.length;
+  return (
+    carts.value.length > 0 && selectedItems.value.length === carts.value.length
+  );
 });
 
 const isCheckUser = computed(() => {
@@ -163,7 +177,10 @@ const isCheckUser = computed(() => {
   // Проверяем, что необходимые поля заполнены
   return (
     !!billing.address_1 ||
-    (billing.address && !!billing.first_name && !!billing.phone && !!billing.email)
+    (billing.address &&
+      !!billing.first_name &&
+      !!billing.phone &&
+      !!billing.email)
   );
 });
 
@@ -172,14 +189,23 @@ const createNewOrder = () => {
 };
 
 // Добавим новое вычисляемое свойство для общей стоимости с учетом доставки
-const totalWithDelivery = computed(() => {
-  return totalPrice.value + deliveryPrice.value;
-});
+// const totalWithDelivery = computed(() => {
+//   return totalPrice.value + deliveryPrice.value;
+// });
 
-// Подсчет общей стоимости корзины
 const totalPrice = computed(() => {
   return carts.value.reduce((total: any, item: any) => {
     return total + item.price * item.quantity;
+  }, 0);
+});
+
+const totalWithDelivery = computed(() => {
+  return totalPrice.value + totalDeliveryPrice.value;
+});
+
+const totalDeliveryPrice = computed(() => {
+  return carts.value.reduce((total: number, item: any) => {
+    return total + deliveryPrice.value * item.quantity;
   }, 0);
 });
 
