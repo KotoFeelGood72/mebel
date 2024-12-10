@@ -82,7 +82,7 @@ defineProps<{
   max-width: 85rem;
   @include bp($point_2) {
     max-width: 100%;
-    margin: -7rem -3rem 0 0;
+    margin: -2rem -3rem 0 0;
   }
   img {
     @include bp($point_2) {
