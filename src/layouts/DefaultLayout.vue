@@ -41,7 +41,7 @@ const route = useRoute();
 const { closeAllModals } = useModalStore();
 const { modals } = useModalStoreRefs();
 const { getAllProducts } = useProductsStore();
-let scrollPosition = 0;
+// let scrollPosition = 0;
 const isModalActive = computed(() => {
   return Object.values(modals.value).some((isActive) => isActive);
 });

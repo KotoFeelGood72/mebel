@@ -24,7 +24,7 @@
           rel="noopener noreferrer"
           class="share-button ok-button"
         >
-          Одноклассники
+          <Icons icon="fa:odnoklassniki-square" />
         </a>
         <a
           :href="`https://vk.com/share.php?url=${currentUrl}`"
@@ -32,7 +32,7 @@
           rel="noopener noreferrer"
           class="share-button vk-button"
         >
-          ВКонтакте
+          <Icons icon="basil:vk-solid" />
         </a>
         <a
           :href="`https://t.me/share/url?url=${currentUrl}&text=${article.title}`"
@@ -40,10 +40,10 @@
           rel="noopener noreferrer"
           class="share-button telegram-button"
         >
-          Telegram
+          <Icons icon="logos:telegram" />
         </a>
         <button @click="copyLink" class="share-button copy-button">
-          Скопировать ссылку
+          <Icons icon="mynaui:link-solid" />
         </button>
       </div>
     </div>
@@ -99,66 +99,113 @@ onMounted(async () => {
   margin: 0 auto;
   // padding: 20px;
   font-size: 2rem;
+  @include bp($point_2) {
+    padding-top: 12rem;
+    font-size: 1.6rem;
+    padding: 0 1.6rem;
+  }
 
   .news-header {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 2rem;
 
     .news-title {
       font-size: 4rem;
       margin-bottom: 2rem;
+      @include bp($point_2) {
+        font-size: 2.4rem;
+      }
     }
 
     .news-meta {
       font-size: 1.8rem;
       color: #777;
+      @include bp($point_2) {
+        font-size: 1.4rem;
+      }
     }
   }
 
   .news-image {
-    margin: 20px 0;
+    margin: 2rem 0;
+    height: 40rem;
+    @include bp($point_2) {
+      height: auto;
+    }
 
     img {
       width: 100%;
-      height: auto;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      height: 100%;
+      border-radius: 0.8rem;
+      box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
+      object-fit: cover;
+      @include bp($point_2) {
+        height: auto;
+      }
     }
   }
 
   .news-content {
     font-size: 2rem;
     margin-bottom: 3rem;
+    @include bp($point_2) {
+      font-size: 1.6rem;
+      margin-bottom: 2rem;
+    }
 
     :deep(p) {
       font-size: 2rem;
       margin: 2rem 0;
+      @include bp($point_2) {
+        font-size: 1.6rem;
+        margin: 1rem 0;
+      }
     }
 
     :deep(h2) {
       font-size: 3rem;
       color: $dark;
       margin: 2rem 0;
+      @include bp($point_2) {
+        font-size: 2rem;
+        margin: 1rem 0;
+      }
     }
     :deep(h3) {
       font-size: 3rem;
       color: $dark;
       margin: 2rem 0;
+      @include bp($point_2) {
+        font-size: 2rem;
+        margin: 1rem 0;
+      }
     }
     :deep(h3) {
       font-size: 3rem;
       color: $dark;
       margin: 2rem 0;
+      @include bp($point_2) {
+        font-size: 2rem;
+        margin: 1rem 0;
+      }
     }
     :deep(h4) {
       font-size: 3rem;
       color: $dark;
       margin: 2rem 0;
+      @include bp($point_2) {
+        font-size: 2rem;
+        margin: 1rem 0;
+      }
     }
     :deep(h5) {
       font-size: 3rem;
       color: $dark;
       margin: 2rem 0;
+      @include bp($point_2) {
+        font-size: 2rem;
+        margin: 1rem 0;
+      }
     }
 
     :deep(ul) {
@@ -166,12 +213,12 @@ onMounted(async () => {
       flex-direction: column;
       gap: 1.5rem;
       li {
-        margin-bottom: 10px;
+        margin-bottom: 1rem;
       }
     }
 
     a {
-      color: #007bff;
+      color: $lbrown;
       text-decoration: none;
 
       &:hover {
@@ -180,9 +227,27 @@ onMounted(async () => {
     }
   }
 
+  :deep(.wp-block-image) {
+    height: 30rem;
+    width: auto;
+    @include bp($point_2) {
+      height: auto;
+    }
+    img {
+      border-radius: 1rem;
+      // width: 100%;
+      height: 100%;
+      object-fit: cover;
+      @include bp($point_2) {
+        height: auto;
+        width: auto;
+      }
+    }
+  }
+
   .related-news {
     background: #f9f9f9;
-    padding: 15px;
+    padding: 1.5rem;
     border-radius: 8px;
 
     h3 {
@@ -195,10 +260,10 @@ onMounted(async () => {
       padding: 0;
 
       li {
-        margin-bottom: 5px;
+        margin-bottom: 0.5rem;
 
         a {
-          color: #007bff;
+          color: $lbrown;
           text-decoration: none;
 
           &:hover {
@@ -216,13 +281,17 @@ onMounted(async () => {
   h3 {
     font-size: 2rem;
     margin-bottom: 10px;
+    @include bp($point_2) {
+      margin-bottom: 1rem;
+      font-size: 1.8rem;
+    }
   }
 
   .share-buttons {
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 1rem;
 
     .share-button {
       font-size: 1.6rem;
@@ -231,6 +300,8 @@ onMounted(async () => {
       color: #fff;
       text-decoration: none;
       transition: background-color 0.3s;
+      @include flex-center;
+      cursor: pointer;
 
       &.ok-button {
         background-color: #ee8208;
