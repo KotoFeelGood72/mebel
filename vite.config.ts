@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => {
   const isProduction = mode === "production"; // Определяем режим
 
   return {
-    base: isProduction ? "/wp-content/themes/fu/vue/dist/" : "/", // Указываем base только для деплоя
+    base: isProduction ? "/wp-content/themes/fu/vue/dist/" : "/",
     build: isProduction
       ? {
           rollupOptions: {

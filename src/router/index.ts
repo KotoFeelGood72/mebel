@@ -40,21 +40,21 @@ const router = createRouter({
       component: () => import("@/views/offer-physical.vue"),
     },
     {
-      name: 'articles',
-      path: '/news',
+      name: "articles",
+      path: "/news",
       redirect: "/news/main",
       children: [
-          {
-            name: 'news',
-            path: '/news/main',
-            component: () => import('@/views/news/index.vue'),
-          },
-          {
-            name: 'news-id',
-            path: '/news/:id',
-            component: () => import('@/views/news/news.vue'),
-          },
-      ]
+        {
+          name: "news",
+          path: "/news/main",
+          component: () => import("@/views/news/index.vue"),
+        },
+        {
+          name: "news-id",
+          path: "/news/:id",
+          component: () => import("@/views/news/news.vue"),
+        },
+      ],
     },
 
     {
