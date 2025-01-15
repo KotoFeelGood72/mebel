@@ -49,18 +49,34 @@ onMounted(async () => {
   margin-bottom: 8rem;
   @include flex-start;
   padding: 5rem 3rem;
+  @include bp($point_2) {
+    margin-bottom: 3rem;
+    height: 15rem;
+    border-radius: 1rem;
+  }
 
   h1 {
     font-size: 6rem;
     font-weight: 600;
+
+    @include bp($point_2) {
+      font-size: 2.4rem;
+    }
   }
 }
 .news {
   padding: 24rem 0 10rem 0;
+  @include bp($point_2) {
+    padding: 10rem 0 6rem 0;
+  }
 }
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
   grid-gap: 3rem;
+  @include bp($point_2) {
+    grid-gap: 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+  }
 }
 </style>

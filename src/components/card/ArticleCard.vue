@@ -61,6 +61,9 @@ const formattedDate = formatDate(props.article.date);
   position: relative;
   width: 100%;
   height: 30rem;
+  @include bp($point_2) {
+    height: 20rem;
+  }
 
   .date {
     position: absolute;
@@ -92,6 +95,11 @@ h3 {
   -webkit-line-clamp: 2;
   line-height: 3.3rem;
   max-height: 6.5rem;
+  @include bp($point_2) {
+    font-size: 1.8rem;
+    line-height: 2.6rem;
+    margin-bottom: 1rem;
+  }
 }
 
 p {
@@ -104,6 +112,10 @@ p {
   -webkit-line-clamp: 3;
   line-height: 2.4rem;
   max-height: 7rem;
+  @include bp($point_2) {
+    font-size: 1.6rem;
+    line-height: 2.2rem;
+  }
 }
 
 .article__content {
