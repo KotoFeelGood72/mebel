@@ -40,6 +40,11 @@ const router = createRouter({
       component: () => import("@/views/offer-physical.vue"),
     },
     {
+      path: "/maintance",
+      name: "maintance",
+      component: () => import("@/views/maintance.vue"),
+    },
+    {
       name: "articles",
       path: "/news",
       redirect: "/news/main",

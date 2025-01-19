@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <Header />
+    <Header v-if="route.name != 'maintance'" />
     <div class="content">
       <slot />
     </div>
@@ -20,7 +20,7 @@
       <div v-if="isModalActive" class="page-bg" @click="closeAllModals"></div>
     </transition>
     <Preloader />
-    <Footer />
+    <Footer v-if="route.name != 'maintance'" />
   </div>
 </template>
 
