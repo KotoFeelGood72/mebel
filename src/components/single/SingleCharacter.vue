@@ -1,5 +1,6 @@
 <template>
   <div class="character">
+    <div class="link-character" id="link-character"></div>
     <div class="container">
       <h2>{{ title }}</h2>
       <div class="character_main">
@@ -31,6 +32,7 @@ defineProps<{
 .character {
   background-color: $light;
   padding: 8rem 0 14.5rem 0;
+  position: relative;
   @include bp($point_2) {
     padding: 3rem 0 2.2rem 0;
   }
@@ -102,5 +104,10 @@ defineProps<{
       }
     }
   }
+}
+
+.link-character {
+  position: absolute;
+  top: -14rem;
 }
 </style>

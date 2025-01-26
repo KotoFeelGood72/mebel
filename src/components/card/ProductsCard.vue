@@ -3,7 +3,9 @@
     <ProductsSlider :gallery="activeVariation" class="product-sliders" />
     <div class="products_content">
       <div class="products_content__head">
-        <h3>{{ products.title }}</h3>
+        <RouterLink class="product_title" :to="`/shop/products/${products.id}`"
+          ><h3>{{ products.title }}</h3></RouterLink
+        >
         <div class="products_description">
           {{ products.acf.about_txt_product }}
         </div>
@@ -98,11 +100,15 @@ watch(
 
   &.reverse {
     .products_content {
-      order: 0;
+      @include bp($point_2, $direction: min) {
+        order: 0;
+      }
     }
 
     :deep(.product-sliders) {
-      order: 1;
+      @include bp($point_2, $direction: min) {
+        order: 1;
+      }
     }
   }
 }
@@ -120,7 +126,7 @@ watch(
     margin-bottom: 3.5rem;
   }
   h3 {
-    font-size: 4rem;
+    font-size: 3.6rem;
     margin-bottom: 3rem;
     @include bp($point_2) {
       font-size: 2.4rem;
@@ -128,7 +134,7 @@ watch(
     }
   }
 
-  a {
+  a:not(.product_title) {
     color: $brown;
     font-size: 2.4rem;
     font-family: $font_2;
@@ -148,6 +154,12 @@ watch(
 .products_description {
   margin-bottom: 3.5rem;
   color: $gray;
+  max-height: 16rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
 
   @include bp($point_2) {
     font-size: 1.6rem;
@@ -177,6 +189,14 @@ watch(
   user-select: none;
   @include bp($point_2) {
     width: 100%;
+  }
+}
+
+.product_title {
+  text-decoration: none;
+  color: $black;
+  &:hover {
+    color: $brown;
   }
 }
 </style>

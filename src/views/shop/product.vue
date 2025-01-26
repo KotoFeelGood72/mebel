@@ -1,6 +1,6 @@
 <template>
   <div class="single" v-if="productPage">
-    <div class="products">
+    <div class="products" :class="{ mb8: !productPage.acf.galereya }">
       <div class="container">
         <Breadcrumbs :crumbs="breadcrumbs" />
         <div class="products_main">
@@ -42,17 +42,17 @@
               </div>
               <ul class="products__nav">
                 <li>
-                  <a href="#character"
+                  <a href="#link-character"
                     ><p>Характеристики</p>
                     <Icons icon="fluent:chevron-right-28-regular" />
                   </a>
                 </li>
-                <li>
+                <!-- <li>
                   <a href="#"
                     ><p>Отзывы</p>
                     <Icons icon="fluent:chevron-right-28-regular" />
                   </a>
-                </li>
+                </li> -->
               </ul>
             </div>
           </div>
@@ -69,7 +69,6 @@
       :title="productPage.acf.character_title"
       :img="productPage.acf.character_img.url"
       :list="productPage.acf.character_list"
-      id="character"
     />
     <SingleIdeas :gallery="productPage.acf.ideas_gallery" />
   </div>
@@ -151,6 +150,9 @@ onMounted(async () => {
 <style scoped lang="scss">
 .products {
   padding-top: calc($header + 4.6rem);
+  &.mb8 {
+    margin-bottom: 8rem;
+  }
   @include bp($point_2) {
     padding-top: 8.5rem;
   }

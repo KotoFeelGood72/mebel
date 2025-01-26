@@ -9,7 +9,9 @@
           v-model="internalSelectedColor"
         />
         <label :for="'color-' + index + '-' + id">
-          <span :style="{ backgroundColor: colorMap[color.attributes.pa_colors] }"></span>
+          <span
+            :style="{ backgroundColor: colorMap[color.attributes.pa_colors] }"
+          ></span>
         </label>
       </li>
     </ul>
@@ -46,15 +48,25 @@ watch(internalSelectedColor, (newValue) => {
 });
 
 const colorMap: Record<string, string> = {
-  ["зелёный"]: "#008000", // Зеленый
-  ["молочный"]: "#FFFDD0", // Молочный
-  ["графитовый"]: "#2F4F4F", // Графитовый
-  ["серый"]: "#808080", // Серый
-  ["угольно-черный"]: "#0C0C0C", // Угольно-черный
-  ["блэк"]: "#000000", // Черный (Black)
-  ["синий"]: "#0000FF", // Синий
-  ["коричневый"]: "#A52A2A", // Коричневый
-  ["розовый"]: "#FFC0CB", // Розовый
+  // ["зелёный"]: "#008000", // Зеленый
+  // ["молочный"]: "#FFFDD0", // Молочный
+  // ["графитовый"]: "#2F4F4F", // Графитовый
+  // ["серый"]: "#808080", // Серый
+  // ["угольно-черный"]: "#0C0C0C", // Угольно-черный
+  // ["блэк"]: "#000000", // Черный (Black)
+  // ["синий"]: "#0000FF", // Синий
+  // ["коричневый"]: "#A52A2A", // Коричневый
+  // ["розовый"]: "#FFC0CB", // Розовый
+  ["bone"]: "#e2d6c5",
+  ["brown"]: "#857367",
+  ["chocolate"]: "#3f2c25",
+  ["coral"]: "#996263",
+  ["cream"]: "#dfd1c1",
+  ["forest"]: "#5e7272",
+  ["grafit"]: "#62656c",
+  ["indigo"]: "#404a6f",
+  ["steel"]: "#a2a8b4",
+  ["umber"]: "#c88b45",
 };
 </script>
 
@@ -64,7 +76,7 @@ const colorMap: Record<string, string> = {
   margin-bottom: 3.5rem;
   gap: 2.1rem;
   @include bp($point_2) {
-    gap: 1.5rem;
+    gap: 0.5rem;
     margin-bottom: 2rem;
   }
   li {

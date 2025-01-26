@@ -128,6 +128,7 @@ const getStockStatus = (status: string) => {
   padding: 2.7rem 2.7rem;
   flex-direction: column;
   align-items: flex-start;
+  display: flex;
   gap: 4.5rem;
   z-index: 2;
   @include bp($point_2) {
