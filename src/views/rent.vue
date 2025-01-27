@@ -304,9 +304,13 @@ onMounted(async () => {
 
 .price__content {
   max-width: 105rem;
+  width: 100%;
   ul {
-    @include flex-start;
-    flex-wrap: wrap;
+    // @include flex-start;
+    // flex-wrap: wrap;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
     gap: 3.5rem 15.8rem;
     margin-bottom: 5.7rem;
     @include bp($point_2) {
