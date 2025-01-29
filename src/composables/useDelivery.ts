@@ -27,30 +27,49 @@ const selectedAddress = ref<string>("");
 const destinationCoordinates = ref<[number, number] | null>(null);
 const deliveryPrice = ref<number>(0);
 
-// Явная типизация deliveryData
 const deliveryData = ref<DeliveryData>({
   regions: {
     "Москва и Московская область": {
-      price: 1500,
+      price: 0,
       cities: {
-        Москва: 1500,
-        Мытищи: 1000,
-        Химки: 1000,
+        Москва: 0,
+        Мытищи: 0,
+        Химки: 0,
       },
     },
     "Крупные города": {
-      price: 1000,
+      price: 0,
       cities: {
-        "Санкт-Петербург": 1000,
-        Казань: 1000,
-        Новосибирск: 1000,
-        Екатеринбург: 1000,
+        "Санкт-Петербург": 0,
+        Казань: 0,
+        Новосибирск: 0,
+        Екатеринбург: 0,
+      },
+    },
+    Крым: {
+      price: 8000,
+      cities: {
+        Симферополь: 8000,
+        Севастополь: 8000,
+        Ялта: 8000,
+        Феодосия: 8000,
+        Керчь: 8000,
+      },
+    },
+    Кавказ: {
+      price: 8000,
+      cities: {
+        Грозный: 8000,
+        Махачкала: 8000,
+        Владикавказ: 8000,
+        Нальчик: 8000,
+        Черкесск: 8000,
       },
     },
   },
   default: {
-    base_price: 500,
-    price_per_km: 20,
+    base_price: 0,
+    price_per_km: 0,
   },
 });
 
@@ -112,7 +131,6 @@ export const useDelivery = () => {
       });
     }
 
-    // Если цена не установлена, считаем по километрам
     if (price === 0 && destinationCoordinates.value) {
       const defaultPrice = deliveryData.value.default;
       const distanceKm = calculateDistanceFromCoordinates(
@@ -125,7 +143,7 @@ export const useDelivery = () => {
   };
 
   const calculateDistanceFromCoordinates = (coordinates: [number, number]) => {
-    const exampleDistanceKm = 10; // Placeholder: добавить реальный расчет дистанции
+    const exampleDistanceKm = 10;
     return exampleDistanceKm;
   };
 

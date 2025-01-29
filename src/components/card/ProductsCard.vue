@@ -168,8 +168,8 @@ watch(
 }
 
 .products_prices {
-  @include flex-start;
-  gap: 10rem;
+  @include flex-space;
+  gap: 5rem;
   @include bp($point_2) {
     flex-direction: column;
     gap: 3rem;
