@@ -26,7 +26,7 @@
 .shophead__main {
   @include flex-start;
   padding-left: 14.5rem;
-  gap: 2rem;
+  gap: 5rem;
   &:before {
     position: absolute;
     top: 0;
