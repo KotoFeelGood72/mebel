@@ -133,6 +133,7 @@ const getStockStatus = (status: string) => {
   z-index: 2;
   @include bp($point_2) {
     // max-width: 14.1rem;
+    gap: 0.5rem;
     padding: 1.5rem 0 1.5rem 1.5rem;
   }
   span {
