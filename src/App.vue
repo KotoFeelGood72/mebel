@@ -14,12 +14,13 @@ import "@fancyapps/ui/dist/fancybox/fancybox.css";
 import { useHead } from "@vueuse/head";
 import { usePage } from "./services/usePage";
 import { useProductPage } from "./services/useProductPage";
-
+import { useHomeStore, useHomeStoreRefs } from "./stores/useHomeStore";
 const route = useRoute();
 const { meta } = usePage();
 const { productPage } = useProductPage();
 const { closeAllModals } = useModalStore();
-
+const { getInfo } = useHomeStore();
+const { info } = useHomeStoreRefs();
 Fancybox.bind("[data-fancybox]");
 
 // Определяем реактивное свойство для заголовка
@@ -46,32 +47,49 @@ const isPagesMeta = computed(() => {
 });
 
 // Устанавливаем заголовок в зависимости от условий
+// watch(
+//   [meta, isPagesMeta, productPage],
+//   () => {
+//     getInfo();
+//     if (meta.value?.title) {
+//       title.value = decodeHtml(`${info.value.title} | ${meta?.value?.title} `);
+//     } else if (isPagesMeta.value) {
+//       title.value = decodeHtml(`${info.value.title} | ${isPagesMeta.value}`);
+//     } else if (productPage.value?.title) {
+//       title.value = decodeHtml(
+//         `${info.value.title} | ${productPage.value.title}`
+//       );
+//     } else {
+//       // title.value = "Кресло мешок груша купить в Краснодаре от производителя";
+//     }
+//   },
+//   { immediate: true }
+// );
+
 watch(
   [meta, isPagesMeta, productPage],
   () => {
+    getInfo();
+    const siteTitle = info.value?.title ?? "SOFTPEAR";
+
     if (meta.value?.title) {
-      title.value = decodeHtml(
-        `${meta.value.title} | Кресло мешок груша купить в Краснодаре от производителя`
-      );
+      title.value = decodeHtml(`${siteTitle} | ${meta.value.title}`);
     } else if (isPagesMeta.value) {
-      title.value = decodeHtml(
-        `${isPagesMeta.value} | Кресло мешок груша купить в Краснодаре от производителя`
-      );
+      title.value = decodeHtml(`${siteTitle} | ${isPagesMeta.value}`);
     } else if (productPage.value?.title) {
-      title.value = decodeHtml(
-        `${productPage.value.title} | Кресло мешок груша купить в Краснодаре от производителя`
-      );
+      title.value = decodeHtml(`${siteTitle} | ${productPage.value.title}`);
     } else {
-      title.value = "Кресло мешок груша купить в Краснодаре от производителя";
+      title.value = siteTitle;
     }
   },
   { immediate: true }
 );
 
-// Применяем `useHead` с реактивным свойством `title`
-useHead({
-  title,
-});
+if (title) {
+  useHead({
+    title,
+  });
+}
 
 // Закрытие всех модальных окон при изменении маршрута
 watch(
