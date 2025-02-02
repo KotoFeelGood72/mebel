@@ -13,9 +13,17 @@
 <script setup lang="ts">
 import { ref } from "vue";
 const socials = ref<any>([
-  { icon: "bxl:vk", link: "/", size: 25 },
-  { icon: "mingcute:telegram-fill", link: "/", size: 23 },
-  { icon: "mage:whatsapp-filled", link: "/", size: 23 },
+  { icon: "bxl:vk", link: "https://vk.com/softpear_divan", size: 25 },
+  {
+    icon: "mingcute:telegram-fill",
+    link: "https://t.me/softpear_divan",
+    size: 23,
+  },
+  {
+    icon: "mage:whatsapp-filled",
+    link: "https://wtsp.cc/79189609505",
+    size: 23,
+  },
 ]);
 </script>
 
