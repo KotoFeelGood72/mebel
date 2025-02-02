@@ -68,7 +68,7 @@ export const useCartStore = defineStore("carts", {
       };
       try {
         const response = await axios.post(
-          "https://fu.gleede.ru/wp-json/yandexpay/v1/create-order/",
+          "https://softpear.ru/wp-json/yandexpay/v1/create-order/",
           this.currentOrder
         );
 

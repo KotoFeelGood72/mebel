@@ -198,7 +198,7 @@
       title="Арендуйте у нас кресла-мешки для комфортного и радостного
 		мероприятия"
       txt=""
-      img="https://fu.gleede.ru/wp-content/uploads/2024/11/action-1.jpg"
+      img="https://softpear.ru/wp-content/uploads/2024/11/action-1.jpg"
     />
   </div>
 </template>

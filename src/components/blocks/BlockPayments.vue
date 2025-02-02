@@ -44,7 +44,7 @@ const paymentMethods = [
   { name: "Оплата картой онлайн или через СБП" },
   {
     name: "Оплатить",
-    logo: "https://fu.gleede.ru/wp-content/uploads/2024/11/split.png",
+    logo: "https://softpear.ru/wp-content/uploads/2024/11/split.png",
   },
 ];
 const widgetInitialized = ref(false);

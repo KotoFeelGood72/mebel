@@ -144,6 +144,10 @@ defineProps<{
     box-shadow: 0 0 1rem 0 #00000033;
     border-radius: 2.4rem;
     overflow: hidden;
+    @include bp($point_2, $direction: min) {
+      max-height: 59rem;
+      height: 100%;
+    }
 
     // min-width: 84.9rem;
 
