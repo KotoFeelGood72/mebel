@@ -27,7 +27,7 @@ const router = createRouter({
     {
       path: "/cansel",
       name: "cansel",
-      component: () => import("@/views/cansel.vue"),
+      component: () => import("@/views/canсel.vue"),
     },
     {
       path: "/offer-legal",
