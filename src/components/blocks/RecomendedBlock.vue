@@ -2,20 +2,20 @@
   <div class="recomended">
     <div class="container">
       <div class="recomended_main p10">
-        <h3>Рекомендуем сегодня</h3>
+        <h3>{{ title }}</h3>
         <ul class="recomended_list">
           <li class="recomended_item">
             <RouterLink to="/news/main">
-              <img src="/img/recomended-0.jpg" alt="" />
-              <div class="item__sale">до <span>-40 %</span></div>
+              <img :src="img1.url" alt="" />
+              <!-- <div class="item__sale">до <span>-40 %</span></div> -->
             </RouterLink>
           </li>
           <li class="recomended_item">
             <RouterLink to="/news/main">
               <div class="recomended_item__content">
-                <span>23 апреля - 18 мая</span>
-                <h3>Уже тепло</h3>
-                <p>Новая коллекция 2024 для вашей мансарды</p>
+                <span>{{ card.date }}</span>
+                <h3>{{ card.title }}</h3>
+                <p>{{ card.txt }}</p>
                 <DefaultBtn
                   name="Подробнее"
                   type="secondary"
@@ -24,15 +24,15 @@
                 />
               </div>
               <div class="recomended_item__img">
-                <img src="/img/recomended-1.jpg" alt="" />
-                <div class="item__sale">до <span>-40 %</span></div>
+                <img :src="img2.url" />
+                <!-- <div class="item__sale">до <span>-40 %</span></div> -->
               </div>
             </RouterLink>
           </li>
           <li class="recomended_item">
             <RouterLink to="/news/main">
-              <img src="/img/recomended-2.jpg" />
-              <div class="item__sale">до <span>-40 %</span></div>
+              <img :src="img3.url" />
+              <!-- <div class="item__sale">до <span>-40 %</span></div> -->
             </RouterLink>
           </li>
         </ul>
@@ -43,6 +43,14 @@
 
 <script setup lang="ts">
 import DefaultBtn from "../ui/DefaultBtn.vue";
+
+const props = defineProps<{
+  img1: any;
+  img2: any;
+  img3: any;
+  card: any;
+  title: string;
+}>();
 </script>
 
 <style scoped lang="scss">

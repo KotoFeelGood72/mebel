@@ -2,7 +2,13 @@
   <div class="home" v-if="page">
     <HeroSlider :slides="page.slider" />
     <Hits :title="page.title_hit" :products="hits" />
-    <RecomendedBlock />
+    <RecomendedBlock
+      :img1="page.recomend_img_1"
+      :img2="page.recomend_img_2"
+      :img3="page.recomend_img_3"
+      :title="page.recomend_title"
+      :card="page.caard_in_txt"
+    />
     <ActionBlock />
   </div>
 </template>
