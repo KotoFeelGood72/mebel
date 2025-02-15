@@ -1,6 +1,7 @@
 <template>
   <div class="news-page" v-if="article">
     <header class="news-header">
+      <bread :items="breadcrumbs" theme="dark" class="bread" />
       <h1 class="news-title">{{ article.title }}</h1>
       <div class="news-meta">
         <span class="news-date">{{ formatDate(article.date) }}</span>
@@ -51,14 +52,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useNews } from "@/services/useNews";
 import { useToast } from "vue-toastification";
-
+import bread from "@/components/bread.vue";
 const route = useRoute();
 const { useGetArticle, article } = useNews();
 const toast = useToast();
+const breadcrumbs = computed(() => {
+  return [
+    { label: "Главная", to: "/" },
+    { label: "Блог", to: "/news" },
+    // Последняя крошка — заголовок статьи (если статья уже загружена)
+    { label: article.value?.title || "Загрузка..." },
+  ];
+});
 
 // Вычисляем текущий URL
 const currentUrl = window.location.href;
@@ -102,7 +111,7 @@ onMounted(async () => {
   @include bp($point_2) {
     padding-top: 12rem;
     font-size: 1.6rem;
-    padding: 0 1.6rem;
+    padding: 10rem 1.6rem 1.6rem 1.6rem;
   }
 
   .news-header {
@@ -320,6 +329,12 @@ onMounted(async () => {
         opacity: 0.8;
       }
     }
+  }
+}
+
+.bread {
+  :deep(ol) {
+    justify-content: center;
   }
 }
 </style>

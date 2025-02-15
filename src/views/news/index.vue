@@ -2,6 +2,7 @@
   <div class="news">
     <div class="container">
       <div class="head">
+        <bread :items="breadcrumbs" theme="dark" />
         <h1>Новости</h1>
       </div>
       <div class="grid">
@@ -21,14 +22,13 @@
 </template>
 
 <script setup lang="ts">
-// @ts-ignore
 import { useNews } from "@/services/useNews";
-// @ts-ignore
 import ActionBlock from "@/components/blocks/ActionBlock.vue";
-// @ts-ignore
 import ArticleCard from "@/components/card/ArticleCard.vue";
-import { ref, onMounted, computed } from "vue";
+import { onMounted } from "vue";
+import bread from "@/components/bread.vue";
 
+const breadcrumbs = [{ label: "Главная", to: "/" }, { label: "Блог" }];
 const { useGetNews, news } = useNews();
 // const head = ref<any>();
 
@@ -48,7 +48,9 @@ onMounted(async () => {
   border-radius: 2rem;
   margin-bottom: 8rem;
   @include flex-start;
+  align-items: flex-start;
   padding: 5rem 3rem;
+  flex-direction: column;
   @include bp($point_2) {
     margin-bottom: 3rem;
     height: 15rem;
