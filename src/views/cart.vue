@@ -86,8 +86,7 @@
             color="brown"
             size="normal"
             type="primary"
-            :disable="!isCheckUser"
-            @click="createNewOrder"
+            @click="handlePayment"
           />
         </BlockCartTotals>
       </div>
@@ -107,19 +106,18 @@ import BlockPayments from "@/components/blocks/BlockPayments.vue";
 import { ref, computed, watch, onMounted } from "vue";
 import { useCartStoreRefs, useCartStore } from "@/stores/useCartStore";
 import { useDelivery } from "@/composables/useDelivery";
+import { useToast } from "vue-toastification"; // Подключаем useToast
+
 const { carts, currentOrder } = useCartStoreRefs();
 const { updateCartItem, createOrder, removeCart } = useCartStore();
-
 const { deliveryPrice } = useDelivery();
 const { user } = useUserStoreRefs();
 const selectedItems = ref<string[]>([]);
 const router = useRouter();
+const toast = useToast(); // Инициализируем useToast
 
-const hasSelectedItems = computed(() => {
-  return selectedItems.value.length > 0;
-});
+const hasSelectedItems = computed(() => selectedItems.value.length > 0);
 
-// Обновление количества товара в корзине
 const updateQuantity = (item: any, quantity: number) => {
   item.quantity = quantity;
   updateCartItem(item);
@@ -130,7 +128,6 @@ const deleteSelectedItems = () => {
     const itemIndex = carts.value.findIndex(
       (cartItem: any) => cartItem.variationId === variationId
     );
-
     if (itemIndex !== -1) {
       carts.value.splice(itemIndex, 1);
     }
@@ -138,7 +135,6 @@ const deleteSelectedItems = () => {
   selectedItems.value = [];
 };
 
-// Обработка выбора товара
 const toggleSelectItem = (variationId: string) => {
   if (selectedItems.value.includes(variationId)) {
     selectedItems.value = selectedItems.value.filter(
@@ -149,13 +145,6 @@ const toggleSelectItem = (variationId: string) => {
   }
 };
 
-const totalQuantity = computed(() => {
-  return carts.value.reduce((total: number, item: any) => {
-    return total + item.quantity;
-  }, 0);
-});
-
-// Выбор всех товаров
 const toggleSelectAll = (event: Event) => {
   if ((event.target as HTMLInputElement).checked) {
     selectedItems.value = carts.value.map((item: any) => item.variationId);
@@ -164,17 +153,13 @@ const toggleSelectAll = (event: Event) => {
   }
 };
 
-// Проверка, все ли товары выбраны
-const isAllSelected = computed(() => {
-  return (
+const isAllSelected = computed(
+  () =>
     carts.value.length > 0 && selectedItems.value.length === carts.value.length
-  );
-});
+);
 
 const isCheckUser = computed(() => {
   const billing = user.value.billing;
-
-  // Проверяем, что необходимые поля заполнены
   return (
     !!billing.address_1 ||
     (billing.address &&
@@ -184,32 +169,45 @@ const isCheckUser = computed(() => {
   );
 });
 
-const createNewOrder = () => {
+const totalQuantity = computed(() =>
+  carts.value.reduce((total: number, item: any) => total + item.quantity, 0)
+);
+
+const totalPrice = computed(() =>
+  carts.value.reduce(
+    (total: any, item: any) => total + item.price * item.quantity,
+    0
+  )
+);
+
+const totalDeliveryPrice = computed(() =>
+  carts.value.reduce(
+    (total: number, item: any) => total + deliveryPrice.value * item.quantity,
+    0
+  )
+);
+
+const totalWithDelivery = computed(
+  () => totalPrice.value + totalDeliveryPrice.value
+);
+
+const handlePayment = () => {
+  const missingFields: string[] = [];
+
+  if (!user.value.billing.first_name) missingFields.push("Имя");
+  if (!user.value.billing.phone) missingFields.push("Телефон");
+  if (!user.value.billing.email) missingFields.push("Email");
+  if (!user.value.billing.address_1 && !user.value.billing.address)
+    missingFields.push("Адрес");
+
+  if (missingFields.length > 0) {
+    toast.error(`Заполните обязательные поля: ${missingFields.join(", ")}`);
+    return;
+  }
+
   createOrder();
 };
 
-// Добавим новое вычисляемое свойство для общей стоимости с учетом доставки
-// const totalWithDelivery = computed(() => {
-//   return totalPrice.value + deliveryPrice.value;
-// });
-
-const totalPrice = computed(() => {
-  return carts.value.reduce((total: any, item: any) => {
-    return total + item.price * item.quantity;
-  }, 0);
-});
-
-const totalWithDelivery = computed(() => {
-  return totalPrice.value + totalDeliveryPrice.value;
-});
-
-const totalDeliveryPrice = computed(() => {
-  return carts.value.reduce((total: number, item: any) => {
-    return total + deliveryPrice.value * item.quantity;
-  }, 0);
-});
-
-// Функция установки товаров и цены в заказ
 const setLineItemsAndPrice = () => {
   const lineItems = carts.value.map((item: any) => ({
     product_id: item.id,
@@ -228,23 +226,6 @@ const setLineItemsAndPrice = () => {
   };
 };
 
-function loadYandexSplitSDK() {
-  if (!window.YaPay) {
-    const script = document.createElement("script");
-    script.src = "https://pay.yandex.ru/sdk/v1/pay.js";
-    script.async = true;
-    script.onload = () => {
-      console.log("YaPay SDK загружен");
-    };
-    script.onerror = () => {
-      console.error("Ошибка при загрузке YaPay SDK");
-    };
-    document.head.appendChild(script);
-  } else {
-    console.log("YaPay SDK уже загружен");
-  }
-}
-
 watch([carts, deliveryPrice], setLineItemsAndPrice, { deep: true });
 
 watch(
@@ -258,7 +239,6 @@ watch(
 );
 
 onMounted(() => {
-  loadYandexSplitSDK();
   setLineItemsAndPrice();
 });
 </script>
