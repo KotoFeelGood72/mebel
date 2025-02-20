@@ -19,6 +19,7 @@
     "@vueuse/head": "^2.0.0",
     "axios": "^1.7.7",
     "dotenv": "^16.4.5",
+    "html2pdf.js": "^0.10.2",
     "pinia": "^2.2.4",
     "pinia-plugin-persistedstate": "^4.1.1",
     "sass": "^1.79.5",

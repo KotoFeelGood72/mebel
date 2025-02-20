@@ -1,72 +1,35 @@
 <template>
-  <div class="offerta">
+  <div class="offerta" v-if="page">
     <div class="container">
       <div class="offerta_main">
         <div class="offerta_head">
-          <h1>Оферта для физических лиц</h1>
+          <h1>{{ page.title }}</h1>
         </div>
         <div class="offerta_row">
           <div class="offerta__col">
             <ul class="offerta_list__action">
-              <li class="offerta_item">
-                <Icons name="custom:print" :size="40" />
+              <li class="offerta_item" @click="printPage">
+                <Icons icon="material-symbols-light:print-outline" :size="40" />
               </li>
-              <li class="offerta_item">
-                <Icons name="custom:save" :size="40" />
+              <li class="offerta_item" @click="saveAsPDF">
+                <Icons
+                  icon="material-symbols-light:save-outline-rounded"
+                  :size="40"
+                />
               </li>
-              <li class="offerta_item">
-                <Icons name="custom:link" :size="32" />
+              <li class="offerta_item" @click="copyLink">
+                <Icons icon="material-symbols-light:link-rounded" :size="42" />
               </li>
             </ul>
-            <div class="offerta_quot">
-              <p>
-                Общество с ограниченной ответственностью, далее именуемое «Продавец»,
-                предлагает Товары, размещенные в интернет-магазине www.Furnitura.ru,
-                любому физическому лицу, именуемому в дальнейшем «Покупатель», в случае
-                принятия последним условий настоящего Договора и его приложений
-                (безусловный акцепт). Настоящий Договор не требует двустороннего
-                подписания, считается заключенным с момента его акцепта Покупателем и
-                действителен в электронном виде.
-              </p>
-            </div>
-            <div class="offerta_content">
-              <p>
-                Интернет-магазин — сайт Продавца, через который осуществляется
-                дистанционная торговля Товарами, имеющий в сети Интернет адрес
-                – www.divan.ru. На указанном сайте представлены товары, предлагаемые
-                Продавцом Покупателям к продаже, описание каждой позиции с указанием
-                информации, подлежащей предоставлению в соответствии с действующим
-                законодательством Российской Федерации, а также иные условия приобретения
-                товара. Шоу-рум — демонстрационный зал в торговом центре, где представлены
-                каталоги и образцы товара Продавца. Продавец — Общество с ограниченной
-                ответственностью «ДИВАН ТРЕЙД», ИНН 7726457128, ОГРН 1197746537185,
-                Юридический и почтовый адрес: 129110, г. Москва, вн. тер. г. муниципальный
-                округ Мещанский, ул. Большая Переяславская, д.10, этаж 1, помещ. V, ком.13
-                Покупатель — любое физическое лицо, выразившее намерение приобрести Товар
-                исключительно для использования в личных, семейных, домашних и иных целях,
-                не связанных с осуществлением предпринимательской деятельности, на
-                условиях, предусмотренных настоящим Договором. Оферта — публичное
-                предложение Продавца, адресованное физическому лицу, приобретающему Товар
-                исключительно для использования в личных, семейных, домашних и иных целях,
-                не связанных с осуществлением предпринимательской деятельности, заключить
-                с ним договор купли-продажи (далее — "Договор") на условиях, содержащихся
-                в настоящем Договоре. Акцепт — полное и безоговорочное принятие
-                Покупателем условий оферты посредством оформления заказа на сайте или по
-                телефону интернет-магазина. Товар — любая позиция товара, представленного
-                к продаже в Интернет-магазине. Информация о Товаре, включая цвета, размеры
-                и формы, о наличии товара и сроках поставки, представленная на Сайте,
-                носит справочный характер и подлежит уточнению Продавцом при подтверждении
-                Заказа. В случае возникновения у Покупателя вопросов, касающихся свойств и
-                характеристик товара, перед оформлением Заказа Покупатель должен
-                обратиться к Продавцу по телефону, указанному на сайте. Выставочный
-                образец — единица товара, выставленная для демонстрации в шоу-руме для
-                ознакомления Покупателя с товаром Продавца. Заказ — оформленный запрос с
-                указанием корректных сведений о Покупателе, а также с указанием выбранных
-              </p>
-            </div>
+            <div class="offerta_quot" v-html="page.short_txt"></div>
+            <div
+              class="offerta_content"
+              v-html="page.txt"
+              ref="contentRef"
+            ></div>
           </div>
           <div class="offerta__img">
-            <img src="/img/offerta.png" alt="" />
+            <img :src="page.img" alt="" />
           </div>
         </div>
       </div>
@@ -74,13 +37,43 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { usePage } from "@/services/usePage";
+import { onMounted, ref } from "vue";
+import html2pdf from "html2pdf.js";
 
-<style scoped lang="scss">
+const { useGetPage, page } = usePage();
+const contentRef = ref<HTMLElement | null>(null);
+
+onMounted(async () => {
+  await useGetPage("120");
+});
+
+const printPage = () => {
+  window.print();
+};
+
+const saveAsPDF = () => {
+  if (contentRef.value) {
+    html2pdf().from(contentRef.value).save("offerta.pdf");
+  }
+};
+
+const copyLink = async () => {
+  try {
+    await navigator.clipboard.writeText(window.location.href);
+    alert("Ссылка скопирована!");
+  } catch (err) {
+    console.error("Ошибка копирования ссылки:", err);
+  }
+};
+</script>
+
+<style lang="scss">
 .offerta {
   padding-top: calc($header + 8.1rem);
   padding-bottom: 7.5rem;
-  p {
+  :deep(p) {
     font-size: 1.6rem;
     line-height: 150%;
     color: $gray;
@@ -112,11 +105,9 @@
 }
 
 .offerta_quot {
-  p {
-    padding-bottom: 3.2rem;
-    margin-bottom: 3.2rem;
-    border-bottom: 0.1rem solid $black;
-  }
+  padding-bottom: 3.2rem;
+  margin-bottom: 3.2rem;
+  border-bottom: 0.1rem solid $black;
 }
 
 .offerta__img {
@@ -129,5 +120,22 @@
 
 .offerta__col {
   max-width: 91.1rem;
+}
+
+@media print {
+  header,
+  footer {
+    display: none !important;
+  }
+
+  .offerta {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+  }
 }
 </style>
