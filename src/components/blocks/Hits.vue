@@ -161,7 +161,8 @@ const getStockStatus = (status: string) => {
 
 .hits_item__price {
   color: $brown;
-  gap: 2rem;
+  gap: 1rem;
+  display: flex;
   span {
     font-size: 2rem;
     font-family: $font_2;
@@ -171,6 +172,7 @@ const getStockStatus = (status: string) => {
 .item__oldprice {
   color: $gray !important;
   text-decoration: line-through;
+  font-size: 1.4rem !important;
 }
 
 .hits_item__img {

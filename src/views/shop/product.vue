@@ -23,7 +23,10 @@
               />
 
               <div class="products_prices">
-                <p>{{ variationPrice }} ₽</p>
+                <div class="price-col">
+                  <span v-if="boolSalePrice">{{ variationSalePrice }} ₽</span>
+                  <p>{{ variationPrice }} ₽</p>
+                </div>
                 <div class="product_cart__row">
                   <AddToCart
                     :center="true"
@@ -114,6 +117,8 @@ watch(
 const {
   selectedColor,
   variationPrice,
+  boolSalePrice,
+  variationSalePrice,
   isCarts,
   cartItem,
   selectedQuantity,
@@ -236,6 +241,21 @@ onMounted(async () => {
   gap: 2rem;
   :deep(.button) {
     flex-grow: 1;
+  }
+}
+
+.price-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+  span {
+    position: absolute;
+    color: #a4a4a4ff;
+    top: -2rem;
+    font-family: $font_3;
+    text-decoration: line-through;
+    font-size: 1.6rem;
   }
 }
 </style>

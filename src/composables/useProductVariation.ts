@@ -48,6 +48,14 @@ export function useProductVariation(productData: any) {
     () => findVariation.value?.price || productData.value?.price || 0
   );
 
+  const variationSalePrice = computed(() => {
+    return findVariation.value?.regular_price;
+  });
+  const boolSalePrice = computed(() => {
+    return !!findVariation.value?.sale_price;
+  });
+
+
   const isCarts = computed(() =>
     carts.value.some((cart: any) => cart.variationId === findVariationId.value)
   );
@@ -102,12 +110,14 @@ export function useProductVariation(productData: any) {
   return {
     selectedColor,
     variationPrice,
+    variationSalePrice,
     isCarts,
     cartItem,
     selectedQuantity,
     toggleCart,
     updateQuantity,
     findVariationId,
+    boolSalePrice,
     removeCart,
   };
 }

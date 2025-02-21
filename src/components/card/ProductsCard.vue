@@ -20,7 +20,10 @@
           v-model="selectedColor"
         />
         <div class="products_prices">
-          <p>{{ variationPrice }} ₽</p>
+          <div class="price-col">
+            <span v-if="boolSalePrice">{{ variationSalePrice }}</span>
+            <p>{{ variationPrice }} ₽</p>
+          </div>
           <div class="products_prices__right">
             <AddToCart
               :active="isCarts"
@@ -71,6 +74,8 @@ const {
   toggleCart,
   updateQuantity,
   findVariationId,
+  variationSalePrice,
+  boolSalePrice,
   removeCart,
 } = useProductVariation(productRef);
 
@@ -197,6 +202,20 @@ watch(
   color: $black;
   &:hover {
     color: $brown;
+  }
+}
+
+.price-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+  span {
+    position: absolute;
+    color: #a4a4a4ff;
+    top: -2rem;
+    font-family: $font_3;
+    text-decoration: line-through;
   }
 }
 </style>
