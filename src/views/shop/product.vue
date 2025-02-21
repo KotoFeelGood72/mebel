@@ -4,7 +4,11 @@
       <div class="container">
         <Breadcrumbs :crumbs="breadcrumbs" />
         <div class="products_main">
-          <ProductsSlider :gallery="activeVariation" :single="true" />
+          <ProductsSlider
+            :gallery="activeVariation"
+            :single="true"
+            :isStock="variationStock"
+          />
           <div class="products_content">
             <div class="products_content__head">
               <h3>{{ productPage.title }}</h3>
@@ -125,6 +129,7 @@ const {
   toggleCart,
   updateQuantity,
   findVariationId,
+  variationStock,
   removeCart,
 } = useProductVariation(productPage);
 

@@ -48,6 +48,10 @@ export function useProductVariation(productData: any) {
     () => findVariation.value?.price || productData.value?.price || 0
   );
 
+  const variationStock = computed(
+    () => findVariation.value?.stock_status 
+  );
+
   const variationSalePrice = computed(() => {
     return findVariation.value?.regular_price;
   });
@@ -110,6 +114,7 @@ export function useProductVariation(productData: any) {
   return {
     selectedColor,
     variationPrice,
+    variationStock,
     variationSalePrice,
     isCarts,
     cartItem,

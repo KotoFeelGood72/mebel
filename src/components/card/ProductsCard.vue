@@ -1,6 +1,10 @@
 <template>
   <div class="products" v-if="products" :class="{ reverse: reverse }">
-    <ProductsSlider :gallery="activeVariation" class="product-sliders" />
+    <ProductsSlider
+      :gallery="activeVariation"
+      class="product-sliders"
+      :isStock="variationStock"
+    />
     <div class="products_content">
       <div class="products_content__head">
         <RouterLink class="product_title" :to="`/shop/products/${products.id}`"
@@ -68,6 +72,7 @@ const productRef = ref(props.products);
 const {
   selectedColor,
   variationPrice,
+  variationStock,
   isCarts,
   cartItem,
   selectedQuantity,

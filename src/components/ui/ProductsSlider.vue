@@ -1,5 +1,8 @@
 <template>
   <div class="products-sliders">
+    <div class="isStock" :class="[isStock]">
+      {{ isStockText }}
+    </div>
     <div
       :class="[
         `products_slider products_slider_${gallery?.id}`,
@@ -100,10 +103,11 @@
 import { Navigation, Pagination, Thumbs } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/swiper-bundle.css";
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 
 const props = defineProps<{
   gallery: any;
+  isStock: string;
 }>();
 
 // Управляем загрузкой
@@ -146,12 +150,27 @@ watch(
   },
   { immediate: true }
 );
+
+const isStockText = computed(() => {
+  switch (props.isStock) {
+    case "outofstock":
+      return "Нет в наличии";
+    case "instock":
+      return "В наличие";
+    case "onbackorder":
+      return "Предзаказ";
+
+    default:
+      break;
+  }
+});
 </script>
 
 <style scoped lang="scss">
 .products-sliders {
   width: 50%;
   min-width: 50%;
+  position: relative;
 
   @include bp($point_2) {
     width: 100%;
@@ -299,6 +318,29 @@ watch(
 :deep(.swiper-slide-thumb-active) {
   img {
     border: 0.2rem solid $brown;
+  }
+}
+
+.isStock {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  z-index: 88;
+  padding: 0.7rem 2rem;
+  border-radius: 0.4rem;
+  font-size: 1.4rem;
+  font-family: $font_2;
+  color: $white;
+
+  &.instock {
+    background-color: #2cc840;
+  }
+
+  &.outofstock {
+    background-color: #eb1d1d;
+  }
+  &.onbackorder {
+    background-color: #eb8e1dff;
   }
 }
 </style>
