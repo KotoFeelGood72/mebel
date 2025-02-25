@@ -156,10 +156,9 @@ const isStockText = computed(() => {
     case "outofstock":
       return "Нет в наличии";
     case "instock":
-      return "В наличие";
+      return "В наличии";
     case "onbackorder":
       return "Предзаказ";
-
     default:
       break;
   }

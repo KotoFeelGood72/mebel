@@ -25,7 +25,7 @@ const router = createRouter({
       component: () => import("@/views/error.vue"),
     },
     {
-      path: "/cansel",
+      path: "/cancel",
       name: "cansel",
       component: () => import("@/views/canсel.vue"),
     },
