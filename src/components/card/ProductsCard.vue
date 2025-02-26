@@ -1,6 +1,10 @@
 <template>
   <div class="products" v-if="products" :class="{ reverse: reverse }">
-    <ProductsSlider :gallery="activeVariation" class="product-sliders" />
+    <ProductsSlider
+      :gallery="activeVariation"
+      class="product-sliders"
+      :isStock="variationStock"
+    />
     <div class="products_content">
       <div class="products_content__head">
         <RouterLink class="product_title" :to="`/shop/products/${products.id}`"
@@ -20,7 +24,10 @@
           v-model="selectedColor"
         />
         <div class="products_prices">
-          <p>{{ variationPrice }} ₽</p>
+          <div class="price-col">
+            <span v-if="boolSalePrice">{{ variationSalePrice }}</span>
+            <p>{{ variationPrice }} ₽</p>
+          </div>
           <div class="products_prices__right">
             <AddToCart
               :active="isCarts"
@@ -65,12 +72,15 @@ const productRef = ref(props.products);
 const {
   selectedColor,
   variationPrice,
+  variationStock,
   isCarts,
   cartItem,
   selectedQuantity,
   toggleCart,
   updateQuantity,
   findVariationId,
+  variationSalePrice,
+  boolSalePrice,
   removeCart,
 } = useProductVariation(productRef);
 
@@ -197,6 +207,20 @@ watch(
   color: $black;
   &:hover {
     color: $brown;
+  }
+}
+
+.price-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+  span {
+    position: absolute;
+    color: #a4a4a4ff;
+    top: -2rem;
+    font-family: $font_3;
+    text-decoration: line-through;
   }
 }
 </style>

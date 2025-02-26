@@ -12,6 +12,11 @@
         </li>
       </ul>
     </div>
+    <ActionBlock
+      img="https://softpear.ru/wp-content/uploads/2024/11/action-2.jpg"
+      title="Как начать сотрудничество?"
+      txt="Свяжитесь с нами, чтобы обсудить ваши идеи и запросы. Наши специалисты всегда готовы предоставить консультацию и помочь на каждом этапе реализации вашего проекта. Вместе мы сможем создать нечто действительно выдающееся."
+    />
   </div>
 </template>
 
@@ -20,6 +25,7 @@ import ShopHead from "@/components/head/ShopHead.vue";
 import ProductsCard from "@/components/card/ProductsCard.vue";
 import { onMounted } from "vue";
 import { useProducts } from "@/services/useProducts";
+import ActionBlock from "@/components/blocks/ActionBlock.vue";
 
 const { useGetProducts, products } = useProducts();
 

@@ -4,7 +4,11 @@
       <div class="container">
         <Breadcrumbs :crumbs="breadcrumbs" />
         <div class="products_main">
-          <ProductsSlider :gallery="activeVariation" :single="true" />
+          <ProductsSlider
+            :gallery="activeVariation"
+            :single="true"
+            :isStock="variationStock"
+          />
           <div class="products_content">
             <div class="products_content__head">
               <h3>{{ productPage.title }}</h3>
@@ -23,7 +27,10 @@
               />
 
               <div class="products_prices">
-                <p>{{ variationPrice }} ₽</p>
+                <div class="price-col">
+                  <span v-if="boolSalePrice">{{ variationSalePrice }} ₽</span>
+                  <p>{{ variationPrice }} ₽</p>
+                </div>
                 <div class="product_cart__row">
                   <AddToCart
                     :center="true"
@@ -114,12 +121,15 @@ watch(
 const {
   selectedColor,
   variationPrice,
+  boolSalePrice,
+  variationSalePrice,
   isCarts,
   cartItem,
   selectedQuantity,
   toggleCart,
   updateQuantity,
   findVariationId,
+  variationStock,
   removeCart,
 } = useProductVariation(productPage);
 
@@ -236,6 +246,21 @@ onMounted(async () => {
   gap: 2rem;
   :deep(.button) {
     flex-grow: 1;
+  }
+}
+
+.price-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+  span {
+    position: absolute;
+    color: #a4a4a4ff;
+    top: -2rem;
+    font-family: $font_3;
+    text-decoration: line-through;
+    font-size: 1.6rem;
   }
 }
 </style>
