@@ -25,6 +25,15 @@
                 :colors="productPage.variations"
                 v-model="selectedColor"
               />
+              <div class="select_var">
+                <select name="select-var" id="select-var">
+                  <option value="Шитые">Шитые</option>
+                  <option value="Не шитые">Не шитые</option>
+                </select>
+                <div class="select_var__arrow">
+                  <Icons icon="fluent:chevron-right-28-regular" />
+                </div>
+              </div>
 
               <div class="products_prices">
                 <div class="price-col">
@@ -54,12 +63,6 @@
                     <Icons icon="fluent:chevron-right-28-regular" />
                   </a>
                 </li>
-                <!-- <li>
-                  <a href="#"
-                    ><p>Отзывы</p>
-                    <Icons icon="fluent:chevron-right-28-regular" />
-                  </a>
-                </li> -->
               </ul>
             </div>
           </div>
@@ -262,5 +265,30 @@ onMounted(async () => {
     text-decoration: line-through;
     font-size: 1.6rem;
   }
+}
+
+.select_var {
+  position: relative;
+  display: inline-flex;
+  margin: -5rem 0 5rem 0;
+  select {
+    padding: 1.5rem;
+    border: 0.1rem solid $gray;
+    width: 100%;
+    height: 100%;
+    appearance: none;
+    font-family: $font_2;
+    color: $gray;
+    font-size: 1.8rem;
+    cursor: pointer;
+    min-width: 25rem;
+  }
+}
+
+.select_var__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+  right: 2rem;
 }
 </style>
