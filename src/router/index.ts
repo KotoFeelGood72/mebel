@@ -39,11 +39,6 @@ const router = createRouter({
       name: "offer-physical",
       component: () => import("@/views/offer-physical.vue"),
     },
-    // {
-    //   path: "/maintance",
-    //   name: "maintance",
-    //   component: () => import("@/views/maintance.vue"),
-    // },
     {
       name: "articles",
       path: "/news",
