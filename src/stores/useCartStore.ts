@@ -1,5 +1,6 @@
 import { defineStore, storeToRefs } from "pinia";
 import { useUserStoreRefs } from "./useUserStore";
+import { useToast } from "vue-toastification";
 import axios from "axios";
 
 export const useCartStore = defineStore("carts", {
@@ -59,6 +60,7 @@ export const useCartStore = defineStore("carts", {
 
     async createOrder() {
       const { user } = useUserStoreRefs();
+      const toast = useToast();
       this.currentOrder.billing = {
         ...this.currentOrder.billing,
         first_name: user.value.billing.first_name,
@@ -73,7 +75,7 @@ export const useCartStore = defineStore("carts", {
         );
 
         if (response.data && response.data.payment_url) {
-          // window.location.href = response.data.payment_url;
+          window.location.href = response.data.payment_url;
         }
 
         this.carts = [];
@@ -83,6 +85,9 @@ export const useCartStore = defineStore("carts", {
         };
       } catch (error) {
         console.error("Ошибка при создании заказа:", error);
+        toast.error(
+          "Ошибка при создании заказа: Неверный адрес эл. почты для выставления счета"
+        );
       }
     },
   },
