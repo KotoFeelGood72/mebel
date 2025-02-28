@@ -39,7 +39,7 @@
                 <div class="hits_item__price">
                   <span>{{ item.price }} ₽</span>
                   <span class="item__oldprice" v-if="item.sale_price"
-                    >{{ item.sale_price }} ₽</span
+                    >{{ item.regular_price }} ₽</span
                   >
                 </div>
               </div>
