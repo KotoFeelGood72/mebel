@@ -216,6 +216,12 @@ const setLineItemsAndPrice = () => {
     color: item.color,
     variation_id: item.variationId,
     thumbnail: item.thumbnail,
+    meta_data: [
+      {
+        key: "Тип",
+        value: item.type,
+      },
+    ],
   }));
 
   currentOrder.value = {

@@ -7,13 +7,8 @@ export function useProductVariation(productData: any) {
   const { addCart, removeCart, updateCartItem } = useCartStore();
   const { carts } = useCartStoreRefs();
 
-  // Используем productData напрямую как ref
-  // const product = productData;
   const selectedColor = ref<any>(null);
-
-  // console.log(productData)
-
-  // Отслеживание изменений product, чтобы обновлять данные, когда product обновится
+  const selectedType = ref("Шитые");
   watch(
     productData,
     (newProduct) => {
@@ -22,14 +17,13 @@ export function useProductVariation(productData: any) {
         newProduct.variations &&
         newProduct.variations.length > 0
       ) {
-        // Берем цвет из первой доступной вариации
         selectedColor.value =
           newProduct.variations[0].attributes.pa_colors || null;
       } else {
         selectedColor.value = null;
       }
     },
-    { immediate: true } // Запускаем немедленно, чтобы получить начальное значение
+    { immediate: true }
   );
 
   const findVariation = computed(() => {
@@ -48,9 +42,7 @@ export function useProductVariation(productData: any) {
     () => findVariation.value?.price || productData.value?.price || 0
   );
 
-  const variationStock = computed(
-    () => findVariation.value?.stock_status 
-  );
+  const variationStock = computed(() => findVariation.value?.stock_status);
 
   const variationSalePrice = computed(() => {
     return findVariation.value?.regular_price;
@@ -58,7 +50,6 @@ export function useProductVariation(productData: any) {
   const boolSalePrice = computed(() => {
     return !!findVariation.value?.sale_price;
   });
-
 
   const isCarts = computed(() =>
     carts.value.some((cart: any) => cart.variationId === findVariationId.value)
@@ -92,6 +83,7 @@ export function useProductVariation(productData: any) {
         color: selectedColor.value,
         price: variationPrice.value,
         title: productData.value.title,
+        type: selectedType.value,
       });
       toast.success("Добавлено в корзину");
     }
@@ -124,5 +116,6 @@ export function useProductVariation(productData: any) {
     findVariationId,
     boolSalePrice,
     removeCart,
+    selectedType,
   };
 }

@@ -26,10 +26,15 @@
                 v-model="selectedColor"
               />
               <div class="select_var">
-                <select name="select-var" id="select-var">
+                <select
+                  name="select-var"
+                  id="select-var"
+                  v-model="selectedType"
+                >
                   <option value="Шитые">Шитые</option>
                   <option value="Не шитые">Не шитые</option>
                 </select>
+
                 <div class="select_var__arrow">
                   <Icons icon="fluent:chevron-right-28-regular" />
                 </div>
@@ -102,6 +107,7 @@ import ProductsSlider from "@/components/ui/ProductsSlider.vue";
 const totalSlides = ref();
 const route = useRoute();
 const activeVariation = ref(null);
+
 const breadcrumbs = ref([
   { text: "Каталог", href: "/shop" },
   { text: productPage?.value?.title },
@@ -111,7 +117,6 @@ watch(
   () => productPage.value,
   (newValue) => {
     if (newValue && newValue.title) {
-      // Обновляем второй элемент хлебных крошек, когда данные productPage доступны
       breadcrumbs.value = [
         { text: "Каталог", href: "/shop" },
         { text: newValue.title },
@@ -134,6 +139,7 @@ const {
   findVariationId,
   variationStock,
   removeCart,
+  selectedType,
 } = useProductVariation(productPage);
 
 watch(
@@ -282,6 +288,11 @@ onMounted(async () => {
     font-size: 1.8rem;
     cursor: pointer;
     min-width: 25rem;
+
+    @include bp($point_2) {
+      font-size: 1.6rem;
+      padding: 1.2rem 2rem;
+    }
   }
 }
 

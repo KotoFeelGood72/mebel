@@ -73,10 +73,9 @@ export const useCartStore = defineStore("carts", {
         );
 
         if (response.data && response.data.payment_url) {
-          window.location.href = response.data.payment_url;
+          // window.location.href = response.data.payment_url;
         }
 
-        // Очистка корзины и сброс текущего заказа
         this.carts = [];
         this.currentOrder = {
           line_items: [],
