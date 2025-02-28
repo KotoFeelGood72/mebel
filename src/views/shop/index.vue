@@ -5,7 +5,6 @@
       :txt="page.shop_txt"
       :img="page.shop_img"
     />
-    {{ page }}
     <div class="container">
       <ul class="products_list p10">
         <li

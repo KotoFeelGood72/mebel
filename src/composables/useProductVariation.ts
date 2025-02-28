@@ -8,7 +8,7 @@ export function useProductVariation(productData: any) {
   const { carts } = useCartStoreRefs();
 
   const selectedColor = ref<any>(null);
-  const selectedType = ref("Сшитые");
+  const selectedType = ref("Шитые");
   watch(
     productData,
     (newProduct) => {
