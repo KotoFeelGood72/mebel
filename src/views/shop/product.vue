@@ -31,8 +31,8 @@
                   id="select-var"
                   v-model="selectedType"
                 >
-                  <option value="Шитые">Шитые</option>
-                  <option value="Раздельные">Раздельные</option>
+                  <option value="Шитые матрасы">Шитые матрасы</option>
+                  <option value="Раздельные матрасы">Раздельные матрасы</option>
                 </select>
 
                 <div class="select_var__arrow">
