@@ -31,7 +31,7 @@
                   id="select-var"
                   v-model="selectedType"
                 >
-                  <option value="Шитые матрасы">Шитые матрасы</option>
+                  <option value="Сшитые матрасы">Сшитые матрасы</option>
                   <option value="Раздельные матрасы">Раздельные матрасы</option>
                 </select>
 
