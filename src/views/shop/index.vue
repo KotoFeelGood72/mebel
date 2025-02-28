@@ -1,6 +1,11 @@
 <template>
   <div class="shop" v-if="products">
-    <ShopHead />
+    <ShopHead
+      :title="page.shop_title"
+      :txt="page.shop_txt"
+      :img="page.shop_img"
+    />
+    {{ page }}
     <div class="container">
       <ul class="products_list p10">
         <li
@@ -13,9 +18,9 @@
       </ul>
     </div>
     <ActionBlock
-      img="https://softpear.ru/wp-content/uploads/2024/11/action-2.jpg"
-      title="Как начать сотрудничество?"
-      txt="Свяжитесь с нами, чтобы обсудить ваши идеи и запросы. Наши специалисты всегда готовы предоставить консультацию и помочь на каждом этапе реализации вашего проекта. Вместе мы сможем создать нечто действительно выдающееся."
+      :img="page.изображение"
+      :title="page.form_title"
+      :txt="page.form_txt"
     />
   </div>
 </template>
@@ -26,11 +31,14 @@ import ProductsCard from "@/components/card/ProductsCard.vue";
 import { onMounted } from "vue";
 import { useProducts } from "@/services/useProducts";
 import ActionBlock from "@/components/blocks/ActionBlock.vue";
+import { usePage } from "@/services/usePage";
 
 const { useGetProducts, products } = useProducts();
+const { page, useGetPage } = usePage();
 
 onMounted(() => {
   useGetProducts("all");
+  useGetPage("118");
 });
 </script>
 

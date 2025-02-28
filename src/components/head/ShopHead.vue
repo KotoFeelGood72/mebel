@@ -3,16 +3,14 @@
     <div class="container">
       <div class="shophead__main">
         <div class="shophead__content">
-          <h1>Каталог</h1>
+          <h1>{{ title }}</h1>
           <p>
-            Ассортимент уютных и стильных бескаркасных кресел и пуфов помогут
-            вам найти идеальное решение для комфортного отдыха и создать
-            неповторимую атмосферу в вашем доме
+            {{ txt }}
           </p>
         </div>
         <div class="shophead_img__w">
           <div class="shophead__img">
-            <img src="/img/shophead.png" alt="" />
+            <img :src="img" alt="" />
           </div>
         </div>
       </div>
@@ -20,7 +18,13 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const props = defineProps<{
+  title: string;
+  txt: string;
+  img: string;
+}>();
+</script>
 
 <style scoped lang="scss">
 .shophead__main {
