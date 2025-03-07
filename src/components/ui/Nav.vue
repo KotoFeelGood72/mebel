@@ -9,6 +9,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 const nav = ref<any>([
+  { name: "Главная", link: "/" },
   { name: "Каталог", link: "/shop" },
   { name: "Аренда", link: "/rent" },
   { name: "Для дизайнеров", link: "/design" },

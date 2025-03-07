@@ -1,9 +1,10 @@
 <template>
   <div class="shop" v-if="products">
     <ShopHead
+      v-if="page"
       :title="page.shop_title"
       :txt="page.shop_txt"
-      :img="page.shop_img.url"
+      :img="page.shop_img?.url"
     />
     <div class="container">
       <ul class="products_list p10">

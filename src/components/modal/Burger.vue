@@ -10,6 +10,7 @@
     </div>
     <div class="burger-nav">
       <nav>
+        <RouterLink to="/"> Главная</RouterLink>
         <RouterLink to="/shop/products"> Каталог</RouterLink>
         <RouterLink to="/rent"> Аренда</RouterLink>
         <RouterLink to="/design"> Для дизайнеров</RouterLink>
@@ -24,7 +25,9 @@
     <div class="burger-info">
       <nav>
         <RouterLink to="/offer-physical"> Оферта для физических лиц</RouterLink>
-        <RouterLink to="/offer-legal"> Оферта для юридических лиц и ИП</RouterLink>
+        <RouterLink to="/offer-legal">
+          Оферта для юридических лиц и ИП</RouterLink
+        >
         <RouterLink to="/privacy"> Политика конфиденциальности</RouterLink>
       </nav>
       <ul class="burger-company__info">

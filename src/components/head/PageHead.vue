@@ -49,6 +49,11 @@ defineProps<{
 </script>
 
 <style scoped lang="scss">
+.pagehead {
+  @include bp($point_2) {
+    overflow-x: hidden;
+  }
+}
 .pagehead_main {
   @include flex-start;
   padding-top: calc($header + 6.9rem);
@@ -65,15 +70,15 @@ defineProps<{
     margin-bottom: 4.7rem;
     margin-right: -15rem;
     @include bp($point_2) {
-      font-size: 3rem;
+      font-size: 2rem;
       margin: 0 0 2rem 0;
     }
   }
   .pagehead__txt {
     max-width: 70.6rem;
     @include bp($point_2) {
-      font-size: 1.6rem;
-      max-width: 90%;
+      font-size: 1.4rem;
+      max-width: 100%;
     }
   }
 }
@@ -82,7 +87,7 @@ defineProps<{
   max-width: 85rem;
   @include bp($point_2) {
     max-width: 100%;
-    margin: -2rem -3rem 0 0;
+    margin: -2rem -6rem 0 0;
   }
   img {
     @include bp($point_2) {
@@ -103,7 +108,7 @@ defineProps<{
     font-size: 6.5rem;
     line-height: 120%;
     @include bp($point_2) {
-      font-size: 3rem;
+      font-size: 2rem;
       margin: 0 0 2rem 0;
     }
   }

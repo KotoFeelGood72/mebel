@@ -200,7 +200,7 @@ onUnmounted(() => {
   }
 }
 .header_col__left {
-  align-items: flex-end;
+  // align-items: flex-end;
 
   @include bp($point_2) {
     display: none;

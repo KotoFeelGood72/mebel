@@ -157,9 +157,11 @@
               v-for="(item, i) in page.geo_list"
               :key="'geo-item-' + i"
             >
-              <a class="geo_item__img" :href="item.img.url">
-                <img :src="item.img.url" :alt="item.img.alt" />
-              </a>
+              <img
+                class="geo_item__img"
+                :src="item.img.url"
+                :alt="item.img.alt"
+              />
               <p>{{ item.title }}</p>
             </li>
           </ul>
@@ -315,13 +317,14 @@ onMounted(async () => {
     margin-bottom: 5.7rem;
     @include bp($point_2) {
       gap: 2rem;
+      grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
       margin-bottom: 2.5rem;
     }
     li {
       @include flex-start;
       gap: 1.9rem;
       @include bp($point_2) {
-        font-size: 2rem;
+        font-size: 1.4rem;
         gap: 0.8rem;
       }
       :deep(span) {
@@ -623,8 +626,10 @@ onMounted(async () => {
 
 .event_main {
   padding: 10rem 0 5rem 0;
+  margin-bottom: 15rem;
   @include bp($point_2) {
     padding: 3rem 0;
+    margin-bottom: 5rem;
   }
 
   h3 {
@@ -688,11 +693,9 @@ onMounted(async () => {
     }
     img {
       transition: all 0.3s ease-in-out;
-      @include bp($point_2) {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
     &:hover {
       img {
@@ -701,9 +704,9 @@ onMounted(async () => {
     }
     a {
       @include flex-center;
+      width: 100%;
+      height: 100%;
       @include bp($point_2) {
-        width: 100%;
-        height: 100%;
       }
     }
     &:nth-child(1) {
@@ -712,7 +715,7 @@ onMounted(async () => {
 
     &:nth-child(2) {
       grid-area: two;
-      height: 40.4rem;
+      height: 50.4rem;
       @include bp($point_2) {
         height: 16.9rem;
       }

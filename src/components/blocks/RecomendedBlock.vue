@@ -3,7 +3,7 @@
     <div class="container">
       <div class="recomended_main p10">
         <h3>{{ title }}</h3>
-        <ul class="recomended_list" v-if="img1.url && img2.url">
+        <ul class="recomended_list" v-if="img1 && img2">
           <li class="recomended_item">
             <RouterLink to="/news">
               <img :src="img1.url" alt="" />

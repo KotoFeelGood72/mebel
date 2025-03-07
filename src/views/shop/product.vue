@@ -25,7 +25,10 @@
                 :colors="productPage.variations"
                 v-model="selectedColor"
               />
-              <div class="select_var">
+              <div
+                class="select_var"
+                v-if="productPage.acf.vklyuchit_modifikator"
+              >
                 <select
                   name="select-var"
                   id="select-var"
@@ -85,25 +88,27 @@
       :img="productPage.acf.character_img.url"
       :list="productPage.acf.character_list"
     />
+    <SeoBlock :content="productPage.acf.opisanie" />
     <SingleIdeas :gallery="productPage.acf.ideas_gallery" />
   </div>
 </template>
 
 <script setup lang="ts">
+import SeoBlock from "@/components/ui/SeoBlock.vue";
 import SingleCharacter from "@/components/single/SingleCharacter.vue";
 import SingleIdeas from "@/components/single/SingleIdeas.vue";
 import SingleAbout from "@/components/single/SingleAbout.vue";
 import ColorSelect from "@/components/ui/ColorSelect.vue";
 import AddToCart from "@/components/ui/AddToCart.vue";
 import Breadcrumbs from "@/components/ui/Breadcrumbs.vue";
-import Qty from "@/components/ui/Qty.vue"; // Импортируем компонент для количества
+import Qty from "@/components/ui/Qty.vue";
 import { useRoute } from "vue-router";
-import { ref, computed, onMounted, watch } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { useProductPage } from "@/services/useProductPage";
 import { useProductVariation } from "@/composables/useProductVariation";
-const { useGetProductPage, productPage } = useProductPage();
 import ProductsSlider from "@/components/ui/ProductsSlider.vue";
 
+const { useGetProductPage, productPage } = useProductPage();
 const totalSlides = ref();
 const route = useRoute();
 const activeVariation = ref(null);

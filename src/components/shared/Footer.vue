@@ -159,4 +159,12 @@ const additionaly = ref<any>([
     align-items: flex-start;
   }
 }
+
+.footer_col__center {
+  .nav {
+    @include bp($point_2) {
+      flex-wrap: wrap;
+    }
+  }
+}
 </style>
