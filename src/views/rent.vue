@@ -612,6 +612,12 @@ onMounted(async () => {
   }
 }
 
+.geo_item {
+  @include flex-center;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .geo_item__img {
   height: 19rem;
   flex-direction: column;

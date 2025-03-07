@@ -43,7 +43,7 @@
 <script setup lang="ts">
 import DefaultBtn from "../ui/DefaultBtn.vue";
 
-const props = defineProps<{
+defineProps<{
   img1: any;
   img2: any;
   img3: any;

@@ -3,9 +3,14 @@
     <div class="container">
       <Swiper
         :slides-per-view="1"
-        :modules="[Navigation, Pagination]"
+        :modules="[Navigation, Pagination, Autoplay]"
         :speed="700"
         :space-between="20"
+        :loop="true"
+        :autoplay="{
+          delay: 2000,
+          disableOnInteraction: false,
+        }"
         :navigation="{
           prevEl: '.hero_prev',
           nextEl: '.hero_next',
@@ -54,7 +59,7 @@
 
 <script setup lang="ts">
 import { Swiper, SwiperSlide } from "swiper/vue";
-import { Navigation, Pagination, EffectFade } from "swiper/modules";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import DefaultBtn from "../ui/DefaultBtn.vue";
 import { useRouter } from "vue-router";
 
