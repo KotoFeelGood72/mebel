@@ -7,13 +7,15 @@
     />
     <div class="products_content">
       <div class="products_content__head">
-        <RouterLink class="product_title" :to="`/shop/products/${products.id}`"
+        <RouterLink
+          class="product_title"
+          :to="`/shop/products/${products.slug}`"
           ><h3>{{ products.title }}</h3></RouterLink
         >
         <div class="products_description">
           {{ products.acf.about_txt_product }}
         </div>
-        <RouterLink :to="`/shop/products/${products.id}`"
+        <RouterLink :to="`/shop/products/${products.slug}`"
           >Подробнее о товаре</RouterLink
         >
       </div>

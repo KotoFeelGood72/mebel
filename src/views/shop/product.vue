@@ -162,7 +162,7 @@ watch(
   { immediate: true }
 );
 onMounted(async () => {
-  await useGetProductPage(String(route.params.id));
+  await useGetProductPage(String(route.params.slug));
 });
 </script>
 

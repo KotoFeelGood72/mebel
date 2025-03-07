@@ -42,16 +42,16 @@ const router = createRouter({
     {
       name: "articles",
       path: "/news",
-      redirect: "/news/main",
+      redirect: "/news/articles",
       children: [
         {
           name: "news",
-          path: "/news/main",
+          path: "/news/articles",
           component: () => import("@/views/news/index.vue"),
         },
         {
-          name: "news-id",
-          path: "/news/:id",
+          name: "news-slug",
+          path: "/news/:slug",
           component: () => import("@/views/news/news.vue"),
         },
       ],
@@ -107,7 +107,7 @@ const router = createRouter({
       redirect: "/shop/products",
       children: [
         {
-          path: "/shop/products/:id",
+          path: "/shop/products/:slug",
           name: "product",
           component: () => import("@/views/shop/product.vue"),
         },

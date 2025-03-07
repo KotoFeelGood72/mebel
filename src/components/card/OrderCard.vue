@@ -31,7 +31,7 @@
           v-for="(item, i) in order.items"
           :key="'order-item-slide-' + i"
         >
-          <RouterLink :to="`/shop/products/${item.product_id}`">
+          <RouterLink :to="`/shop/products/${item.slug}`">
             <div class="order">
               <div class="order_img">
                 <img :src="item.image_url" />

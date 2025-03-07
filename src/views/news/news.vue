@@ -96,8 +96,8 @@ const copyLink = async () => {
 };
 
 onMounted(async () => {
-  const articleId = route.params.id;
-  await useGetArticle(articleId);
+  const articleSlug = route.params.slug;
+  await useGetArticle(articleSlug);
 });
 </script>
 

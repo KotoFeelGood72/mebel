@@ -1,5 +1,5 @@
 <template>
-  <RouterLink :to="`/news/${article.id}`" class="article">
+  <RouterLink :to="`/news/${article.slug}`" class="article">
     <div class="article_img">
       <div class="date">{{ formattedDate }}</div>
       <img :src="article.thumbnail" :alt="article.title" class="full" />
@@ -22,13 +22,7 @@
 <script setup lang="ts">
 import DefaultBtn from "../ui/DefaultBtn.vue";
 const props = defineProps<{
-  article: {
-    date: string;
-    id: string;
-    thumbnail: string;
-    title: string;
-    excerpt: string;
-  };
+  article: any;
 }>();
 
 // Функция форматирования даты

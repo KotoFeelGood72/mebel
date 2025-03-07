@@ -3,15 +3,14 @@
     <div class="container">
       <div class="recomended_main p10">
         <h3>{{ title }}</h3>
-        <ul class="recomended_list">
+        <ul class="recomended_list" v-if="img1.url && img2.url">
           <li class="recomended_item">
-            <RouterLink to="/news/main">
+            <RouterLink to="/news">
               <img :src="img1.url" alt="" />
-              <!-- <div class="item__sale">до <span>-40 %</span></div> -->
             </RouterLink>
           </li>
           <li class="recomended_item">
-            <RouterLink to="/news/main">
+            <RouterLink to="/news">
               <div class="recomended_item__content">
                 <span>{{ card.date }}</span>
                 <h3>{{ card.title }}</h3>
@@ -30,7 +29,7 @@
             </RouterLink>
           </li>
           <li class="recomended_item">
-            <RouterLink to="/news/main">
+            <RouterLink to="/news">
               <img :src="img3.url" />
               <!-- <div class="item__sale">до <span>-40 %</span></div> -->
             </RouterLink>
