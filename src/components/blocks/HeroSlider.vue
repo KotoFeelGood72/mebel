@@ -38,8 +38,8 @@
               </div>
             </div> -->
             <div class="hero_slide__img">
-              <img :src="item.img.link" alt="" class="desktop_img" />
-              <img :src="item.mobile_img.link" alt="" class="mobile_img" />
+              <img :src="item.img.url" alt="" class="desktop_img" />
+              <img :src="item.mobile_img.url" alt="" class="mobile_img" />
             </div>
           </div>
         </SwiperSlide>
