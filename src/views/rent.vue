@@ -197,10 +197,9 @@
       </div>
     </div>
     <ActionBlock
-      title="Арендуйте у нас кресла-мешки для комфортного и радостного
-		мероприятия"
-      txt=""
-      img="https://softpear.ru/wp-content/uploads/2024/11/action-1.jpg"
+      :img="page.изображение"
+      :title="page.form_title"
+      :txt="page.form_txt"
     />
   </div>
 </template>
@@ -229,7 +228,7 @@ const head = computed(() => {
 });
 
 onMounted(async () => {
-  await useGetPage("124");
+  await useGetPage("arenda");
 });
 </script>
 

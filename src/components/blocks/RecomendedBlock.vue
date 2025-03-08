@@ -44,11 +44,11 @@
 import DefaultBtn from "../ui/DefaultBtn.vue";
 
 defineProps<{
-  img1: any;
-  img2: any;
-  img3: any;
-  card: any;
-  title: string;
+  img1?: any;
+  img2?: any;
+  img3?: any;
+  card?: any;
+  title?: string;
 }>();
 </script>
 

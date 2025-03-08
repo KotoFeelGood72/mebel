@@ -46,9 +46,9 @@
       </div>
     </div>
     <ActionBlock
-      img="https://softpear.ru/wp-content/uploads/2024/11/action-2.jpg"
-      title="Как начать сотрудничество?"
-      txt="Свяжитесь с нами, чтобы обсудить ваши идеи и запросы. Наши специалисты всегда готовы предоставить консультацию и помочь на каждом этапе реализации вашего проекта. Вместе мы сможем создать нечто действительно выдающееся."
+      :img="page.изображение"
+      :title="page.form_title"
+      :txt="page.form_txt"
     />
   </div>
 </template>
@@ -60,7 +60,6 @@ import ActionBlock from "@/components/blocks/ActionBlock.vue";
 import { ref, onMounted, computed } from "vue";
 
 const { useGetPage, page } = usePage();
-// const head = ref<any>();
 
 const head = computed(() => {
   if (page.value) {
@@ -76,7 +75,7 @@ const head = computed(() => {
 });
 
 onMounted(async () => {
-  await useGetPage("116"); // Загружаем данные страницы
+  await useGetPage("dizajn"); // Загружаем данные страницы
 });
 </script>
 

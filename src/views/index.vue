@@ -3,13 +3,17 @@
     <HeroSlider :slides="page.slider" />
     <Hits :title="page.title_hit" :products="hits" />
     <RecomendedBlock
-      :img1="page.recomend_img_1"
-      :img2="page.recomend_img_2"
-      :img3="page.recomend_img_3"
+      :img1="page?.recomend_img_1"
+      :img2="page?.recomend_img_2"
+      :img3="page?.recomend_img_3"
       :title="page.recomend_title"
       :card="page.caard_in_txt"
     />
-    <ActionBlock />
+    <ActionBlock
+      :img="page.изображение"
+      :title="page.form_title"
+      :txt="page.form_txt"
+    />
   </div>
 </template>
 
@@ -18,15 +22,15 @@ import Hits from "@/components/blocks/Hits.vue";
 import ActionBlock from "@/components/blocks/ActionBlock.vue";
 import RecomendedBlock from "@/components/blocks/RecomendedBlock.vue";
 import HeroSlider from "@/components/blocks/HeroSlider.vue";
-import { onMounted, watchEffect } from "vue";
+import { onMounted } from "vue";
 import { usePage } from "@/services/usePage";
 import { useProducts } from "@/services/useProducts";
 
-const { useGetPage, page, meta } = usePage();
+const { useGetPage, page } = usePage();
 const { useGetProducts, hits } = useProducts();
 
 onMounted(async () => {
-  await useGetPage("114");
+  await useGetPage("beskarkasnye-divany-kresla");
   await useGetProducts("popular");
 });
 </script>

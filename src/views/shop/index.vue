@@ -38,7 +38,7 @@ const { page, useGetPage } = usePage();
 
 onMounted(() => {
   useGetProducts("all");
-  useGetPage("118");
+  useGetPage("katalog");
 });
 </script>
 

@@ -46,7 +46,7 @@ const { useGetPage, page } = usePage();
 const contentRef = ref<HTMLElement | null>(null);
 
 onMounted(async () => {
-  await useGetPage("120");
+  await useGetPage("oferta-dlya-fizicheskih-licz");
 });
 
 const printPage = () => {
@@ -101,6 +101,7 @@ const copyLink = async () => {
 
 .offerta_row {
   @include flex-start;
+  align-items: flex-start;
   gap: 11.2rem;
 }
 

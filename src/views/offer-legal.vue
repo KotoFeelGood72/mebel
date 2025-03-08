@@ -12,14 +12,21 @@
                 <Icons icon="material-symbols-light:print-outline" :size="40" />
               </li>
               <li class="offerta_item" @click="saveAsPDF">
-                <Icons icon="material-symbols-light:save-outline-rounded" :size="40" />
+                <Icons
+                  icon="material-symbols-light:save-outline-rounded"
+                  :size="40"
+                />
               </li>
               <li class="offerta_item" @click="copyLink">
                 <Icons icon="material-symbols-light:link-rounded" :size="42" />
               </li>
             </ul>
             <div class="offerta_quot" v-html="page.short_txt"></div>
-            <div class="offerta_content" v-html="page.txt" ref="contentRef"></div>
+            <div
+              class="offerta_content"
+              v-html="page.txt"
+              ref="contentRef"
+            ></div>
           </div>
           <div class="offerta__img">
             <img :src="page.img" alt="" />
@@ -39,7 +46,7 @@ const { useGetPage, page } = usePage();
 const contentRef = ref<HTMLElement | null>(null);
 
 onMounted(async () => {
-  await useGetPage("122");
+  await useGetPage("oferta-dlya-yuridicheskih-licz");
 });
 
 const printPage = () => {
@@ -94,6 +101,7 @@ const copyLink = async () => {
 
 .offerta_row {
   @include flex-start;
+  align-items: flex-start;
   gap: 11.2rem;
 }
 

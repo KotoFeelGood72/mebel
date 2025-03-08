@@ -140,8 +140,8 @@ const isRent = computed(() => route.name === "rent");
 
 .action_form__w {
   max-width: 84.3rem;
+  padding: 1.6rem 1.6rem 5rem 1.6rem;
   @include bp($point_2) {
-    padding: 1.6rem 1.6rem 5rem 1.6rem;
   }
 
   &.small {

@@ -20,9 +20,9 @@
 
 <script setup lang="ts">
 const props = defineProps<{
-  title: string;
-  txt: string;
-  img: string;
+  title?: string;
+  txt?: string;
+  img?: string;
 }>();
 </script>
 

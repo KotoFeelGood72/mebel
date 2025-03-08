@@ -10,7 +10,7 @@ export const useHomeStore = defineStore("home", {
   actions: {
     async getHome() {
       try {
-        const response = await api.get("/page/post-114.json");
+        const response = await api.get("/page/beskarkasnye-divany-kresla.json");
         this.home = response.data.acf;
       } catch (error) {}
     },

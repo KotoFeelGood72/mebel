@@ -7,7 +7,7 @@ const meta = ref<any>(null);
 export function usePage() {
   const useGetPage = async (pages: string) => {
     try {
-      const response = await api.get(`/page/post-${pages}.json`);
+      const response = await api.get(`/page/${pages}.json`);
       page.value = response.data.acf;
       meta.value = {
         title: response.data.title,
