@@ -77,9 +77,9 @@ defineProps<{
 .hero_slider {
   // background-color: $light;
   padding-top: calc($header + 2rem);
-  // margin-top: -17rem;
-  // padding-top: 5.6rem;
-  // padding-top: 29.3rem;
+  @include bp($point_2) {
+    padding-top: 8.3rem;
+  }
 }
 
 .hero_slide {

@@ -88,7 +88,10 @@
       :img="productPage.acf.character_img.url"
       :list="productPage.acf.character_list"
     />
-    <SeoBlock :content="productPage.acf.opisanie" />
+    <SeoBlock
+      v-if="productPage.acf.opisanie"
+      :content="productPage.acf.opisanie"
+    />
     <SingleIdeas :gallery="productPage.acf.ideas_gallery" />
   </div>
 </template>
