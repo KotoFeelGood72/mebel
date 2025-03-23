@@ -58,6 +58,23 @@ const colorMap: Record<string, string> = {
   ["indigo"]: "#404a6f",
   ["steel"]: "#a2a8b4",
   ["umber"]: "#c88b45",
+  ["vertical-000"]: "#f3f0e8",
+  ["vertical-230"]: "#7e5c4d",
+  ["vertical-236"]: "#5f3e37",
+  ["vertical-297"]: "#514341",
+  ["vertical-392"]: "#a98b92",
+  ["vertical-490"]: "#b55d43",
+  ["vertical-560"]: "#e0a737",
+  ["vertical-677"]: "#2c7b7a",
+  ["vertical-690"]: "#c7d0c0",
+  ["vertical-768"]: "#0f4877",
+  ["vertical-795"]: "#5a6386",
+  ["vertical-910"]: "#ddd2ca",
+  ["vertical-930"]: "#d3c6c0",
+  ["vertical-968"]: "#70737d",
+  ["vertical-970"]: "#c1c4d7",
+  ["vertical-990"]: "#9ea1a9",
+  ["vertical-994"]: "#b0b4c3",
 };
 </script>
 
