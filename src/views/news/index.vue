@@ -1,9 +1,9 @@
 <template>
-  <div class="news">
+  <div class="news" v-if="page">
     <div class="container">
-      <div class="head">
+      <div class="head" :style="`background-image: url('${page?.img.url}')`">
         <bread :items="breadcrumbs" theme="dark" />
-        <h1>Новости</h1>
+        <h1>{{ page["news-title"] }}</h1>
       </div>
       <div class="grid">
         <ArticleCard
@@ -14,9 +14,9 @@
       </div>
     </div>
     <ActionBlock
-      img="https://softpear.ru/wp-content/uploads/2024/11/action-2.jpg"
-      title="Как начать сотрудничество?"
-      txt="Свяжитесь с нами, чтобы обсудить ваши идеи и запросы. Наши специалисты всегда готовы предоставить консультацию и помочь на каждом этапе реализации вашего проекта. Вместе мы сможем создать нечто действительно выдающееся."
+      :img="page.form.kartinka.url"
+      :title="page.form.zagolovok"
+      :txt="page.form.opisanie"
     />
   </div>
 </template>
@@ -27,13 +27,16 @@ import ActionBlock from "@/components/blocks/ActionBlock.vue";
 import ArticleCard from "@/components/card/ArticleCard.vue";
 import { onMounted } from "vue";
 import bread from "@/components/bread.vue";
+import { usePage } from "@/services/usePage";
 
+const { useGetPage, page } = usePage();
 const breadcrumbs = [{ label: "Главная", to: "/" }, { label: "Блог" }];
 const { useGetNews, news } = useNews();
 // const head = ref<any>();
 
 onMounted(async () => {
   await useGetNews();
+  await useGetPage("news"); // Загружаем данные страницы
 });
 </script>
 

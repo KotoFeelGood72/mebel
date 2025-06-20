@@ -1,79 +1,64 @@
 <template>
   <div class="order" v-if="order">
+    <!-- Табы -->
     <div class="order_tabs">
-      <!-- Табы -->
       <div
+        v-for="t in tabs"
+        :key="t.key"
         class="order__tab"
-        :class="{ active: activeTab === 'active' }"
-        @click="activeTab = 'active'"
+        :class="{ active: activeTab === t.key }"
+        @click="activeTab = t.key"
       >
-        Активные
-      </div>
-      <div
-        class="order__tab"
-        :class="{ active: activeTab === 'completed' }"
-        @click="activeTab = 'completed'"
-      >
-        Завершенные
+        {{ t.label }}
       </div>
     </div>
 
-    <!-- Контент табов -->
+    <!-- Содержимое активного таба -->
     <div class="order_tabs__contents">
-      <div class="order_tab__content" v-if="activeTab === 'active'">
-        <div v-if="activeOrders.length === 0" class="order__placeholder">
-          Нет активных заказов
-        </div>
-        <OrderCard
-          v-for="(item, i) in activeOrders"
-          :key="'active-orders-list-item-' + i"
-          :order="item"
-          v-else
-        />
-      </div>
-      <div class="order_tab__content" v-if="activeTab === 'completed'">
-        <div v-if="completedOrders.length === 0" class="order__placeholder">
-          <h3>У вас пока что нет заказов</h3>
-          <DefaultBtn
-            name="Перейти в каталог"
-            type="primary"
-            color="brown"
-            size="normal"
+      <div class="order_tab__content">
+        <template v-if="currentTabOrders.length">
+          <OrderCard
+            v-for="(item, i) in currentTabOrders"
+            :key="`${activeTab}-order-${i}`"
+            :order="item"
           />
+        </template>
+
+        <!-- Плейсхолдер, если заказов нет -->
+        <div v-else class="order__placeholder">
+          Нет заказов со статусом «{{ tabLabel(activeTab) }}»
         </div>
-        <OrderCard
-          v-for="(item, i) in completedOrders"
-          :key="'completed-orders-list-item-' + i"
-          :order="item"
-          v-else
-        />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import OrderCard from "@/components/card/OrderCard.vue";
-import "swiper/swiper-bundle.css";
 import DefaultBtn from "@/components/ui/DefaultBtn.vue";
 import { useUserStoreRefs, useUserStore } from "@/stores/useUserStore";
-// Активная вкладка
-const activeTab = ref<"active" | "completed">("active");
+
+type OrderStatus = "in-work" | "paid" | "not-paid";
+
+const tabs = [
+  { key: "in-work", label: "В работе" },
+  { key: "paid", label: "Оплачен" },
+  { key: "not-paid", label: "Не оплачен" },
+] as const;
+
+const activeTab = ref<OrderStatus>("in-work");
 
 const { order } = useUserStoreRefs();
 const { fetchUser } = useUserStore();
 
-const activeOrders = computed(() =>
-  order.value.orders.filter((order: any) => order.status !== "completed")
-);
-const completedOrders = computed(() =>
-  order.value.orders.filter((order: any) => order.status === "completed")
+const currentTabOrders = computed(() =>
+  order.value.orders.filter((o: any) => o.status === activeTab.value)
 );
 
-onMounted(async () => {
-  await fetchUser();
-});
+const tabLabel = (key: OrderStatus) => tabs.find((t) => t.key === key)!.label;
+
+onMounted(fetchUser);
 </script>
 
 <style scoped lang="scss">
