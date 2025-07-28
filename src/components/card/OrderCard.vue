@@ -27,19 +27,19 @@
         }"
         :pagination="{ el: '.order-pagination', clickable: true }"
       >
-        <SwiperSlide
-          v-for="(item, i) in order.items"
-          :key="'order-item-slide-' + i"
-        >
+        <SwiperSlide v-for="(item, i) in order.line_items" :key="'order-item-slide-' + i">
           <RouterLink :to="`/shop/products/${item.slug}`">
             <div class="order">
               <div class="order_img">
-                <img :src="item.image_url" />
+                <img :src="item.image.src" />
               </div>
               <div class="order__content">
                 <h3>{{ item.name }}</h3>
                 <p>
-                  Цвет: <span>{{ item.color }}</span>
+                  Цвет:
+                  <span
+                    >{{ item.meta_data.find((m: any) => m.key === "pa_colors")?.value }}</span
+                  >
                 </p>
               </div>
             </div>
@@ -70,10 +70,12 @@
 <script setup lang="ts">
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Navigation, Pagination } from "swiper/modules";
-
+import "swiper/swiper-bundle.css";
 const props = defineProps<{
   order: any;
 }>();
+
+console.log(props.order);
 </script>
 
 <style scoped lang="scss">
