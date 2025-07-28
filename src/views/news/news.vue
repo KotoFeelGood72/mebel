@@ -169,6 +169,27 @@ onMounted(async () => {
         margin: 1rem 0;
       }
     }
+    :deep(figcaption) {
+      font-size: 2rem;
+      margin: 2rem 0;
+      font-style: italic;
+      font-family: $font_2;
+      @include bp($point_2) {
+        font-size: 1.6rem;
+        margin: 1rem 0;
+      }
+    }
+    :deep(figure) {
+      font-size: 2rem;
+      margin: 2rem 0;
+      // display: flex;
+      // flex-direction: column;
+      // gap: 2rem;
+      @include bp($point_2) {
+        font-size: 1.6rem;
+        margin: 1rem 0;
+      }
+    }
 
     :deep(h2) {
       font-size: 3rem;
@@ -235,21 +256,17 @@ onMounted(async () => {
     }
   }
 
-  :deep(.wp-block-image) {
+  :deep(img) {
     height: 30rem;
     width: auto;
+    border-radius: 1rem;
+    // width: 100%;
+    // height: 100%;
+    height: auto;
+    object-fit: cover;
     @include bp($point_2) {
       height: auto;
-    }
-    img {
-      border-radius: 1rem;
-      // width: 100%;
-      height: 100%;
-      object-fit: cover;
-      @include bp($point_2) {
-        height: auto;
-        width: auto;
-      }
+      width: auto;
     }
   }
 
