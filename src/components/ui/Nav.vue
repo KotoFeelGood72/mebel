@@ -13,6 +13,7 @@ const nav = ref<any>([
   { name: "Каталог", link: "/shop" },
   { name: "Аренда", link: "/rent" },
   { name: "Для дизайнеров", link: "/design" },
+  { name: "Блог", link: "/news" },
 ]);
 </script>
 
