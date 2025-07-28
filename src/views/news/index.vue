@@ -1,10 +1,10 @@
 <template>
   <div class="news" v-if="page">
     <div class="container">
-      <div class="head" :style="`background-image: url('${page?.img.url}')`">
+      <!-- <div class="head" :style="`background-image: url('${page?.img?.url}')`">
         <bread :items="breadcrumbs" theme="dark" />
         <h1>{{ page["news-title"] }}</h1>
-      </div>
+      </div> -->
       <div class="grid">
         <ArticleCard
           v-for="(item, i) in news"
@@ -13,11 +13,11 @@
         />
       </div>
     </div>
-    <ActionBlock
+    <!-- <ActionBlock
       :img="page.form.kartinka.url"
       :title="page.form.zagolovok"
       :txt="page.form.opisanie"
-    />
+    /> -->
   </div>
 </template>
 

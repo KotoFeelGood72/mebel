@@ -5,15 +5,10 @@
       <img :src="article.thumbnail" :alt="article.title" class="full" />
     </div>
     <div class="article__content">
-      <h3>{{ article.title }}</h3>
-      <p>{{ article.excerpt }}</p>
+      <h3>{{ article.title.rendered }}</h3>
+      <div class="article__excerpt" v-html="article.excerpt.rendered"></div>
       <div class="btn">
-        <DefaultBtn
-          name="Подробнее"
-          type="primary"
-          color="brown"
-          size="small"
-        />
+        <DefaultBtn name="Подробнее" type="primary" color="brown" size="small" />
       </div>
     </div>
   </RouterLink>
@@ -110,6 +105,16 @@ p {
     font-size: 1.6rem;
     line-height: 2.2rem;
   }
+}
+
+.article__excerpt {
+  max-height: 12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  margin-bottom: 2rem;
 }
 
 .article__content {

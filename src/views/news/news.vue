@@ -8,7 +8,6 @@
       </div>
     </header>
 
-    <!-- Изображение -->
     <div class="news-image">
       <img :src="article.thumbnail" :alt="article.title" />
     </div>
