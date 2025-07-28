@@ -27,6 +27,8 @@ export function useNews() {
       article.value = item
         ? {
             ...item,
+            title: item.title.rendered,
+            content: item.content.rendered,
             thumbnail:
               item._embedded?.["wp:featuredmedia"]?.[0]?.source_url || null,
           }

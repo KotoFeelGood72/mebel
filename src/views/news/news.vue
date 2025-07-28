@@ -284,8 +284,10 @@ onMounted(async () => {
 }
 
 .news-share {
-  margin-top: 2rem;
-
+  margin: 3rem 0;
+  @include bp($point_2) {
+    margin: 2rem 0;
+  }
   h3 {
     font-size: 2rem;
     margin-bottom: 10px;
