@@ -1,6 +1,7 @@
 import { defineStore, storeToRefs } from "pinia";
 import { useModalStore } from "./useModalStore";
 import { auth, api } from "@/api/axios";
+import axios from "axios";
 
 interface shipping {
   address_1?: string;
@@ -98,11 +99,17 @@ export const useUserStore = defineStore("users", {
 
     // Получение данных пользователя
     async fetchUser() {
+      const consumerKey = "ck_a6175ce718950d98d48dade5de1265a062a56caf";
+      const consumerSecret = "cs_8c92946f2850eba6f6d1cc1288df80c65573af2c";
       try {
-        const response = await api.get(`/users/user-${this.user.ID}.json`);
+        // Получаем заказы пользователя через WooCommerce REST API
+
+        const response = await axios.get(
+          `https://softpear.ru/wp-json/wc/v3/orders?customer=${this.user.ID}&consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
+        );
         this.order = response.data;
       } catch (error) {
-        console.error("Ошибка при получении данных пользователя:", error);
+        console.error("Ошибка при получении заказов пользователя:", error);
       }
     },
 

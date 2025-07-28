@@ -59,7 +59,7 @@
     <div class="orders__footer">
       <h4>Данные доставки</h4>
       <p>Адрес доставки</p>
-      <span>{{ order.billing_address.address_1 }}</span>
+      <span>{{ order.billing.address_1 }}</span>
     </div>
     <div class="orders__total">
       Сумма заказа: <b>{{ order.total }}</b>

@@ -3,11 +3,11 @@
     <!-- Табы -->
     <div class="order_tabs">
       <div
-        v-for="t in tabs"
-        :key="t.key"
+        v-for="(t, idx) in tabs"
+        :key="t.label"
         class="order__tab"
-        :class="{ active: activeTab === t.key }"
-        @click="activeTab = t.key"
+        :class="{ active: activeTabIdx === idx }"
+        @click="activeTabIdx = idx"
       >
         {{ t.label }}
       </div>
@@ -19,14 +19,14 @@
         <template v-if="currentTabOrders.length">
           <OrderCard
             v-for="(item, i) in currentTabOrders"
-            :key="`${activeTab}-order-${i}`"
+            :key="`${tabs[activeTabIdx].key}-order-${i}`"
             :order="item"
           />
         </template>
 
         <!-- Плейсхолдер, если заказов нет -->
         <div v-else class="order__placeholder">
-          Нет заказов со статусом «{{ tabLabel(activeTab) }}»
+          Нет заказов со статусом «{{ tabLabel(activeTabIdx) }}»
         </div>
       </div>
     </div>
@@ -39,24 +39,22 @@ import OrderCard from "@/components/card/OrderCard.vue";
 import DefaultBtn from "@/components/ui/DefaultBtn.vue";
 import { useUserStoreRefs, useUserStore } from "@/stores/useUserStore";
 
-type OrderStatus = "in-work" | "paid" | "not-paid";
+const tabs: { key: string[]; label: string }[] = [
+  { key: ["in-work"], label: "В работе" },
+  { key: ["paid"], label: "Оплачен" },
+  { key: ["not-paid", "pending"], label: "Не оплачен" },
+];
 
-const tabs = [
-  { key: "in-work", label: "В работе" },
-  { key: "paid", label: "Оплачен" },
-  { key: "not-paid", label: "Не оплачен" },
-] as const;
-
-const activeTab = ref<OrderStatus>("in-work");
+const activeTabIdx = ref(0);
 
 const { order } = useUserStoreRefs();
 const { fetchUser } = useUserStore();
 
 const currentTabOrders = computed(() =>
-  order.value.orders.filter((o: any) => o.status === activeTab.value)
+  (order.value as any[]).filter((o) => tabs[activeTabIdx.value].key.includes(o.status))
 );
 
-const tabLabel = (key: OrderStatus) => tabs.find((t) => t.key === key)!.label;
+const tabLabel = (idx: number) => tabs[idx].label;
 
 onMounted(fetchUser);
 </script>
