@@ -69,6 +69,8 @@ export const useCartStore = defineStore("carts", {
         email: user.value.billing.email,
         address_1: user.value.billing.address,
       };
+      // Гарантируем актуальную привязку заказа к пользователю на момент оплаты
+      this.currentOrder.user_id = user.value?.ID || 0;
       try {
         const response = await axios.post(
           "https://softpear.ru/wp-json/yandexpay/v1/create-order/",
