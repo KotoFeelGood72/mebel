@@ -27,10 +27,21 @@
     font-family: $font_2;
     font-weight: 500;
     margin-bottom: 6.5rem;
+
+    @include bp($point_2) {
+      font-size: 4.5rem;
+      margin-bottom: 4.5rem;
+    }
   }
 }
 
 .thanks_img {
   @include flex-center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
 }
 </style>
