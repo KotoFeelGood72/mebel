@@ -162,6 +162,11 @@ defineProps<{
   width: calc(100% + 11rem);
   z-index: 101;
   pointer-events: none;
+
+  @include bp($point_2) {
+    display: none;
+  }
+
   div {
     cursor: pointer;
     pointer-events: all;

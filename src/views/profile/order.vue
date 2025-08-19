@@ -68,12 +68,24 @@ onMounted(async () => {
   display: inline-flex;
   background-color: $light;
   margin-bottom: 6rem;
+
+  @include bp($point_2) {
+    width: 100%;
+  }
   div {
     padding: 1rem 4.5rem;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
     font-family: $font_3;
     color: $gray;
+
+    @include bp($point_2) {
+      padding: 1rem 1.5rem;
+      font-size: 1.2rem;
+      flex-grow: 1;
+      text-align: center;
+    }
+
     &.active {
       box-shadow: 0px 2.83px 11.34px 0px #0000001f;
       background-color: $white;
