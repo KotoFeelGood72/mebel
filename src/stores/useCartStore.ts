@@ -8,6 +8,7 @@ export const useCartStore = defineStore("carts", {
     carts: [] as any,
     paymentMethod: "Оплатить" as any,
     currentOrder: {} as any,
+    isRedirectingToPayment: false as boolean,
   }),
   actions: {
     setPaymentMethod(methods: any) {
@@ -74,7 +75,8 @@ export const useCartStore = defineStore("carts", {
           this.currentOrder
         );
 
-        if (response.data && response.data.payment_url) {
+        if (response.data.payment_url) {
+          this.isRedirectingToPayment = true;
           window.location.href = response.data.payment_url;
         }
 
@@ -88,6 +90,7 @@ export const useCartStore = defineStore("carts", {
         toast.error(
           "Ошибка при создании заказа: Неверный адрес эл. почты для выставления счета"
         );
+        this.isRedirectingToPayment = false;
       }
     },
   },

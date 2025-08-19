@@ -56,7 +56,10 @@ const currentTabOrders = computed(() =>
 
 const tabLabel = (idx: number) => tabs[idx].label;
 
-onMounted(fetchUser);
+onMounted(async () => {
+  await fetchUser();
+  console.log(order.value);
+});
 </script>
 
 <style scoped lang="scss">

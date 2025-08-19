@@ -1,6 +1,6 @@
 <template>
   <div class="orders">
-    <div class="orders__head">№ {{ order.order_id }}</div>
+    <div class="orders__head">№ {{ order.id }}</div>
     <div class="orders__main">
       <Swiper
         :slides-per-view="5.5"
@@ -71,11 +71,9 @@
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Navigation, Pagination } from "swiper/modules";
 import "swiper/swiper-bundle.css";
-const props = defineProps<{
+defineProps<{
   order: any;
 }>();
-
-console.log(props.order);
 </script>
 
 <style scoped lang="scss">

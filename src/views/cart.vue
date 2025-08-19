@@ -57,9 +57,7 @@
                   <div class="cart_item__price">{{ item.price }} Р</div>
                   <Qty
                     :initialQuantity="item.quantity"
-                    @updateQuantity="
-                      (quantity) => updateQuantity(item, quantity)
-                    "
+                    @updateQuantity="(quantity) => updateQuantity(item, quantity)"
                     @clear="removeCart(item.variationId)"
                   />
                 </div>
@@ -69,9 +67,7 @@
           <div class="list-block">
             <BlockUserInfo />
             <BlockDeliveryCalc
-              :defaultAddress="
-                user?.billing?.address_1 || user?.billing?.address
-              "
+              :defaultAddress="user?.billing?.address_1 || user?.billing?.address"
             />
             <BlockPayments :total="totalWithDelivery" />
           </div>
@@ -109,6 +105,7 @@ import { useDelivery } from "@/composables/useDelivery";
 import { useToast } from "vue-toastification"; // Подключаем useToast
 
 const { carts, currentOrder } = useCartStoreRefs();
+const { isRedirectingToPayment } = useCartStoreRefs();
 const { updateCartItem, createOrder, removeCart } = useCartStore();
 const { deliveryPrice } = useDelivery();
 const { user } = useUserStoreRefs();
@@ -137,9 +134,7 @@ const deleteSelectedItems = () => {
 
 const toggleSelectItem = (variationId: string) => {
   if (selectedItems.value.includes(variationId)) {
-    selectedItems.value = selectedItems.value.filter(
-      (id) => id !== variationId
-    );
+    selectedItems.value = selectedItems.value.filter((id) => id !== variationId);
   } else {
     selectedItems.value.push(variationId);
   }
@@ -154,18 +149,14 @@ const toggleSelectAll = (event: Event) => {
 };
 
 const isAllSelected = computed(
-  () =>
-    carts.value.length > 0 && selectedItems.value.length === carts.value.length
+  () => carts.value.length > 0 && selectedItems.value.length === carts.value.length
 );
 
 const isCheckUser = computed(() => {
   const billing = user.value.billing;
   return (
     !!billing.address_1 ||
-    (billing.address &&
-      !!billing.first_name &&
-      !!billing.phone &&
-      !!billing.email)
+    (billing.address && !!billing.first_name && !!billing.phone && !!billing.email)
   );
 });
 
@@ -174,10 +165,7 @@ const totalQuantity = computed(() =>
 );
 
 const totalPrice = computed(() =>
-  carts.value.reduce(
-    (total: any, item: any) => total + item.price * item.quantity,
-    0
-  )
+  carts.value.reduce((total: any, item: any) => total + item.price * item.quantity, 0)
 );
 
 const totalDeliveryPrice = computed(() =>
@@ -187,9 +175,7 @@ const totalDeliveryPrice = computed(() =>
   )
 );
 
-const totalWithDelivery = computed(
-  () => totalPrice.value + totalDeliveryPrice.value
-);
+const totalWithDelivery = computed(() => totalPrice.value + totalDeliveryPrice.value);
 
 const handlePayment = () => {
   const missingFields: string[] = [];
@@ -237,7 +223,7 @@ watch([carts, deliveryPrice], setLineItemsAndPrice, { deep: true });
 watch(
   carts,
   (newCarts) => {
-    if (newCarts.length === 0) {
+    if (newCarts.length === 0 && !isRedirectingToPayment.value) {
       router.push("/");
     }
   },
